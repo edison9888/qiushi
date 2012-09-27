@@ -36,6 +36,8 @@ static int typeInternet = kTypeNO;
             
             isNetWork = YES;
             
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+            [ud setObject:[NSNumber numberWithBool:YES]  forKey:@"showAD"];
             
         });
     };
@@ -46,7 +48,8 @@ static int typeInternet = kTypeNO;
             
             DLog( @"Block Says Unreachable---");
             isNetWork = NO;
-            
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+            [ud setObject:[NSNumber numberWithBool:NO]  forKey:@"showAD"];
             
         });
     };
@@ -69,7 +72,8 @@ static int typeInternet = kTypeNO;
 
 
         isNetWork = YES;
-        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        [ud setObject:[NSNumber numberWithBool:YES]  forKey:@"showAD"];
         
     }
     else
@@ -77,6 +81,8 @@ static int typeInternet = kTypeNO;
         
 
         isNetWork = NO;
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        [ud setObject:[NSNumber numberWithBool:NO]  forKey:@"showAD"];
         
     }
     

@@ -66,14 +66,6 @@ UITableViewDelegate
 {
     [super viewDidLoad];
     
-    NSError *error;
-    if (![[GANTracker sharedTracker] trackEvent:@"Application iOS"
-                                         action:@"ContentViewController.h"
-                                          label:@"Example iOS"
-                                          value:99
-                                      withError:&error]) {
-        NSLog(@"error in trackEvent");
-    }
     
     
 	// Do any additional setup after loading the view, typically from a nib.
@@ -165,6 +157,14 @@ UITableViewDelegate
 
 - (void)loadData{
     
+    if ([IsNetWorkUtil isNetWork] == NO) {
+        [[iToast makeText:@"亲，网络不给力，请稍后再试呀..."] show];
+        self.refreshing = NO;
+        [self.tableView tableViewDidFinishedLoading];
+        [self.tableView reloadData];
+        return;
+    }
+    
     self.page++;
     NSURL *url;
     
@@ -220,14 +220,6 @@ UITableViewDelegate
 
 -(void) GetErr:(ASIHTTPRequest *)request
 {
-    NSError *error1;
-    if (![[GANTracker sharedTracker] trackEvent:@"Application iOS"
-                                         action:@"refresh error"
-                                          label:@"Example iOS"
-                                          value:99
-                                      withError:&error1]) {
-        NSLog(@"error in trackEvent");
-    }
     
     
     self.refreshing = NO;
@@ -258,14 +250,7 @@ UITableViewDelegate
     
     //    NSString *responseString = [request responseString];
     //    NSLog(@"%@\n",responseString);
-    NSError *error;
-    if (![[GANTracker sharedTracker] trackEvent:@"Application iOS"
-                                         action:@"refresh ok"
-                                          label:@"Example iOS"
-                                          value:99
-                                      withError:&error]) {
-        NSLog(@"error in trackEvent");
-    }
+   
     
     if (self.refreshing) {
         self.page = 1;

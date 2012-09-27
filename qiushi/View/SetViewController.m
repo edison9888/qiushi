@@ -83,9 +83,11 @@
     _mTable.delegate = self;
     _mTable.dataSource = self;
     _mTable.backgroundColor = [UIColor clearColor];
+    [self.mTable setBackgroundView:nil];
     [self.view addSubview:_mTable];
     
-    _items = [[NSMutableArray alloc]initWithObjects:@"显示广告",@"去给评个分吧",@"图片加载方式",@"清除缓存", nil];
+//    _items = [[NSMutableArray alloc]initWithObjects:@"显示广告",@"去给评个分吧",@"图片加载方式",@"清除缓存", nil];
+        _items = [[NSMutableArray alloc]initWithObjects:@"去给评个分吧",@"图片加载方式",@"清除缓存", nil];
     _subItems = [[NSMutableArray alloc]initWithObjects:@"", nil];
     
     
@@ -158,19 +160,26 @@
     cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
    
     
-    if (indexPath.row == 0) {
-        
-        cell.accessoryView = _adSwitch;
-        
-    }
-    else{
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
+//    if (indexPath.row == 0) {
+//        
+//        cell.accessoryView = _adSwitch;
+//        
+//    }
+//    else{
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    }
+//    
+//    if (indexPath.row == 2) {
+//        cell.detailTextLabel.text = [_loadItems objectAtIndex:_typeLoad];
+//    }
+
+         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  
     
-    if (indexPath.row == 2) {
+    if (indexPath.row == 1) {
         cell.detailTextLabel.text = [_loadItems objectAtIndex:_typeLoad];
     }
-    
+
     
     return cell;
 }
@@ -180,11 +189,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.row == 0) {
-        
-        
-        
-    }else if (indexPath.row == 1){
+//    if (indexPath.row == 0) {
+//        
+//        
+//        
+//    }else
+        if (indexPath.row == 0){
         
         //多次跳转，没有下面的好
 //        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=545549453&type=Purple+Software"]];
@@ -193,7 +203,7 @@
         NSString *str = [NSString stringWithFormat:@"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@",MyAppleID];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
         
-    }else if (indexPath.row == 2){
+    }else if (indexPath.row == 1){
         //图片加载方式
         NSString *title = UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) ? @"\n\n\n\n\n\n\n\n\n" : @"\n\n\n\n\n\n\n\n\n\n\n\n" ;
         
@@ -209,7 +219,7 @@
         [actionSheet addSubview:pickerView];
 
         
-    }else if (indexPath.row == 3){
+    }else if (indexPath.row == 2){
         //清除缓存
         
         [SqliteUtil delNoSave];

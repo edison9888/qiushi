@@ -33,7 +33,6 @@
 		136A2E6915F601BB00E402D8 /* MyNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 136A2E6815F601BB00E402D8 /* MyNavigationController.m */; };
 		136A2E6C15F6025500E402D8 /* navi_back_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136A2E6A15F6025500E402D8 /* navi_back_btn@2x.png */; };
 		136A2E6D15F6025500E402D8 /* navi_back_f_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136A2E6B15F6025500E402D8 /* navi_back_f_btn@2x.png */; };
-		13BF0A5116073619007F7B1A /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13BF0A5016073619007F7B1A /* libGoogleAnalytics.a */; };
 		13C3E9F215F490C30001E3A1 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C3E9E715F490C30001E3A1 /* NSObject+SBJSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		13C3E9F315F490C30001E3A1 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C3E9E915F490C30001E3A1 /* NSString+SBJSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		13C3E9F415F490C30001E3A1 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C3E9EB15F490C30001E3A1 /* SBJSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -309,8 +308,6 @@
 		136A2E6815F601BB00E402D8 /* MyNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyNavigationController.m; sourceTree = "<group>"; };
 		136A2E6A15F6025500E402D8 /* navi_back_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navi_back_btn@2x.png"; sourceTree = "<group>"; };
 		136A2E6B15F6025500E402D8 /* navi_back_f_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navi_back_f_btn@2x.png"; sourceTree = "<group>"; };
-		13BF0A4F16073619007F7B1A /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
-		13BF0A5016073619007F7B1A /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
 		13C3E9E515F490C30001E3A1 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		13C3E9E615F490C30001E3A1 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		13C3E9E715F490C30001E3A1 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -715,7 +712,6 @@
 				13C8434C15E47EEC000B8A44 /* Foundation.framework in Frameworks */,
 				13C8434E15E47EEC000B8A44 /* CoreGraphics.framework in Frameworks */,
 				13C846D315E48AFE000B8A44 /* libGoogleAdMobAds.a in Frameworks */,
-				13BF0A5116073619007F7B1A /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,15 +749,6 @@
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
-		13BF0A4E16073619007F7B1A /* GoogleAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				13BF0A4F16073619007F7B1A /* GANTracker.h */,
-				13BF0A5016073619007F7B1A /* libGoogleAnalytics.a */,
-			);
-			path = GoogleAnalytics;
-			sourceTree = "<group>";
-		};
 		13C3E9E415F490C30001E3A1 /* SBJson */ = {
 			isa = PBXGroup;
 			children = (
@@ -791,6 +778,7 @@
 				13C8436A15E47F39000B8A44 /* Default@2x.png */,
 				13C8436B15E47F39000B8A44 /* Icon.png */,
 				13C8485E15E50778000B8A44 /* Icon@2x.png */,
+				13C8473A15E48D86000B8A44 /* Utils */,
 				13C8446315E489F5000B8A44 /* View */,
 				13C843E715E489E8000B8A44 /* Resource */,
 				13C8434F15E47EEC000B8A44 /* qiushi */,
@@ -1001,7 +989,6 @@
 		13C845E315E48AFE000B8A44 /* Frame */ = {
 			isa = PBXGroup;
 			children = (
-				13BF0A4E16073619007F7B1A /* GoogleAnalytics */,
 				13D4BC0A15FD986800AD8B8B /* DIYMenu */,
 				13D4BBFA15FD87EC00AD8B8B /* iToast */,
 				13CA881815F876AE00A85F01 /* ATMHud */,
@@ -1011,7 +998,6 @@
 				1313DA8915EF0012002ACBB2 /* SVStatusHUD */,
 				13C847BA15E4F96A000B8A44 /* ShareService */,
 				13C8476D15E4E152000B8A44 /* EGOImageLoading */,
-				13C8473A15E48D86000B8A44 /* Utils */,
 				13C845E415E48AFE000B8A44 /* admob */,
 				13C845F615E48AFE000B8A44 /* ASIHttpRequest */,
 				13C8460D15E48AFE000B8A44 /* DDMenu */,
@@ -1181,7 +1167,8 @@
 				136A2E6415F5EE7D00E402D8 /* MyProgressHud.h */,
 				136A2E6515F5EE7D00E402D8 /* MyProgressHud.m */,
 			);
-			path = Utils;
+			name = Utils;
+			path = qiushi/Frame/Utils;
 			sourceTree = "<group>";
 		};
 		13C8476D15E4E152000B8A44 /* EGOImageLoading */ = {
@@ -1994,6 +1981,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9A84F65C-C77D-4A30-B928-0A0D71DF7E5C";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2017,6 +2005,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9A84F65C-C77D-4A30-B928-0A0D71DF7E5C";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

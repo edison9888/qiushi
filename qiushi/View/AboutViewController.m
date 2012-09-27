@@ -41,16 +41,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    NSError *error;
-    if (![[GANTracker sharedTracker] trackEvent:@"Application iOS"
-                                         action:@"AboutViewController.h"
-                                          label:@"Example iOS"
-                                          value:99
-                                      withError:&error]) {
-        NSLog(@"error in trackEvent");
-    }
-    
-    self.navigationItem.hidesBackButton = YES;
+   self.navigationItem.hidesBackButton = YES;
     
     
     UIImage *image = [UIImage imageNamed:@"nav_menu_icon.png"];
@@ -100,6 +91,7 @@
     _mTable.delegate = self;
     _mTable.dataSource = self;
     _mTable.backgroundColor = [UIColor clearColor];
+    _mTable.backgroundView = nil;
     [self.view addSubview:_mTable];
     
     _items = [[NSMutableArray alloc]initWithObjects:@"内容及版权",@"开发者邮箱", nil];
