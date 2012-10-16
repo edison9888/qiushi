@@ -220,7 +220,8 @@
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == 0) {
-        return @"我的糗事囧事 v1.0.120901";
+        NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+        return [NSString stringWithFormat:@"糗事囧事 v%@",version];
     }else if(section == 1)
     {
         return @"内容及版权归糗事百科所有";

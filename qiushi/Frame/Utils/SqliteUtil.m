@@ -61,7 +61,7 @@ static NSArray *dirPaths;
     }else
     {
         
-        [MyProgressHud showHUD:[NSString stringWithFormat:@"数据库已存在,%s",sqlite3_errmsg(qiushiDB)]];
+        [MyProgressHud showHUD:@"数据库已存在"];
     }
     
     const char *dbpath = [databasePath UTF8String];
