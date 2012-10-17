@@ -1,6 +1,6 @@
 //
 //  LeftController.m
-//  DDMenuController
+//
 //
 //  Created by Devin Doty on 11/30/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
@@ -8,13 +8,15 @@
 
 #import "LeftController.h"
 #import "MainViewController.h"
-#import "DDMenuController.h"
+
 #import "AppDelegate.h"
 #import "AboutViewController.h"
 #import "SetViewController.h"
 #import "PurchaseInViewController.h"
 #import "MyNavigationController.h"
 #import "FavouriteViewController.h"
+#import "HistoryViewController.h"
+#import "IIViewDeckController.h"
 
 @interface LeftController ()
 {
@@ -29,8 +31,6 @@
 @synthesize items = _items;
 @synthesize navController = _navController;
 @synthesize mainViewController = _mainViewController;
-@synthesize setBtn = _setBtn;
-@synthesize isNormalTable = _isNormalTable;
 @synthesize mainType = _mainType;
 
 - (id)init {
@@ -54,43 +54,34 @@
     [super viewDidLoad];
     
     
-    _menuController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).menuController;
     
-    _items = [[NSMutableArray alloc]initWithObjects:@"随便逛逛",@"新鲜出炉",@"有图有真相",@"个人收藏",@"设置",@"关于", nil];
+    
+    _items = [[NSMutableArray alloc]initWithObjects:@"随便逛逛",@"新鲜出炉",@"有图有真相",@"个人收藏",@"缓存也精彩",@"",@"设置",@"关于", nil];
     
     
     
     [self.view setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
     
-    _setBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_setBtn setBackgroundImage:[UIImage imageNamed:@"settingsIcon.png"] forState:UIControlStateNormal];
-    [_setBtn setFrame:CGRectMake(320 - 27 - 70, (44 - 27) *.5, 27, 27)];
-    [_setBtn setShowsTouchWhenHighlighted:YES];
-    [_setBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_setBtn];
+    
     
     
     //调节亮度的 滑动条
     _mSlider = [[UISlider alloc]initWithFrame:CGRectMake(15.0, 12 , 220, 20)];
     [_mSlider setMaximumValue:1.0];
-    [_mSlider setMinimumValue:.2];
+    [_mSlider setMinimumValue:.3];
     [_mSlider setValue:1.0];
     [_mSlider setMaximumValueImage:[UIImage imageNamed:@"set_asc.png"]];
     [_mSlider setMinimumValueImage:[UIImage imageNamed:@"set_desc.png"]];
     [_mSlider addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventValueChanged];
     
     
-    self.isNormalTable = YES;
     _mainType = 1001;
     
-    
-    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-   [delegate.window addSubview:delegate.lightView];
     
     
     
     if (!_tableView) {
-        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, 480 - 44 -20) style:UITableViewStylePlain];
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 480 -20) style:UITableViewStylePlain];
         tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         tableView.delegate = (id<UITableViewDelegate>)self;
         tableView.dataSource = (id<UITableViewDataSource>)self;
@@ -143,7 +134,7 @@
     
     QuadCurveMenu *menu = [[QuadCurveMenu alloc] initWithFrame:self.view.bounds menus:menus];
     menu.delegate = self;
-//    [self.view addSubview:menu];
+    //    [self.view addSubview:menu];
     
     
 }
@@ -159,27 +150,18 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-
+    
     return 4;
 }
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
-    if (_isNormalTable == YES) {
-        if (section == 0) {
-            return self.items.count;
-        }else{
-            return 0;
-        }
+    
+    if (section == 0) {
+        return self.items.count;
     }else{
-        if (section == 0) {
-            return 1;
-        }else{
-            return 0;
-        }
+        return 0;
     }
-
-        
-
+    
     
     
 }
@@ -188,30 +170,21 @@
     
     static NSString *CellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if(cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    //    if(cell == nil) {
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    //    }
+    
+    
+    
+    cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
+    cell.textLabel.font = [UIFont fontWithName:@"微软雅黑" size:15.0];
+    [cell.textLabel setTextColor:[UIColor whiteColor]];
+    
+    
+    if (indexPath.row == 5) {
+        [cell.contentView addSubview:_mSlider];
     }
     
-     if (_isNormalTable == YES) {
-         if (indexPath.section == 0) {
-             cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
-         }
-         cell.textLabel.font = [UIFont fontWithName:@"微软雅黑" size:15.0];
-         [cell.textLabel setTextColor:[UIColor whiteColor]];
-          [_mSlider removeFromSuperview];
-         
-         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-     }else{
-         if (indexPath.section == 0) {
-             cell.textLabel.text = @"";
-
-             [_mSlider removeFromSuperview];
-             [cell.contentView addSubview:_mSlider];
-             cell.accessoryType = UITableViewCellAccessoryNone;
-         }
-
-        
-     }
     
     
     return cell;
@@ -240,10 +213,21 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    
+    //    [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller) {
+    //        if ([controller.centerController isKindOfClass:[UINavigationController class]]) {
+    //            UITableViewController* cc = (UITableViewController*)((UINavigationController*)controller.centerController).topViewController;
+    //            cc.navigationItem.title = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+    //            if ([cc respondsToSelector:@selector(tableView)]) {
+    //                [cc.tableView deselectRowAtIndexPath:[cc.tableView indexPathForSelectedRow] animated:NO];
+    //            }
+    //        }
+    //
+    //    }];
+
     
     if (_mainType == (1001 + indexPath.row)) {
-        [_menuController showRootController:YES];
+        [self.viewDeckController closeLeftViewAnimated:YES];
+        
     }else if (indexPath.row == 0){
         
         [self.navController popToRootViewControllerAnimated:YES];
@@ -251,40 +235,46 @@
         
         self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
         [self.mainViewController refreshDate];
-        [_menuController showRootController:YES];
+        [self.viewDeckController closeLeftViewAnimated:YES];
     }else if (indexPath.row == 1){
         [self.navController popToRootViewControllerAnimated:YES];
         self.mainViewController.title = [NSString stringWithFormat:@"%@", [self.items objectAtIndex:indexPath.row]];
         
         self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
         [self.mainViewController refreshDate];
-        [_menuController showRootController:YES];
+        [self.viewDeckController closeLeftViewAnimated:YES];
     }else if (indexPath.row == 2){
         [self.navController popToRootViewControllerAnimated:YES];
         self.mainViewController.title = [NSString stringWithFormat:@"%@", [self.items objectAtIndex:indexPath.row]];
         
         self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
         [self.mainViewController refreshDate];
-        [_menuController showRootController:YES];
+        [self.viewDeckController closeLeftViewAnimated:YES];
     }else if (indexPath.row == 3){
         FavouriteViewController *favourite = [[FavouriteViewController alloc]initWithNibName:@"FavouriteViewController" bundle:nil];
         
         [self.navController pushViewController:favourite animated:YES];
-        [_menuController showRootController:YES];
-
+        [self.viewDeckController closeLeftViewAnimated:YES];
+        
     }else if (indexPath.row == 4){
+        HistoryViewController *history = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
+        
+        [self.navController pushViewController:history animated:YES];
+        [self.viewDeckController closeLeftViewAnimated:YES];
+        
+    }else if (indexPath.row == 6){
         SetViewController *set = [[SetViewController alloc]initWithNibName:@"SetViewController" bundle:nil];
         
         [self.navController pushViewController:set animated:YES];
-        [_menuController showRootController:YES];
-    }else if (indexPath.row == 5){
+        [self.viewDeckController closeLeftViewAnimated:YES];
+    }else if (indexPath.row == 7){
         AboutViewController *about = [[AboutViewController alloc]initWithNibName:@"AboutViewController" bundle:nil];
         [self.navController pushViewController:about animated:YES];
         
-        [_menuController showRootController:YES];
+        [self.viewDeckController closeLeftViewAnimated:YES];
     }
-
-
+    
+    
     _mainType = 1001 + indexPath.row;
     
     
@@ -296,36 +286,28 @@
     if (idx == 0)
     {
         //程序内购买
-//        PurchaseInViewController *purchase = [[PurchaseInViewController alloc]initWithNibName:@"PurchaseInViewController" bundle:nil];
-//        [self.navController pushViewController:purchase animated:YES];
-
+        //        PurchaseInViewController *purchase = [[PurchaseInViewController alloc]initWithNibName:@"PurchaseInViewController" bundle:nil];
+        //        [self.navController pushViewController:purchase animated:YES];
+        
         
     }
-     [_menuController showRootController:YES];
+    //     [_menuController showRootController:YES];
 }
 
 
 
-- (void)btnClick:(id)sender
-{
-//    UIButton *btn = (UIButton* )sender;
-    self.isNormalTable = !self.isNormalTable;
-    [self.tableView reloadData];
-}
 
 
 - (void)changeAction:(id)sender {
     
-    UISlider *mSlider = (UISlider*)sender;
-
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [delegate.window bringSubviewToFront:delegate.lightView];
+    UISlider *mSlider = (UISlider*)sender;
+    
+    
     [delegate.lightView setAlpha:(1 - [mSlider value])];
     
-    if ([mSlider value] < .5) {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
-    }else{
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    }
+    
     
 }
 

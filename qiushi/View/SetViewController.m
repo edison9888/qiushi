@@ -8,10 +8,11 @@
 
 #import "SetViewController.h"
 
-#import "DDMenuController.h"
 #import "iToast.h"
 #import "SqliteUtil.h"
 #import "EGOCache.h"
+#import "IIViewDeckController.h"
+
 @interface SetViewController ()
 {
     UIBarButtonItem *leftMenuBtn;
@@ -59,10 +60,8 @@
     [btn setFrame:backframe];
     [btn setBackgroundImage:image forState:UIControlStateNormal];
     [btn setBackgroundImage:imagef forState:UIControlStateHighlighted];
-    [btn addTarget:self action:@selector(showLeft:) forControlEvents:UIControlEventTouchUpInside];
-    
+    [btn addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
-    
     self.navigationItem.leftBarButtonItem = someBarButtonItem;
     
     
@@ -125,13 +124,7 @@
 }
 
 
-- (void)showLeft:(id)seder
-{
-    DDMenuController *menuController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).menuController;
-    [menuController showLeftController:YES];
-    
-    
-}
+
 
 
 #pragma mark - TableView*

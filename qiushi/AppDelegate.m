@@ -9,26 +9,20 @@
 #import "AppDelegate.h"
 
 #import "MainViewController.h"
-#import "DDMenuController.h"
+
 
 #import "LeftController.h"
 #import "CustomNavigationBar.h"
 #import "MyNavigationController.h"
 
 #import <Parse/Parse.h>
+#import "IIViewDeckController.h"
 
-
-
-
-//#import "RightController.h"
-
-//#import "ViewController.h"
 
 
 @implementation AppDelegate
 
 @synthesize window = _window;
-@synthesize menuController = _menuController;
 @synthesize mainController = _mainController;
 @synthesize navController = _navController;
 @synthesize leftController = _leftController;
@@ -80,32 +74,47 @@
     // Override point for customization after application launch.
     
     
-    _lightView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
+    CGRect _winSize = [[UIScreen mainScreen] bounds];
+    _lightView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, _winSize.size.width, _winSize.size.height)];
     [_lightView setUserInteractionEnabled:NO];
     [_lightView setBackgroundColor:[UIColor blackColor]];
     [_lightView setAlpha:.0];
-//    [self.window addSubview:_lightView];
+    [self.window addSubview:_lightView];
     
     
     _mainController = [[MainViewController alloc] init];
     
     _navController = [[MyNavigationController alloc] initWithRootViewController:_mainController];
     
-    _menuController = [[DDMenuController alloc] initWithRootViewController:_navController];
+
     
     
     _leftController = [[LeftController alloc] init];
     _leftController.navController = _navController;
     _leftController.mainViewController = _mainController;
     
-    _menuController.leftViewController = _leftController;
+
+
     
-    //    RightController *rightController = [[RightController alloc] init];
-    //    rootController.rightViewController = rightController;
-    
-    self.window.rootViewController = _menuController;
     
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    
+    
+    
+    IIViewDeckController* deckController =  [[IIViewDeckController alloc] initWithCenterViewController:_navController
+                                                                                    leftViewController:self.leftController
+                                                                                   rightViewController:nil];
+    deckController.rightLedge = 100;
+    
+    self.window.rootViewController = deckController;
+    
+    
+    
+    
+    
+    //状态栏 样式 黑色
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     
     
     [self.navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navi_background.png"]];

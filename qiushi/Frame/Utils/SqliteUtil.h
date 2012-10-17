@@ -30,4 +30,5 @@
 + (void)saveDbWithArray:(NSMutableArray*)qsArray;
 + (int)queryTopId;
 + (BOOL)autoDelNoSave;
++ (NSMutableArray*)queryDbTop;//查询最新的100条
 @end

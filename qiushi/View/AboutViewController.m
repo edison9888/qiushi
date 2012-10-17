@@ -7,8 +7,9 @@
 //
 
 #import "AboutViewController.h"
+#import "IIViewDeckController.h"
 
-#import "DDMenuController.h"
+
 @interface AboutViewController ()
 {
     
@@ -51,10 +52,8 @@
     [btn setFrame:backframe];
     [btn setBackgroundImage:image forState:UIControlStateNormal];
     [btn setBackgroundImage:imagef forState:UIControlStateHighlighted];
-    [btn addTarget:self action:@selector(showLeft:) forControlEvents:UIControlEventTouchUpInside];
-    
+    [btn addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
-    
     self.navigationItem.leftBarButtonItem = someBarButtonItem;
     
     //设置背景颜色
@@ -118,13 +117,6 @@
 }
 
 
-- (void)showLeft:(id)seder
-{
-    DDMenuController *menuController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).menuController;
-    [menuController showLeftController:YES];
-    
-
-}
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -10,7 +10,6 @@
 #import "GADBannerView.h"
 
 @class MainViewController;
-@class DDMenuController;
 @class LeftController;
 @class MyNavigationController;
 
@@ -28,9 +27,6 @@
 }
 
 @property (strong, nonatomic) UIWindow *window;
-
-//@property (strong, nonatomic) ViewController *viewController;
-@property (strong, nonatomic) DDMenuController *menuController;
 
 @property (strong, nonatomic) MainViewController *mainController;
 @property (strong, nonatomic) MyNavigationController *navController;

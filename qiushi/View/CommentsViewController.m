@@ -10,10 +10,11 @@
 
 #import "CJSONDeserializer.h"
 #import "QiuShi.h"
-#import "DDMenuController.h"
+
 #import "SHSShareViewController.h"
 #import "SqliteUtil.h"
 #import "iToast.h"
+#import "IIViewDeckController.h"
 
 #define FShareBtn       101
 #define FBackBtn        102
@@ -232,15 +233,17 @@ UITableViewDelegate
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    if ([self.viewDeckController leftControllerIsOpen]==YES) {
+        [self.viewDeckController closeLeftView];
+    }
     //解决本view与root 共同的手势 冲突
-    _menuController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).menuController;
-    [_menuController.tap setEnabled:NO];
-    [_menuController.pan setEnabled:NO];
+    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [_menuController.tap setEnabled:YES];
-    [_menuController.pan setEnabled:YES];
+    
+    [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

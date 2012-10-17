@@ -85,6 +85,8 @@ UITableViewDelegate
     bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
     bannerView_.rootViewController = self;
     [bannerView_ loadRequest:[GADRequest request]];
+   
+    
     
     
     CGRect bounds = self.view.bounds;
@@ -104,7 +106,7 @@ UITableViewDelegate
 	[self.view addSubview:hud.view];
     
     
-    _cacheArray = [SqliteUtil queryDb];
+    _cacheArray = [SqliteUtil queryDbTop];
     if (_cacheArray != nil) {
         [self.list removeAllObjects];
         for (QiuShi *qiushi in _cacheArray)
@@ -119,7 +121,7 @@ UITableViewDelegate
         [self removeRepeatArray];
         
         //打乱顺序
-        self.list = [self randArray:self.list];
+//        self.list = [self randArray:self.list];
         DLog(@"读取缓存%d条",self.list.count);
         
         [self.tableView tableViewDidFinishedLoading];
@@ -164,6 +166,9 @@ UITableViewDelegate
         [self.tableView reloadData];
         return;
     }
+    
+    //刷新一下AD
+     [bannerView_ loadRequest:[GADRequest request]];
     
     self.page++;
     NSURL *url;
@@ -283,7 +288,7 @@ UITableViewDelegate
             
             //            //ttttttttttt
 //            qs.content = @"中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试111";
-            //            qs.content = @"test...";
+//            qs.content = @"test...";
             //            qs.imageURL = @"http://img.qiushibaike.com/system/pictures/6317243/small/app6317243.jpg";
             //            qs.imageMidURL = @"http://img.qiushibaike.com/system/pictures/6317243/medium/app6317243.jpg";
             //            //tttttttttttt

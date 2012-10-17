@@ -10,13 +10,10 @@
 
 
 #import "SqliteUtil.h"
-
-
 #import "ContentViewController.h"
 #import "SVStatusHUD.h"
-
 #import "DIYMenuOptions.h"
-
+#import "IIViewDeckController.h"
 
 #define kTagMenu      101
 
@@ -55,9 +52,26 @@
 
 
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    UIImage *image = [UIImage imageNamed:@"nav_menu_icon.png"];
+    UIImage *imagef = [UIImage imageNamed:@"nav_menu_icon_f.png"];
+    CGRect backframe= CGRectMake(0, 0, image.size.width, image.size.height);
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setFrame:backframe];
+    [btn setBackgroundImage:image forState:UIControlStateNormal];
+    [btn setBackgroundImage:imagef forState:UIControlStateHighlighted];
+    [btn addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.leftBarButtonItem = someBarButtonItem;
+    
+    
+    
+    
     
     
     UIFont *font = [UIFont fontWithName:MENUFONT_FAMILY size:MENUFONT_SIZE];
@@ -164,8 +178,10 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     DLog("viewDidAppear");
-    [super viewDidAppear:animated];
     [self becomeFirstResponder];
+    [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
+    [super viewDidAppear:animated];
+    
 }
 -(void)viewWillDisappear:(BOOL)animated
 {

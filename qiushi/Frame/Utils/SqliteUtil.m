@@ -172,8 +172,11 @@ static NSArray *dirPaths;
     
     if (sqlite3_open(dbpath, &qiushiDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT  * from QIUSHIS order by upcount desc"];
-        //本打算按 upcount 降序排序，但是string类型，所以 是 乱序了，
+//        NSString *querySQL = [NSString stringWithFormat:@"SELECT  * from QIUSHIS order by upcount desc"];
+        //本打算按 upcount 降序排序，但是string类型，所以 是 乱序了，、
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT  * from QIUSHIS"];
+       
+
         
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(qiushiDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -234,6 +237,86 @@ static NSArray *dirPaths;
 //            [self autoDelNoSave];
 //            [MyProgressHud showHUD:[NSString stringWithFormat:@"数据超过200条，自动删除数据"]];
 //        }
+        
+        return selectArray;
+    }
+    return nil;
+}
+
++ (NSMutableArray*)queryDbTop//查询最新的100条
+{
+    
+    
+    
+    NSMutableArray *selectArray = [[NSMutableArray alloc]init];
+    
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &qiushiDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT  * from QIUSHIS order by id desc limit 100 OFFSET 0"];
+
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(qiushiDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                
+                
+                NSLog(@"已查到结果");
+                
+                
+                QiuShi *qs;
+                
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    
+                    qs = [[QiuShi alloc]init];
+                    qs.qiushiID = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 1)]];
+                    
+                    qs.imageURL = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 2)]];
+                    qs.imageMidURL = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 3)]];
+                    qs.tag = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 4)]];
+                    qs.content = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 5)]];
+                    qs.commentsCount = [[[NSString alloc] initWithUTF8String:(char *)sqlite3_column_text(statement, 6)] intValue];
+                    qs.upCount = [[[NSString alloc] initWithUTF8String:(char *)sqlite3_column_text(statement, 7)] intValue];
+                    qs.downCount = [[[NSString alloc] initWithUTF8String:(char *)sqlite3_column_text(statement, 8)] intValue];
+                    qs.anchor = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 9)]];
+                    qs.fbTime = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 10)]];
+                    
+                    
+                    
+                    
+                    [selectArray addObject:qs];
+                    
+                }
+                
+            }
+            else {
+                
+                
+                
+                [MyProgressHud showHUD:[NSString stringWithFormat:@"查询出错:%s",sqlite3_errmsg(qiushiDB)]];
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        sqlite3_close(qiushiDB);
+    }
+    
+    if (selectArray.count > 0) {
+        
+        
+        //        [MyProgressHud showHUD:[NSString stringWithFormat:@"查到%d条数据",selectArray.count]];
+        
+        //        if (selectArray.count > 200) {
+        //
+        //            [self autoDelNoSave];
+        //            [MyProgressHud showHUD:[NSString stringWithFormat:@"数据超过200条，自动删除数据"]];
+        //        }
         
         return selectArray;
     }

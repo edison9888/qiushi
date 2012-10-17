@@ -33,7 +33,7 @@
     
 //    UIBarButtonItem *_shareItem;//分享item
     
-    DDMenuController *_menuController;
+   
     
     SHSShareViewController *_shareView;
 }

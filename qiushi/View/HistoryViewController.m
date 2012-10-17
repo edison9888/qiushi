@@ -1,12 +1,12 @@
 //
-//  FavouriteViewController.m
+//  HistoryViewController.m
 //  qiushi
 //
-//  Created by xyxd on 12-9-4.
+//  Created by xyxd mac on 12-10-16.
 //  Copyright (c) 2012年 XYXD. All rights reserved.
 //
 
-#import "FavouriteViewController.h"
+#import "HistoryViewController.h"
 
 #import "PullingRefreshTableView.h"
 #import "CommentsViewController.h"
@@ -19,21 +19,23 @@
 #import "MyNavigationController.h"
 #import "AppDelegate.h"
 #import "iToast.h"
+#import "EGOCache.h"
 #import "IIViewDeckController.h"
 
-@interface FavouriteViewController () <
+@interface HistoryViewController ()<
 PullingRefreshTableViewDelegate,
 UITableViewDataSource,
-UITableViewDelegate
+UITableViewDelegate,UIAlertViewDelegate
 >
 
 @property (retain,nonatomic) PullingRefreshTableView *tableView;
 @property (retain,nonatomic) NSMutableArray *list;
 @property (nonatomic) BOOL refreshing;
 @property (assign,nonatomic) NSInteger page;
+
 @end
 
-@implementation FavouriteViewController
+@implementation HistoryViewController
 
 @synthesize tableView = _tableView;
 @synthesize list = _list;
@@ -46,7 +48,7 @@ UITableViewDelegate
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.title = @"个人收藏";
+        self.title = @"缓存也精彩";
     }
     return self;
 }
@@ -84,7 +86,7 @@ UITableViewDelegate
     _list = [[NSMutableArray alloc] init ];
     
     
-   
+    
     
     //ad
     bannerView_ = [[GADBannerView alloc]
@@ -107,11 +109,11 @@ UITableViewDelegate
     _tableView.delegate = self;
     [self.view addSubview:self.tableView];
     
-
     
     
     
-    _cacheArray = [SqliteUtil queryDbIsSave];
+    
+    _cacheArray = [SqliteUtil queryDb];
     if (_cacheArray != nil) {
         [self.list removeAllObjects];
         for (QiuShi *qiushi in _cacheArray)
@@ -134,12 +136,10 @@ UITableViewDelegate
     }
     
     if (_cacheArray.count == 0) {
-        [[iToast makeText:@"亲,您还没有收藏..."] show];
+        [[iToast makeText:@"亲,暂时还没有缓存..."] show];
     }
     
     
-
-
     
     [self setBarButtonItems];
     
@@ -158,82 +158,77 @@ UITableViewDelegate
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    //解决本view与root 共同的手势 冲突
-//    _menuController = (DDMenuController*)((AppDelegate*)[[UIApplication sharedApplication] delegate]).menuController;
-//    [_menuController.tap setEnabled:NO];
-//    [_menuController.pan setEnabled:NO];
-//}
-//- (void)viewDidDisappear:(BOOL)animated
-//{
-//    [_menuController.tap setEnabled:YES];
-//    [_menuController.pan setEnabled:YES];
-//}
+
 
 #pragma mark - Your actions
 
 
 - (void) setBarButtonItems
 {
-	if (_tableView.isEditing)
-        //		self.navigationItem.rightBarButtonItem = SYSBARBUTTON(@"完成",UIBarButtonItemStyleDone, @selector(leaveEditMode));
-    {
-        UIImage* image1= [UIImage imageNamed:@"comm_btn_top_n.png"];
-        UIImage* imagef1 = [UIImage imageNamed:@"comm_btn_top_s.png"];
-        CGRect backframe1= CGRectMake(0, 0, image1.size.width, image1.size.height);
-        UIButton* editButton= [UIButton buttonWithType:UIButtonTypeCustom];
-        editButton.frame = backframe1;
-        [editButton setBackgroundImage:image1 forState:UIControlStateNormal];
-        [editButton setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
-        [editButton setTitle:@"完成" forState:UIControlStateNormal];
-        [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        editButton.titleLabel.font=[UIFont systemFontOfSize:12];
-        [editButton addTarget:self action:@selector(leaveEditMode) forControlEvents:UIControlEventTouchUpInside];
-        //定制自己的风格的  UIBarButtonItem
-        UIBarButtonItem* addBarButton= [[UIBarButtonItem alloc] initWithCustomView:editButton];
-        [self.navigationItem setRightBarButtonItem:addBarButton];
-    }
-	else
-        //        self.navigationItem.rightBarButtonItem = SYSBARBUTTON(@"编辑",UIBarButtonItemStylePlain, @selector(enterEditMode));
-    {
-        UIImage* image1= [UIImage imageNamed:@"comm_btn_top_n.png"];
-        UIImage* imagef1 = [UIImage imageNamed:@"comm_btn_top_s.png"];
-        CGRect backframe1= CGRectMake(0, 0, image1.size.width, image1.size.height);
-        UIButton* editButton= [UIButton buttonWithType:UIButtonTypeCustom];
-        editButton.frame = backframe1;
-        [editButton setBackgroundImage:image1 forState:UIControlStateNormal];
-        [editButton setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
-        [editButton setTitle:@"编辑" forState:UIControlStateNormal];
-        [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        editButton.titleLabel.font=[UIFont systemFontOfSize:12];
-        [editButton addTarget:self action:@selector(enterEditMode) forControlEvents:UIControlEventTouchUpInside];
-        //定制自己的风格的  UIBarButtonItem
-        UIBarButtonItem* addBarButton= [[UIBarButtonItem alloc] initWithCustomView:editButton];
-        [self.navigationItem setRightBarButtonItem:addBarButton];
-    }
+    UIImage* image1= [UIImage imageNamed:@"comm_btn_top_n.png"];
+    UIImage* imagef1 = [UIImage imageNamed:@"comm_btn_top_s.png"];
+    CGRect backframe1= CGRectMake(0, 0, image1.size.width, image1.size.height);
+    UIButton* editButton= [UIButton buttonWithType:UIButtonTypeCustom];
+    editButton.frame = backframe1;
+    [editButton setBackgroundImage:image1 forState:UIControlStateNormal];
+    [editButton setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
+    [editButton setTitle:@"清除" forState:UIControlStateNormal];
+    [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    editButton.titleLabel.font=[UIFont systemFontOfSize:12];
+    [editButton addTarget:self action:@selector(cleanCache:) forControlEvents:UIControlEventTouchUpInside];
+    //定制自己的风格的  UIBarButtonItem
+    UIBarButtonItem* addBarButton= [[UIBarButtonItem alloc] initWithCustomView:editButton];
+    [self.navigationItem setRightBarButtonItem:addBarButton];
+    
     
     
 }
 
--(void)enterEditMode
+- (void)cleanCache:(id)sender
 {
-	[_tableView deselectRowAtIndexPath:[_tableView indexPathForSelectedRow] animated:YES];
-	[_tableView setEditing:YES animated:YES];
-    [self setBarButtonItems];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
+                                                   message:@"亲,确定要清除所有缓存吗?"
+                                                  delegate:self
+                                         cancelButtonTitle:@"取消"
+                                         otherButtonTitles:@"确定", nil];
+    [alert show];
     
 }
--(void)leaveEditMode
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	[_tableView setEditing:NO animated:YES];
-	[self setBarButtonItems];
+    switch (buttonIndex) {
+        case 1:
+        {
+            //GCD为Grand Central Dispatch的缩写。
+            //dispatch_queue_t myQueue = dispatch_queue_create("com.iphonedevblog.post", NULL);
+            //          其中，第一个参数是标识队列的，第二个参数是用来定义队列的参数（目前不支持，因此传入NULL）。
+            //            执行一个队列如下会异步执行传入的代码：dispatch_async(myQueue, ^{ [self doSomething]; });
+            //            其中，首先传入之前创建的队列，然后提供由队列运行的代码块。
+            dispatch_queue_t m_queue = dispatch_get_current_queue();
+            
+            dispatch_async(m_queue, ^{
+                [SqliteUtil delNoSave];
+                EGOCache *cache = [[EGOCache alloc]init];
+                [cache clearCache];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[iToast makeText:@"已完成"] show];
+                });
+            });
+            
+            
+            
+            
+        }break;
+            
+    }
 }
 
 
 - (void)loadData{
     
     self.page++;
-        
+    
     [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
     self.tableView.reachedTheEnd  = YES;
     
@@ -257,10 +252,10 @@ UITableViewDelegate
         [SqliteUtil initDb];
     }
     
-        
-        
-		
-
+    
+    
+    
+    
     
     if (self.page >= 20) {
         [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
@@ -431,14 +426,14 @@ UITableViewDelegate
     {
         DLog(@"delete");
         QiuShi *qs = [self.list objectAtIndex:indexPath.row];
-
+        
         if ([SqliteUtil updateDataIsFavourite:qs.qiushiID isFavourite:@"no"] == YES) {
             [self.list removeObjectAtIndex:indexPath.row];
             [self.tableView reloadData];
             DLog(@"设置成功");
         }else
             DLog(@"设置失败");
-       
+        
         
     }
     
@@ -504,6 +499,5 @@ UITableViewDelegate
     return [super respondsToSelector:aSelector];
 }
 #endif
-
 
 @end

@@ -10,7 +10,7 @@
 
 #import "TestNavigationBar.h"
 #import "MyNavigationController.h"
-
+#import "IIViewDeckController.h"
 
 
 inline static NSString* keyForURL(NSURL* url, NSString* style) {
@@ -185,6 +185,10 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if ([self.viewDeckController leftControllerIsOpen]==YES) {
+        [self.viewDeckController closeLeftView];
+    }
+    
     //    DLog(@"viewWillAppear");
     [_imageView setPlaceholderImage:_placeholderImage];
     
