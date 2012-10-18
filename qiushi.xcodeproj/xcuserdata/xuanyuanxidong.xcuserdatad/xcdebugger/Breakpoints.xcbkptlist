@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/Frame/Utils/SqliteUtil.m"
-         timestampString = "372063836.066128"
+         timestampString = "372161846.270113"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "690"
-         endingLineNumber = "690"
+         startingLineNumber = "692"
+         endingLineNumber = "692"
          landmarkName = "+updateDataIsFavourite:isFavourite:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/Frame/Utils/SqliteUtil.m"
-         timestampString = "372063836.066128"
+         timestampString = "372161846.270113"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "472"
-         endingLineNumber = "472"
+         startingLineNumber = "474"
+         endingLineNumber = "474"
          landmarkName = "+queryDbIsSave"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/Frame/Utils/SqliteUtil.m"
-         timestampString = "368593529.379337"
+         timestampString = "372161846.270113"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "128"
-         endingLineNumber = "128"
+         startingLineNumber = "130"
+         endingLineNumber = "130"
          landmarkName = "+saveDbWithArray:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/Frame/Utils/SqliteUtil.m"
-         timestampString = "372063836.066128"
+         timestampString = "372161846.270113"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "616"
-         endingLineNumber = "616"
+         startingLineNumber = "618"
+         endingLineNumber = "618"
          landmarkName = "+queryTopId"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/Frame/Utils/SqliteUtil.m"
-         timestampString = "372063836.066128"
+         timestampString = "372161846.270113"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "641"
-         endingLineNumber = "641"
+         startingLineNumber = "643"
+         endingLineNumber = "643"
          landmarkName = "+autoDelNoSave"
          landmarkType = "5">
       </FileBreakpoint>
@@ -138,11 +138,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/Frame/Utils/SqliteUtil.m"
-         timestampString = "372063765.943593"
+         timestampString = "372161846.270113"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "251"
-         endingLineNumber = "251"
+         startingLineNumber = "253"
+         endingLineNumber = "253"
          landmarkName = "+queryDbTop"
          landmarkType = "5">
       </FileBreakpoint>

@@ -125,6 +125,8 @@ static NSArray *dirPaths;
 + (void)saveDbWithArray:(NSMutableArray*)qsArray
 {
     
+    NSMutableArray *tem = qsArray;
+    
     sqlite3_stmt *statement;
     
     

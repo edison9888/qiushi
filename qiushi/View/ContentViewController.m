@@ -85,7 +85,7 @@ UITableViewDelegate
     bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
     bannerView_.rootViewController = self;
     [bannerView_ loadRequest:[GADRequest request]];
-   
+    
     
     
     
@@ -98,7 +98,7 @@ UITableViewDelegate
     _tableView.delegate = self;
     [self.view addSubview:self.tableView];
     
-
+    
     
     //提示网络连接失败的
     hud = [[ATMHud alloc] initWithDelegate:self];
@@ -121,7 +121,7 @@ UITableViewDelegate
         [self removeRepeatArray];
         
         //打乱顺序
-//        self.list = [self randArray:self.list];
+        //        self.list = [self randArray:self.list];
         DLog(@"读取缓存%d条",self.list.count);
         
         [self.tableView tableViewDidFinishedLoading];
@@ -168,48 +168,52 @@ UITableViewDelegate
     }
     
     //刷新一下AD
-     [bannerView_ loadRequest:[GADRequest request]];
+    [bannerView_ loadRequest:[GADRequest request]];
     
     self.page++;
     NSURL *url;
     
-    if (Qiutype == QiuShiTypeTop) {
-        switch (QiuTime) {
-            case QiuShiTimeRandom:
-                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
-                break;
-            case QiuShiTimeDay:
-                url = [NSURL URLWithString:DayURLString(10,self.page)];
-                break;
-            case QiuShiTimeWeek:
-                url = [NSURL URLWithString:WeakURlString(10,self.page)];
-                break;
-            case QiuShiTimeMonth:
-                url = [NSURL URLWithString:MonthURLString(10,self.page)];
-                break;
-            default:
-                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
-                break;
+    //////////////ttttttttttttttttttttttttttt离线不行
+//    for (int i = 0; i<=20; i++) {
+//        self.page = i;
+    
+        if (Qiutype == QiuShiTypeTop) {
+            switch (QiuTime) {
+                case QiuShiTimeRandom:
+                    url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                    break;
+                case QiuShiTimeDay:
+                    url = [NSURL URLWithString:DayURLString(10,self.page)];
+                    break;
+                case QiuShiTimeWeek:
+                    url = [NSURL URLWithString:WeakURlString(10,self.page)];
+                    break;
+                case QiuShiTimeMonth:
+                    url = [NSURL URLWithString:MonthURLString(10,self.page)];
+                    break;
+                default:
+                    url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                    break;
+            }
+        }else{
+            switch (Qiutype) {
+                case QiuShiTypeTop:
+                    url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                    break;
+                case QiuShiTypeNew:
+                    url = [NSURL URLWithString:LastestURLString(10,self.page)];
+                    break;
+                case QiuShiTypePhoto:
+                    url = [NSURL URLWithString:ImageURLString(10,self.page)];
+                    break;
+                default:
+                    url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                    break;
+            }
         }
-    }else{
-        switch (Qiutype) {
-            case QiuShiTypeTop:
-                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
-                break;
-            case QiuShiTypeNew:
-                url = [NSURL URLWithString:LastestURLString(10,self.page)];
-                break;
-            case QiuShiTypePhoto:
-                url = [NSURL URLWithString:ImageURLString(10,self.page)];
-                break;
-            default:
-                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
-                break;
-        }
-    }
-    
-    
-    
+        
+        
+//    }
     
     NSLog(@"%@",url);
     //    [ASIHTTPRequest setDefaultCache:[ASIDownloadCache sharedCache]];
@@ -239,9 +243,9 @@ UITableViewDelegate
     NSLog(@"error:%@",error);
     
     
-//    [hud setCaption:@"网络连接失败"];
-//    [hud show];
-//    [hud hideAfter:2.0];
+    //    [hud setCaption:@"网络连接失败"];
+    //    [hud show];
+    //    [hud hideAfter:2.0];
     
     
     [[iToast makeText:@"网络连接失败"] show];
@@ -255,7 +259,7 @@ UITableViewDelegate
     
     //    NSString *responseString = [request responseString];
     //    NSLog(@"%@\n",responseString);
-   
+    
     
     if (self.refreshing) {
         self.page = 1;
@@ -287,8 +291,8 @@ UITableViewDelegate
             
             
             //            //ttttttttttt
-//            qs.content = @"中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试111";
-//            qs.content = @"test...";
+            //            qs.content = @"中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试111";
+            //            qs.content = @"test...";
             //            qs.imageURL = @"http://img.qiushibaike.com/system/pictures/6317243/small/app6317243.jpg";
             //            qs.imageMidURL = @"http://img.qiushibaike.com/system/pictures/6317243/medium/app6317243.jpg";
             //            //tttttttttttt
@@ -315,7 +319,7 @@ UITableViewDelegate
         [self removeRepeatArray];
         //保存到数据库
         [NSThread detachNewThreadSelector:@selector(init_backup:) toTarget:self withObject:nil];
-
+        
         
         //预先加载 图片
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -329,7 +333,7 @@ UITableViewDelegate
         }else if (loadType == 2){//不加载
             
         }
-
+        
     }
     
     if (self.page >= 20) {
@@ -615,7 +619,7 @@ UITableViewDelegate
         
     }
     
-
+    
     NSLog(@"获取缓存完成");
 }
 
