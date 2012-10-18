@@ -7,14 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import <AudioToolbox/AudioToolbox.h>
-
-@class ContentViewController;
 #import "DIYMenu.h"
+#import "ProgressStatusBar.h"
+@class ContentViewController;
 
-
-@interface MainViewController : UIViewController<UIAlertViewDelegate,DIYMenuDelegate>
+@interface MainViewController : UIViewController<UIAlertViewDelegate,DIYMenuDelegate,ProgressStatusBarDelegate>
 {
     ContentViewController *m_contentView;  //内容页面
 
@@ -23,8 +21,10 @@
     
     UIBarButtonItem* _timeItem;
     
-    
     SystemSoundID soundID;
+    
+    ProgressStatusBar *statusBar;
+    NSTimer *timer;
 }
 
 @property (nonatomic,retain) ContentViewController *m_contentView;

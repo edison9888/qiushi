@@ -134,7 +134,7 @@
     
     QuadCurveMenu *menu = [[QuadCurveMenu alloc] initWithFrame:self.view.bounds menus:menus];
     menu.delegate = self;
-    //    [self.view addSubview:menu];
+    [self.view addSubview:menu];
     
     
 }
@@ -226,7 +226,7 @@
 
     
     if (_mainType == (1001 + indexPath.row)) {
-        [self.viewDeckController closeLeftViewAnimated:YES];
+      
         
     }else if (indexPath.row == 0){
         
@@ -235,46 +235,39 @@
         
         self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
         [self.mainViewController refreshDate];
-        [self.viewDeckController closeLeftViewAnimated:YES];
-    }else if (indexPath.row == 1){
+       
+    }else if (indexPath.row == 1 || indexPath.row == 2){
         [self.navController popToRootViewControllerAnimated:YES];
         self.mainViewController.title = [NSString stringWithFormat:@"%@", [self.items objectAtIndex:indexPath.row]];
         
         self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
         [self.mainViewController refreshDate];
-        [self.viewDeckController closeLeftViewAnimated:YES];
-    }else if (indexPath.row == 2){
-        [self.navController popToRootViewControllerAnimated:YES];
-        self.mainViewController.title = [NSString stringWithFormat:@"%@", [self.items objectAtIndex:indexPath.row]];
-        
-        self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
-        [self.mainViewController refreshDate];
-        [self.viewDeckController closeLeftViewAnimated:YES];
+      
     }else if (indexPath.row == 3){
         FavouriteViewController *favourite = [[FavouriteViewController alloc]initWithNibName:@"FavouriteViewController" bundle:nil];
         
         [self.navController pushViewController:favourite animated:YES];
-        [self.viewDeckController closeLeftViewAnimated:YES];
+        
         
     }else if (indexPath.row == 4){
         HistoryViewController *history = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
         
         [self.navController pushViewController:history animated:YES];
-        [self.viewDeckController closeLeftViewAnimated:YES];
+        
         
     }else if (indexPath.row == 6){
         SetViewController *set = [[SetViewController alloc]initWithNibName:@"SetViewController" bundle:nil];
         
         [self.navController pushViewController:set animated:YES];
-        [self.viewDeckController closeLeftViewAnimated:YES];
+        
     }else if (indexPath.row == 7){
         AboutViewController *about = [[AboutViewController alloc]initWithNibName:@"AboutViewController" bundle:nil];
         [self.navController pushViewController:about animated:YES];
         
-        [self.viewDeckController closeLeftViewAnimated:YES];
+        
     }
     
-    
+    [self.viewDeckController closeLeftViewAnimated:YES];
     _mainType = 1001 + indexPath.row;
     
     

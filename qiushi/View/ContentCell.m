@@ -67,7 +67,7 @@
         [self addSubview:txtAnchor];
         
         //发布时间
-        txtTime = [[UILabel alloc]initWithFrame:CGRectMake(240, 5, 90, 32)];
+        txtTime = [[UILabel alloc]initWithFrame:CGRectMake(235, 5, 90, 32)];
 //        [txtTime setText:@"12-08-14 10:06"];
         [txtTime setFont:[UIFont fontWithName:@"微软雅黑" size:10]];
         [txtTime setBackgroundColor:[UIColor clearColor]];
@@ -136,8 +136,8 @@
      
         _saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_saveBtn setFrame:CGRectMake(260,txtContent.frame.size.height-30,25,25)];
-        [_saveBtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
-        [_saveBtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
+//        [_saveBtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
+//        [_saveBtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
         [_saveBtn setImage:[UIImage imageNamed:@"button_save.png"] forState:UIControlStateNormal];
         [_saveBtn setTag:FSave];
         [self addSubview:_saveBtn];

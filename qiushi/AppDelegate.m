@@ -30,15 +30,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
-
+    
+    
     [Parse setApplicationId:@"vXGdzFpCmfMoSWuUX27sLCGKhOfFAB9NHll59IUp"
                   clientKey:@"Axa79C9vZRUZBzI90IXbnCUxtPZDMsr64fLjVcLw"];
     
     
-//    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
-//    [testObject setObject:@"bar111" forKey:@"foo"];
-//    [testObject save];
+    //    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
+    //    [testObject setObject:@"bar111" forKey:@"foo"];
+    //    [testObject save];
     
     
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
@@ -49,16 +49,16 @@
     ////    [NSThread sleepForTimeInterval:1.0];
     
     
-//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    // Override point for customization after application launch.
-//    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-//        self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPhone" bundle:nil];
-//    } else {
-//        self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPad" bundle:nil];
-//    }
-//    self.window.rootViewController = self.viewController;
-//    [self.window makeKeyAndVisible];
-//    return YES;
+    //    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    //    // Override point for customization after application launch.
+    //    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+    //        self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPhone" bundle:nil];
+    //    } else {
+    //        self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPad" bundle:nil];
+    //    }
+    //    self.window.rootViewController = self.viewController;
+    //    [self.window makeKeyAndVisible];
+    //    return YES;
     
     
     //想摇就写在这～～～
@@ -66,8 +66,11 @@
     
     //默认显示广告
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+#ifdef DEBUG
+    [ud setObject:[NSNumber numberWithBool:NO]  forKey:@"showAD"];
+#else
     [ud setObject:[NSNumber numberWithBool:YES]  forKey:@"showAD"];
-    
+#endif
     
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -86,15 +89,15 @@
     
     _navController = [[MyNavigationController alloc] initWithRootViewController:_mainController];
     
-
+    
     
     
     _leftController = [[LeftController alloc] init];
     _leftController.navController = _navController;
     _leftController.mainViewController = _mainController;
     
-
-
+    
+    
     
     
     self.window.backgroundColor = [UIColor whiteColor];
@@ -144,7 +147,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 

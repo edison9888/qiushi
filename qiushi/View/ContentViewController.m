@@ -7,24 +7,17 @@
 //
 
 #import "ContentViewController.h"
+
 #import "PullingRefreshTableView.h"
 #import "CommentsViewController.h"
 #import "CJSONDeserializer.h"
 #import "QiuShi.h"
-#import "GADBannerView.h"
 #import "SqliteUtil.h"
-#import "SVStatusHUD.h"
 #import "MyNavigationController.h"
 #import "AppDelegate.h"
-
-#import "ATMHud.h"
-
-
 #import "PhotoViewer.h"
 #import "iToast.h"
 #import "IsNetWorkUtil.h"
-
-
 
 
 @interface ContentViewController () <
@@ -34,8 +27,11 @@ UITableViewDataSource,
 UITableViewDelegate
 >
 {
-    ATMHud *hud;//提示网络连接 信息的：网络连接失败
+    
     EGOImageButton *tem;//读取图片缓存的
+    int _iLixian;//离线用到的
+    NSMutableArray *_lxArray;
+    NSMutableArray *_lxImgArray;
     
 }
 -(void) GetErr:(ASIHTTPRequest *)request;
@@ -44,7 +40,9 @@ UITableViewDelegate
 @property (retain,nonatomic) NSMutableArray *list;
 @property (nonatomic) BOOL refreshing;
 @property (assign,nonatomic) NSInteger page;
-@property (nonatomic, retain) ATMHud *hud;
+@property (nonatomic, assign) int iLixian;
+@property (retain, nonatomic) NSMutableArray *lxArray;
+@property (retain, nonatomic) NSMutableArray *lxImgArray;
 @end
 
 @implementation ContentViewController
@@ -55,11 +53,10 @@ UITableViewDelegate
 @synthesize asiRequest = _asiRequest;
 @synthesize Qiutype,QiuTime;
 @synthesize cacheArray = _cacheArray;
-@synthesize hud;
 @synthesize imageUrlArray = _imageUrlArray;
-
-
-
+@synthesize iLixian = _iLixian;
+@synthesize lxArray = _lxArray;
+@synthesize lxImgArray = _lxImgArray;
 
 
 - (void)viewDidLoad
@@ -84,8 +81,10 @@ UITableViewDelegate
     
     bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
     bannerView_.rootViewController = self;
+#ifdef DEBUG
+#else
     [bannerView_ loadRequest:[GADRequest request]];
-    
+#endif
     
     
     
@@ -100,12 +99,8 @@ UITableViewDelegate
     
     
     
-    //提示网络连接失败的
-    hud = [[ATMHud alloc] initWithDelegate:self];
-    [hud setBlockTouches:NO];
-	[self.view addSubview:hud.view];
     
-    
+    //读取缓存100条(实际上99条)
     _cacheArray = [SqliteUtil queryDbTop];
     if (_cacheArray != nil) {
         [self.list removeAllObjects];
@@ -122,15 +117,13 @@ UITableViewDelegate
         
         //打乱顺序
         //        self.list = [self randArray:self.list];
-        DLog(@"读取缓存%d条",self.list.count);
+        //        DLog(@"读取缓存%d条",self.list.count);
         
         [self.tableView tableViewDidFinishedLoading];
         self.tableView.reachedTheEnd  = NO;
         [self.tableView reloadData];
         
     }
-    
-    
     
     if (self.page == 0) {
         
@@ -168,62 +161,63 @@ UITableViewDelegate
     }
     
     //刷新一下AD
+#ifdef DEBUG
+#else
     [bannerView_ loadRequest:[GADRequest request]];
+#endif
     
     self.page++;
     NSURL *url;
     
-    //////////////ttttttttttttttttttttttttttt离线不行
-//    for (int i = 0; i<=20; i++) {
-//        self.page = i;
     
-        if (Qiutype == QiuShiTypeTop) {
-            switch (QiuTime) {
-                case QiuShiTimeRandom:
-                    url = [NSURL URLWithString:SuggestURLString(10,self.page)];
-                    break;
-                case QiuShiTimeDay:
-                    url = [NSURL URLWithString:DayURLString(10,self.page)];
-                    break;
-                case QiuShiTimeWeek:
-                    url = [NSURL URLWithString:WeakURlString(10,self.page)];
-                    break;
-                case QiuShiTimeMonth:
-                    url = [NSURL URLWithString:MonthURLString(10,self.page)];
-                    break;
-                default:
-                    url = [NSURL URLWithString:SuggestURLString(10,self.page)];
-                    break;
-            }
-        }else{
-            switch (Qiutype) {
-                case QiuShiTypeTop:
-                    url = [NSURL URLWithString:SuggestURLString(10,self.page)];
-                    break;
-                case QiuShiTypeNew:
-                    url = [NSURL URLWithString:LastestURLString(10,self.page)];
-                    break;
-                case QiuShiTypePhoto:
-                    url = [NSURL URLWithString:ImageURLString(10,self.page)];
-                    break;
-                default:
-                    url = [NSURL URLWithString:SuggestURLString(10,self.page)];
-                    break;
-            }
+    
+    if (Qiutype == QiuShiTypeTop) {
+        switch (QiuTime) {
+            case QiuShiTimeRandom:
+                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                break;
+            case QiuShiTimeDay:
+                url = [NSURL URLWithString:DayURLString(10,self.page)];
+                break;
+            case QiuShiTimeWeek:
+                url = [NSURL URLWithString:WeakURlString(10,self.page)];
+                break;
+            case QiuShiTimeMonth:
+                url = [NSURL URLWithString:MonthURLString(10,self.page)];
+                break;
+            default:
+                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                break;
         }
-        
-        
-//    }
+    }else{
+        switch (Qiutype) {
+            case QiuShiTypeTop:
+                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                break;
+            case QiuShiTypeNew:
+                url = [NSURL URLWithString:LastestURLString(10,self.page)];
+                break;
+            case QiuShiTypePhoto:
+                url = [NSURL URLWithString:ImageURLString(10,self.page)];
+                break;
+            default:
+                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                break;
+        }
+    }
+    
+    
+    
     
     NSLog(@"%@",url);
-    //    [ASIHTTPRequest setDefaultCache:[ASIDownloadCache sharedCache]];
+    
     
     _asiRequest = [ASIHTTPRequest requestWithURL:url];
     [_asiRequest setDelegate:self];
-    
     [_asiRequest setDidFinishSelector:@selector(GetResult:)];
     [_asiRequest setDidFailSelector:@selector(GetErr:)];
     [_asiRequest startAsynchronous];
+    
     
 }
 
@@ -243,14 +237,10 @@ UITableViewDelegate
     NSLog(@"error:%@",error);
     
     
-    //    [hud setCaption:@"网络连接失败"];
-    //    [hud show];
-    //    [hud hideAfter:2.0];
-    
     
     [[iToast makeText:@"网络连接失败"] show];
     
-    //    [SVStatusHUD showWithImage:[UIImage imageNamed:@"wifi.png"] status:[NSString stringWithFormat:@"%@=====\n%@",responseString,error]];
+    
     
 }
 
@@ -336,6 +326,8 @@ UITableViewDelegate
         
     }
     
+    
+    
     if (self.page >= 20) {
         [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
         self.tableView.reachedTheEnd  = YES;
@@ -348,16 +340,63 @@ UITableViewDelegate
 }
 
 
+-(void) GetResult1:(ASIHTTPRequest *)request
+{
 
+          
+//        [SqliteUtil initDb];
+     NSData *data =[request responseData];
+    NSMutableDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:data error:nil];
+    
+    
+    
+    if ([dictionary objectForKey:@"items"]) {
+		NSArray *array = [NSArray arrayWithArray:[dictionary objectForKey:@"items"]];
+        
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        //设定时间格式,这里可以设置成自己需要的格式
+        [dateFormatter setDateFormat:@"yy-MM-dd HH:mm"];
+        
+        for (NSDictionary *qiushi in array)
+        {
+            QiuShi *qs = [[QiuShi alloc]initWithDictionary:qiushi];
+            
+            qs.fbTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:qs.published_at]];
+            [_lxArray addObject:qs];
+            
+            if (qs.imageURL != nil && qs.imageURL != @"") {
+                [self.lxImgArray addObject:qs.imageURL];
+                [self.lxImgArray addObject:qs.imageMidURL];
+            }
+
+        }
+        
+        
+
+        
+        
+
+    }
+    
+    NSLog(@"得到结果");
+    if ([request tag]== 100 + (5*20)-1) {
+        //保存到数据库
+        
+        dispatch_async(dispatch_get_current_queue(), ^{
+            [SqliteUtil saveDbWithArray:_lxArray];
+            //预先加载 图片
+            [self getImageCache1];
+        });
+    }
+    
+}
 
 
 - (void)init_backup:(id)sender
 {
     [SqliteUtil saveDbWithArray:self.list];
 }
-
-
-
 
 
 #pragma mark - TableView data source
@@ -422,7 +461,7 @@ UITableViewDelegate
     [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
     
     //发布时间
-    cell.txtTime.text = qs.fbTime;
+    cell.txtTime.text = [NSString stringWithFormat:@"%@ %d/%d",qs.fbTime,indexPath.row+1,[self.list count]];//qs.fbTime;
     
     [cell.saveBtn setTag:(indexPath.row +100) ];
     [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -497,9 +536,6 @@ UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    
-    
-    
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
     
@@ -518,6 +554,46 @@ UITableViewDelegate
     self.QiuTime = time;
     self.page =0;
     [self.tableView launchRefreshing];
+    
+}
+
+-(void) LoadDataForCache
+{
+    
+    _lxArray = [[NSMutableArray alloc]init];
+    _lxImgArray = [[NSMutableArray alloc]init];
+    NSURL *url;
+    NSMutableArray *urlArray = [[NSMutableArray alloc]init];
+    for (int i = 0; i<20; i++) {
+        
+        [urlArray addObject:[NSURL URLWithString:SuggestURLString(10,i)]];
+        [urlArray addObject:[NSURL URLWithString:WeakURlString(10,i)]];
+        [urlArray addObject:[NSURL URLWithString:MonthURLString(10,i)]];
+        [urlArray addObject:[NSURL URLWithString:LastestURLString(10,i)]];
+        [urlArray addObject:[NSURL URLWithString:ImageURLString(10,i)]];
+    }
+    
+    
+    for (int j=0; j<urlArray.count; j++) {
+        url = [urlArray objectAtIndex:j];
+        
+        NSLog(@"%@",url);
+        
+        
+        _asiRequest = [ASIHTTPRequest requestWithURL:url];
+        [_asiRequest setDelegate:self];
+        [_asiRequest setTag:j+100];
+        NSLog(@"tag:%d",j+100);
+        [_asiRequest setDidFinishSelector:@selector(GetResult1:)];
+        [_asiRequest setDidFailSelector:@selector(GetErr:)];
+        [_asiRequest startAsynchronous];
+    }
+    
+    
+    
+    
+    
+    
     
 }
 
@@ -549,7 +625,7 @@ UITableViewDelegate
 //去掉 重复数据
 - (void)removeRepeatArray
 {
-    DLog(@"原来：%d",self.list.count);
+    //    DLog(@"原来：%d",self.list.count);
     NSMutableArray* filterResults = [[NSMutableArray alloc] init];
     BOOL copy;
     if (![self.list count] == 0) {
@@ -568,7 +644,7 @@ UITableViewDelegate
     }
     
     self.list = filterResults;
-    DLog(@"之后：%d",self.list.count);
+    //    DLog(@"之后：%d",self.list.count);
     //    self.list = [NSMutableArray arrayWithArray:[self.list sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
     
     
@@ -612,6 +688,22 @@ UITableViewDelegate
     NSLog(@"图片数：%d",self.imageUrlArray.count);
     tem = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"main_background.png"] delegate:self];
     for (NSString* strUrl in self.imageUrlArray)
+    {
+        
+        [tem setImageURL:[NSURL URLWithString:strUrl]];
+        
+        
+    }
+    
+    
+    NSLog(@"获取缓存完成");
+}
+- (void)getImageCache1
+{
+    
+    NSLog(@"图片数：%d",self.lxImgArray.count);
+    tem = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"main_background.png"] delegate:self];
+    for (NSString* strUrl in self.lxImgArray)
     {
         
         [tem setImageURL:[NSURL URLWithString:strUrl]];

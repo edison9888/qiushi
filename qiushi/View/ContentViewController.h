@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ContentCell.h"
 #import "ASIHttpHeaders.h"
-
+#import "GADBannerView.h"
 @class PhotoViewer;
 
 @interface ContentViewController : UIViewController<EGOImageButtonDelegate>
@@ -35,4 +35,5 @@
 @property (nonatomic,retain) NSMutableArray *imageUrlArray;
 -(void) LoadPageOfQiushiType:(QiuShiType) type Time:(QiuShiTime) time;
 -(CGFloat) getTheHeight:(NSInteger)row;
+-(void) LoadDataForCache;
 @end

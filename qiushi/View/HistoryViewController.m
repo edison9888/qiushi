@@ -10,17 +10,17 @@
 
 #import "PullingRefreshTableView.h"
 #import "CommentsViewController.h"
-
 #import "CJSONDeserializer.h"
 #import "QiuShi.h"
 #import "GADBannerView.h"
 #import "SqliteUtil.h"
-#import "SVStatusHUD.h"
+
 #import "MyNavigationController.h"
 #import "AppDelegate.h"
 #import "iToast.h"
 #import "EGOCache.h"
 #import "IIViewDeckController.h"
+#import "MyProgressHud.h"
 
 @interface HistoryViewController ()<
 PullingRefreshTableViewDelegate,
@@ -74,10 +74,7 @@ UITableViewDelegate,UIAlertViewDelegate
     self.navigationItem.leftBarButtonItem = someBarButtonItem;
     
     
-    
-    
-    
-    [self.view setBackgroundColor:[UIColor clearColor]];
+
     
     //设置背景颜色
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
@@ -97,7 +94,10 @@ UITableViewDelegate,UIAlertViewDelegate
     
     bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
     bannerView_.rootViewController = self;
+#ifdef DEBUG
+#else
     [bannerView_ loadRequest:[GADRequest request]];
+#endif
     
     
     CGRect bounds = self.view.bounds;
@@ -111,37 +111,50 @@ UITableViewDelegate,UIAlertViewDelegate
     
     
     
-    
-    
-    _cacheArray = [SqliteUtil queryDb];
-    if (_cacheArray != nil) {
-        [self.list removeAllObjects];
-        for (QiuShi *qiushi in _cacheArray)
-        {
-            QiuShi *qs = [[QiuShi alloc]initWithQiushi:qiushi];
-            
-            [self.list addObject:qs];
-            
-        }
-        
-        //数据源去重复
-        [self removeRepeatArray];
-        
-        
-        
-        [self.tableView tableViewDidFinishedLoading];
-        self.tableView.reachedTheEnd  = NO;
-        [self.tableView reloadData];
-        
-    }
-    
-    if (_cacheArray.count == 0) {
-        [[iToast makeText:@"亲,暂时还没有缓存..."] show];
-    }
-    
-    
-    
     [self setBarButtonItems];
+    
+    [self.view addSubview:[MyProgressHud getInstance]];
+    dispatch_async(dispatch_get_current_queue(), ^{
+        _cacheArray = [SqliteUtil queryDb];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_cacheArray != nil) {
+                [self.list removeAllObjects];
+                for (QiuShi *qiushi in _cacheArray)
+                {
+                    QiuShi *qs = [[QiuShi alloc]initWithQiushi:qiushi];
+                    
+                    [self.list addObject:qs];
+                    
+                }
+                
+                //数据源去重复
+                [self removeRepeatArray];
+                
+                
+                
+                [self.tableView tableViewDidFinishedLoading];
+                self.tableView.reachedTheEnd  = NO;
+                [self.tableView reloadData];
+                
+            }
+            
+            
+            if (_cacheArray.count == 0) {
+                [[iToast makeText:@"亲,暂时还没有缓存..."] show];
+            }
+
+            [MyProgressHud remove];
+            
+        });
+                
+    });
+    
+    
+        
+    
+    
+    
     
     
     
@@ -159,6 +172,20 @@ UITableViewDelegate,UIAlertViewDelegate
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    if ([self.viewDeckController leftControllerIsOpen]==YES) {
+        [self.viewDeckController closeLeftView];
+    }
+    //解决本view与root 共同的手势 冲突
+    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
+}
+- (void)viewDidDisappear:(BOOL)animated
+{
+    
+    [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
+    
+}
 
 #pragma mark - Your actions
 
@@ -236,37 +263,7 @@ UITableViewDelegate,UIAlertViewDelegate
 
 
 
--(void) GetResult:(ASIHTTPRequest *)request
-{
-    
-    //    NSString *responseString = [request responseString];
-    //    NSLog(@"%@\n",responseString);
-    
-    if (self.refreshing) {
-        self.page = 1;
-        self.refreshing = NO;
-        if (self.list.count > 100) {
-            [self.list removeAllObjects];
-        }
-        
-        [SqliteUtil initDb];
-    }
-    
-    
-    
-    
-    
-    
-    if (self.page >= 20) {
-        [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
-        self.tableView.reachedTheEnd  = YES;
-    } else {
-        [self.tableView tableViewDidFinishedLoading];
-        self.tableView.reachedTheEnd  = NO;
-        [self.tableView reloadData];
-    }
-    
-}
+
 #pragma mark - TableView*
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -329,7 +326,7 @@ UITableViewDelegate,UIAlertViewDelegate
     [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
     
     //发布时间
-    cell.txtTime.text = qs.fbTime;
+    cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.row+1,[self.list count]];//qs.fbTime;
     
     
     
@@ -406,7 +403,7 @@ UITableViewDelegate,UIAlertViewDelegate
     
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    
+
     
     
     CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
@@ -424,15 +421,16 @@ UITableViewDelegate,UIAlertViewDelegate
     
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        DLog(@"delete");
-        QiuShi *qs = [self.list objectAtIndex:indexPath.row];
         
-        if ([SqliteUtil updateDataIsFavourite:qs.qiushiID isFavourite:@"no"] == YES) {
-            [self.list removeObjectAtIndex:indexPath.row];
-            [self.tableView reloadData];
-            DLog(@"设置成功");
-        }else
-            DLog(@"设置失败");
+       
+        dispatch_async(dispatch_get_current_queue(), ^{
+            QiuShi *qs = [self.list objectAtIndex:indexPath.row];
+            [SqliteUtil deleteData:qs.qiushiID];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.list removeObjectAtIndex:indexPath.row];
+                [self.tableView reloadData];
+            });
+        });
         
         
     }
@@ -466,7 +464,7 @@ UITableViewDelegate,UIAlertViewDelegate
 
 - (void)removeRepeatArray
 {
-    DLog(@"原来：%d",self.list.count);
+//    DLog(@"原来：%d",self.list.count);
     NSMutableArray* filterResults = [[NSMutableArray alloc] init];
     BOOL copy;
     if (![self.list count] == 0) {
@@ -485,7 +483,7 @@ UITableViewDelegate,UIAlertViewDelegate
     }
     
     self.list = filterResults;
-    DLog(@"之后：%d",self.list.count);
+//    DLog(@"之后：%d",self.list.count);
     //    self.list = [NSMutableArray arrayWithArray:[self.list sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
     
 }

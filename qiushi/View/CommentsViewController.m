@@ -74,7 +74,10 @@ UITableViewDelegate
         bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
         bannerView_.rootViewController = self;
         [self.view addSubview:bannerView_];//添加bannerview到你的试图
+#ifdef DEBUG
+#else
         [bannerView_ loadRequest:[GADRequest request]];
+#endif
     }
     
     

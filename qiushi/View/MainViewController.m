@@ -15,7 +15,8 @@
 #import "DIYMenuOptions.h"
 #import "IIViewDeckController.h"
 
-#define kTagMenu      101
+#define kTagMenu        101
+#define kTagRefresh     102
 
 
 //启动一定次数，引导用户去评分
@@ -27,8 +28,9 @@
 {
     UIButton *_segmentButton;//
     UIImageView *_arrowImage;
+    UIButton *_refreshBtn;//刷新btn 
 }
-
+@property (retain, nonatomic) UIButton *refreshBtn;//刷新按钮
 @end
 
 @implementation MainViewController
@@ -36,6 +38,9 @@
 @synthesize typeQiuShi = _typeQiuShi;
 @synthesize timeSegment = _timeSegment;
 @synthesize timeItem = _timeItem;
+@synthesize refreshBtn = _refreshBtn;
+
+static CGFloat progress = 0;
 
 #pragma mark - view life cycle
 
@@ -48,9 +53,6 @@
     }
     return self;
 }
-
-
-
 
 
 - (void)viewDidLoad
@@ -69,9 +71,14 @@
     UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
     self.navigationItem.leftBarButtonItem = someBarButtonItem;
     
+    UIButton *lxBtn = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [lxBtn addTarget:self action:@selector(lixian:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem* lxItem = [[UIBarButtonItem alloc]initWithCustomView:lxBtn];
+    self.navigationItem.rightBarButtonItem = lxItem;
     
     
-    
+    statusBar = [[ProgressStatusBar alloc] init];
+    statusBar.delegate = self;
     
     
     UIFont *font = [UIFont fontWithName:MENUFONT_FAMILY size:MENUFONT_SIZE];
@@ -155,8 +162,15 @@
     [self.view addSubview:m_contentView.view];
     
     
-    
-    
+    CGRect bounds = self.view.bounds;
+    _refreshBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *refreshImg = [UIImage imageNamed:@"refresh.png"];
+    [self.refreshBtn setFrame:CGRectMake(bounds.size.width-refreshImg.size.width-15, bounds.size.height-refreshImg.size.height-44-15, refreshImg.size.width, refreshImg.size.height)];
+    [self.refreshBtn setBackgroundImage:refreshImg forState:UIControlStateNormal];
+    [self.refreshBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.refreshBtn setTag:kTagRefresh];
+    [self.view addSubview:_refreshBtn];
+
     
     
 }
@@ -170,6 +184,11 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (void)dealloc
+{
+    [timer invalidate];
+    timer = nil;
+}
 
 //摇一摇 的准备
 -(BOOL)canBecomeFirstResponder{
@@ -209,9 +228,67 @@
         {
             [DIYMenu show];
         }break;
+        case kTagRefresh:
+        {
+            [self refreshDate];
+        }break;
             
             
     }
+}
+
+- (void)lixian:(id)sender
+{
+    [statusBar show];
+    
+    
+    [self startOffline];
+    
+    [m_contentView LoadDataForCache];
+}
+
+// 模拟离线
+- (void)startOffline
+{
+    progress = 0;
+    
+    [timer invalidate];
+    timer = nil;
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
+}
+
+- (void)stopOffline
+{
+    [timer invalidate];
+    timer = nil;
+}
+
+- (void)updateProgress:(NSTimer *)sender
+{
+    progress += 0.05;
+    
+    [statusBar setProgress:progress];
+    [statusBar setLoadingMsg:[NSString stringWithFormat:@"正在离线: %.0f%%", progress * 100]];
+    
+    if (progress > 1) {
+        progress = 0;
+        [statusBar setLoadingMsg:@"离线完成"];
+        
+        [self stopOffline];
+        
+        [statusBar performSelector:@selector(hide) withObject:nil afterDelay:1];
+    }
+}
+
+#pragma mark - ProgressStatusBarDelegate
+
+- (void)closeButtonClicked
+{
+    // stop offline
+    [self stopOffline];
+    
+    [statusBar setLoadingMsg:@"停止离线"];
 }
 
 #pragma mark -  引导用户去 评分

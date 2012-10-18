@@ -31,4 +31,5 @@
 + (int)queryTopId;
 + (BOOL)autoDelNoSave;
 + (NSMutableArray*)queryDbTop;//查询最新的100条
++ (BOOL) deleteData:(NSString*)qiushiid;
 @end

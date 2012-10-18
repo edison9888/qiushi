@@ -43,6 +43,13 @@
 		137CF94C162E7D6C00162D11 /* IIViewDeckController.m in Sources */ = {isa = PBXBuildFile; fileRef = 137CF949162E7D6C00162D11 /* IIViewDeckController.m */; };
 		137CF94D162E7D6C00162D11 /* WrapController.m in Sources */ = {isa = PBXBuildFile; fileRef = 137CF94B162E7D6C00162D11 /* WrapController.m */; };
 		137CF954162EB77100162D11 /* settingsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137CF953162EB77100162D11 /* settingsIcon@2x.png */; };
+		139A721F162FB4B700A08978 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 139A721E162FB4B700A08978 /* refresh.png */; };
+		139A7227162FCC8900A08978 /* refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 139A7226162FCC8800A08978 /* refresh@2x.png */; };
+		139A7232162FEE4F00A08978 /* ProgressStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 139A7231162FEE4F00A08978 /* ProgressStatusBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		139A7237162FEE8000A08978 /* statusbar_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 139A7233162FEE7F00A08978 /* statusbar_close.png */; };
+		139A7238162FEE8000A08978 /* statusbar_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 139A7234162FEE7F00A08978 /* statusbar_close@2x.png */; };
+		139A7239162FEE8000A08978 /* info_offline_flash.png in Resources */ = {isa = PBXBuildFile; fileRef = 139A7235162FEE7F00A08978 /* info_offline_flash.png */; };
+		139A723A162FEE8000A08978 /* info_offline_flash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 139A7236162FEE8000A08978 /* info_offline_flash@2x.png */; };
 		13C3E9F215F490C30001E3A1 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C3E9E715F490C30001E3A1 /* NSObject+SBJSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		13C3E9F315F490C30001E3A1 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C3E9E915F490C30001E3A1 /* NSString+SBJSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		13C3E9F415F490C30001E3A1 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C3E9EB15F490C30001E3A1 /* SBJSON.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -337,6 +344,14 @@
 		137CF94A162E7D6C00162D11 /* WrapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WrapController.h; sourceTree = "<group>"; };
 		137CF94B162E7D6C00162D11 /* WrapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WrapController.m; sourceTree = "<group>"; };
 		137CF953162EB77100162D11 /* settingsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settingsIcon@2x.png"; sourceTree = "<group>"; };
+		139A721E162FB4B700A08978 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh.png; sourceTree = "<group>"; };
+		139A7226162FCC8800A08978 /* refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh@2x.png"; sourceTree = "<group>"; };
+		139A7230162FEE4F00A08978 /* ProgressStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressStatusBar.h; sourceTree = "<group>"; };
+		139A7231162FEE4F00A08978 /* ProgressStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressStatusBar.m; sourceTree = "<group>"; };
+		139A7233162FEE7F00A08978 /* statusbar_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusbar_close.png; sourceTree = "<group>"; };
+		139A7234162FEE7F00A08978 /* statusbar_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statusbar_close@2x.png"; sourceTree = "<group>"; };
+		139A7235162FEE7F00A08978 /* info_offline_flash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info_offline_flash.png; sourceTree = "<group>"; };
+		139A7236162FEE8000A08978 /* info_offline_flash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info_offline_flash@2x.png"; sourceTree = "<group>"; };
 		13C3E9E515F490C30001E3A1 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		13C3E9E615F490C30001E3A1 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		13C3E9E715F490C30001E3A1 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -911,6 +926,8 @@
 		13C843E815E489E8000B8A44 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				139A7226162FCC8800A08978 /* refresh@2x.png */,
+				139A721E162FB4B700A08978 /* refresh.png */,
 				132044A115FF1362004C8746 /* comm_bg_main_memu2x.png */,
 				132044A215FF1362004C8746 /* comm_btn_top_n@2x.png */,
 				132044A315FF1362004C8746 /* comm_btn_top_s@2x.png */,
@@ -999,6 +1016,12 @@
 		13C8446315E489F5000B8A44 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				139A7233162FEE7F00A08978 /* statusbar_close.png */,
+				139A7234162FEE7F00A08978 /* statusbar_close@2x.png */,
+				139A7235162FEE7F00A08978 /* info_offline_flash.png */,
+				139A7236162FEE8000A08978 /* info_offline_flash@2x.png */,
+				139A7230162FEE4F00A08978 /* ProgressStatusBar.h */,
+				139A7231162FEE4F00A08978 /* ProgressStatusBar.m */,
 				13D4BBD215F9BC9000AD8B8B /* PhotoViewer */,
 				1313DAA015EF3281002ACBB2 /* CustomView */,
 				13C8446415E489F5000B8A44 /* AboutViewController.h */,
@@ -1774,6 +1797,12 @@
 				13C85E01162D38E400F71161 /* HistoryViewController.xib in Resources */,
 				137CF954162EB77100162D11 /* settingsIcon@2x.png in Resources */,
 				1344FAC9162FA11300EE6E7B /* README.txt in Resources */,
+				139A721F162FB4B700A08978 /* refresh.png in Resources */,
+				139A7227162FCC8900A08978 /* refresh@2x.png in Resources */,
+				139A7237162FEE8000A08978 /* statusbar_close.png in Resources */,
+				139A7238162FEE8000A08978 /* statusbar_close@2x.png in Resources */,
+				139A7239162FEE8000A08978 /* info_offline_flash.png in Resources */,
+				139A723A162FEE8000A08978 /* info_offline_flash@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1900,6 +1929,7 @@
 				13C85E00162D38E400F71161 /* HistoryViewController.m in Sources */,
 				137CF94C162E7D6C00162D11 /* IIViewDeckController.m in Sources */,
 				137CF94D162E7D6C00162D11 /* WrapController.m in Sources */,
+				139A7232162FEE4F00A08978 /* ProgressStatusBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

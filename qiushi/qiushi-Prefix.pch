@@ -18,7 +18,7 @@
 
 #endif
 
-#define MY_BANNER_UNIT_ID @"a14feae0ee078ea"
+#define MY_BANNER_UNIT_ID @"a14feae0ee078ea" //Admob id
 
 #define MyAppleID @"545549453"
 
