@@ -8,7 +8,7 @@
 
 #import "PurchaseInViewController.h"
 
-#define ProductID_IAP0p99 @"com.xyxd.qiushi.ad"//$0.99
+#define ProductID_IAP0p99 @"com.xyxd.qiushis.qcgg"//$0.99
 #define ProductID_IAP1p99 @"com.buytest.two" //$1.99
 #define ProductID_IAP4p99 @"com.buytest.three" //$4.99
 #define ProductID_IAP9p99 @"com.buytest.four" //$19.99

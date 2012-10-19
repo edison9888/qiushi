@@ -279,12 +279,12 @@
     if (idx == 0)
     {
         //程序内购买
-        //        PurchaseInViewController *purchase = [[PurchaseInViewController alloc]initWithNibName:@"PurchaseInViewController" bundle:nil];
-        //        [self.navController pushViewController:purchase animated:YES];
+        PurchaseInViewController *purchase = [[PurchaseInViewController alloc]initWithNibName:@"PurchaseInViewController" bundle:nil];
+        [self.navController pushViewController:purchase animated:YES];
         
         
     }
-    //     [_menuController showRootController:YES];
+    [self.viewDeckController closeLeftViewAnimated:YES];
 }
 
 
