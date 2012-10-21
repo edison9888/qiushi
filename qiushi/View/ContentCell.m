@@ -97,6 +97,7 @@
         [goodbtn setFrame:CGRectMake(10,txtContent.frame.size.height-30,70,32)];
         [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
         [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
+        [goodbtn setUserInteractionEnabled:NO];
         [goodbtn setImage:[UIImage imageNamed:@"icon_for_good.png"] forState:UIControlStateNormal];
         [goodbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
         [goodbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
@@ -117,6 +118,7 @@
         [badbtn setTitle:@"0" forState:UIControlStateNormal];
         [badbtn.titleLabel setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
         [badbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [badbtn setUserInteractionEnabled:NO];
         [badbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:badbtn];
         
@@ -125,6 +127,7 @@
         [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
         [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
         [commentsbtn setImage:[UIImage imageNamed:@"icon_for_comment.png"] forState:UIControlStateNormal];
+        [commentsbtn setUserInteractionEnabled:NO];
         [commentsbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
         [commentsbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
         [commentsbtn.titleLabel setFont:[UIFont fontWithName:@"微软雅黑" size:14]];

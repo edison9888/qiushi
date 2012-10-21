@@ -71,10 +71,10 @@ static CGFloat progress = 0;
     UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
     self.navigationItem.leftBarButtonItem = someBarButtonItem;
     
-    UIButton *lxBtn = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    [lxBtn addTarget:self action:@selector(lixian:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem* lxItem = [[UIBarButtonItem alloc]initWithCustomView:lxBtn];
-    self.navigationItem.rightBarButtonItem = lxItem;
+//    UIButton *lxBtn = [UIButton buttonWithType:UIButtonTypeInfoLight];
+//    [lxBtn addTarget:self action:@selector(lixian:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem* lxItem = [[UIBarButtonItem alloc]initWithCustomView:lxBtn];
+//    self.navigationItem.rightBarButtonItem = lxItem;
     
     
     statusBar = [[ProgressStatusBar alloc] init];

@@ -287,6 +287,7 @@
 		13F4C74D15F2164600DD8451 /* nav_menu_icon_f@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13F4C74C15F2164600DD8451 /* nav_menu_icon_f@2x.png */; };
 		C9BDA76915F64D0700645ED0 /* FavouriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BDA76715F64D0700645ED0 /* FavouriteViewController.m */; };
 		C9BDA76A15F64D0700645ED0 /* FavouriteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9BDA76815F64D0700645ED0 /* FavouriteViewController.xib */; };
+		C9C06C391633A3FC003C0F96 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -716,6 +717,7 @@
 		C9BDA76615F64D0700645ED0 /* FavouriteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteViewController.h; sourceTree = "<group>"; };
 		C9BDA76715F64D0700645ED0 /* FavouriteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteViewController.m; sourceTree = "<group>"; };
 		C9BDA76815F64D0700645ED0 /* FavouriteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavouriteViewController.xib; sourceTree = "<group>"; };
+		C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -843,6 +845,7 @@
 		13C8433A15E47EEC000B8A44 = {
 			isa = PBXGroup;
 			children = (
+				C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */,
 				1313DAB615F054B5002ACBB2 /* README.md */,
 				13C845E315E48AFE000B8A44 /* Frame */,
 				13C8436915E47F39000B8A44 /* Default.png */,
@@ -1803,6 +1806,7 @@
 				139A7238162FEE8000A08978 /* statusbar_close@2x.png in Resources */,
 				139A7239162FEE8000A08978 /* info_offline_flash.png in Resources */,
 				139A723A162FEE8000A08978 /* info_offline_flash@2x.png in Resources */,
+				C9C06C391633A3FC003C0F96 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2041,7 +2045,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2073,7 +2077,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
