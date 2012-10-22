@@ -157,15 +157,16 @@ static CGFloat progress = 0;
     
     //添加内容的TableView
     self.m_contentView = [[ContentViewController alloc]initWithNibName:@"ContentViewController" bundle:nil];
-    [m_contentView.view setFrame:CGRectMake(0, 0, kDeviceWidth, self.view.frame.size.height)];
+    [m_contentView.view setFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight)];
     [m_contentView LoadPageOfQiushiType:_typeQiuShi Time:_timeType];
     [self.view addSubview:m_contentView.view];
     
+ 
     
-    CGRect bounds = self.view.bounds;
+
     _refreshBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *refreshImg = [UIImage imageNamed:@"refresh.png"];
-    [self.refreshBtn setFrame:CGRectMake(bounds.size.width-refreshImg.size.width-15, bounds.size.height-refreshImg.size.height-44-15, refreshImg.size.width, refreshImg.size.height)];
+    [self.refreshBtn setFrame:CGRectMake(kDeviceWidth-refreshImg.size.width-15, KDeviceHeight-refreshImg.size.height-44-15, refreshImg.size.width, refreshImg.size.height)];
     [self.refreshBtn setBackgroundImage:refreshImg forState:UIControlStateNormal];
     [self.refreshBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.refreshBtn setTag:kTagRefresh];

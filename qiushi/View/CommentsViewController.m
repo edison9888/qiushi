@@ -66,7 +66,7 @@ UITableViewDelegate
     if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
         bannerView_ = [[GADBannerView alloc]
                        initWithFrame:CGRectMake(0.0,
-                                                self.view.frame.size.height -GAD_SIZE_320x50.height - 44,
+                                                KDeviceHeight -GAD_SIZE_320x50.height - 44 -20,
                                                 GAD_SIZE_320x50.width,
                                                 GAD_SIZE_320x50.height)];//设置位置
         

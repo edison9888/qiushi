@@ -75,7 +75,7 @@ UITableViewDelegate
     //ad
     bannerView_ = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0.0,
-                                            self.view.frame.size.height - GAD_SIZE_320x50.height,
+                                            KDeviceHeight - GAD_SIZE_320x50.height,
                                             GAD_SIZE_320x50.width,
                                             GAD_SIZE_320x50.height)];//设置位置
     
@@ -89,7 +89,7 @@ UITableViewDelegate
     
     
     CGRect bounds = self.view.bounds;
-    bounds.size.height -= (44);
+    bounds.size.height = KDeviceHeight - (44);
     self.tableView = [[PullingRefreshTableView alloc] initWithFrame:bounds pullingDelegate:self];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];

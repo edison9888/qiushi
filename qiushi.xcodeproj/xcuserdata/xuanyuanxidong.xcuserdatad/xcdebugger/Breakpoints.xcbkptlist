@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/View/MainViewController.m"
-         timestampString = "372243724.154754"
+         timestampString = "372574699.375998"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "269"
-         endingLineNumber = "269"
+         startingLineNumber = "270"
+         endingLineNumber = "270"
          landmarkName = "-updateProgress:"
          landmarkType = "5">
       </FileBreakpoint>

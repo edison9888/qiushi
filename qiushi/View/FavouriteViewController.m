@@ -85,7 +85,7 @@ UITableViewDelegate
     //ad
     bannerView_ = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0.0,
-                                            self.view.frame.size.height - GAD_SIZE_320x50.height,
+                                            KDeviceHeight - GAD_SIZE_320x50.height,
                                             GAD_SIZE_320x50.width,
                                             GAD_SIZE_320x50.height)];//设置位置
     
@@ -98,7 +98,7 @@ UITableViewDelegate
     
     
     CGRect bounds = self.view.bounds;
-    bounds.size.height -= (44);
+    bounds.size.height = KDeviceHeight - (44);
     self.tableView = [[PullingRefreshTableView alloc] initWithFrame:bounds pullingDelegate:self];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
@@ -347,6 +347,8 @@ UITableViewDelegate
     //发布时间
     cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.row+1,[self.list count]];//qs.fbTime;
     
+    [cell.saveBtn setTag:(indexPath.row +100) ];
+    [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
     
     
     //自适应函数
@@ -506,7 +508,17 @@ UITableViewDelegate
     
 }
 
-
+- (void)favoriteAction:(id)sender
+{
+    UIButton *btn = (UIButton*)sender;
+    int index = ([btn tag] - 100) ;
+    QiuShi *qs = [self.list objectAtIndex:index];
+    
+    DLog(@"%@",qs.qiushiID);
+    [SqliteUtil updateDataIsFavourite:qs.qiushiID isFavourite:@"yes"];
+    
+    [[iToast makeText:@"已添加到收藏..."] show];
+}
 
 
 #ifdef _FOR_DEBUG_
