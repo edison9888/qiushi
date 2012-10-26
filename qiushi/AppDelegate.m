@@ -31,12 +31,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     
     [Parse setApplicationId:@"vXGdzFpCmfMoSWuUX27sLCGKhOfFAB9NHll59IUp"
                   clientKey:@"Axa79C9vZRUZBzI90IXbnCUxtPZDMsr64fLjVcLw"];
-    
-    
-    
+
     
     //    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
     //    [testObject setObject:@"bar111" forKey:@"foo"];
@@ -179,12 +178,18 @@
     // Tell Parse about the device token.
     [PFPush storeDeviceToken:deviceToken];
     // Subscribe to the global broadcast channel.
-    [PFPush subscribeToChannelInBackground:@""];
+//    [PFPush subscribeToChannelInBackground:@""];
+#ifdef DEBUG
+    [PFPush subscribeToChannelInBackground:kPushChannelDebug];
+#else
+    [PFPush subscribeToChannelInBackground:kPushChannelProduct];
+#endif
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     [PFPush handlePush:userInfo];
+    
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
@@ -196,6 +201,12 @@
     }
 }
 
+// Via http://stackoverflow.com/questions/7841610/xcode-4-2-debug-doesnt-symbolicate-stack-call
 
+void uncaughtExceptionHandler(NSException *exception) {
+    NSLog(@"CRASH: %@", exception);
+    NSLog(@"Stack Trace: %@", [exception callStackSymbols]);
+    // Internal error reporting
+}
 
 @end

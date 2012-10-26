@@ -23,6 +23,8 @@
 
 #define MyAppleID @"567647956"
 #define TestFlightTeamToken @"b127f94be4c8dc66d8fc69b45dcb3cb7_MTQ1MjM5MjAxMi0xMC0yNSAyMTo1MTo0OC43OTUxNTc"
+#define kPushChannelDebug    @"ParsePushChannelDebug"
+#define kPushChannelProduct     @"ParsePushChannelProduct"
 
 
 #define kDeviceWidth [UIScreen mainScreen].bounds.size.width
