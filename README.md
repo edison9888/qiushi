@@ -2,6 +2,15 @@ qiushi
 ======
 
 iphone_app_糗事囧事
+=====================================
+2012年10月26日11:18:09
+增加TestFlight
+
+=====================================
+2012年10月23日18:09:34
+离线下载：popover(可能需要另找，有bug)
+https://github.com/xyxdasnjss/FPPopover
+http://code4app.com/ios/Popover-View-in-iPhone/4fa931bd06f6e78d0f000000
 
 =====================================
 2012年10月22日13:12:24

@@ -89,12 +89,13 @@ UITableViewDelegate
     
     
     CGRect bounds = self.view.bounds;
-    bounds.size.height = KDeviceHeight - (44);
+    bounds.size.height = KDeviceHeight - (44 + 20);
     self.tableView = [[PullingRefreshTableView alloc] initWithFrame:bounds pullingDelegate:self];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    DLog(@"==:%f",_tableView.frame.size.height);
     [self.view addSubview:self.tableView];
     
     

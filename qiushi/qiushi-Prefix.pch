@@ -13,6 +13,7 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
+#import "TestFlight.h"
 
 
 
@@ -20,7 +21,8 @@
 
 #define MY_BANNER_UNIT_ID @"a14feae0ee078ea" //Admob id
 
-#define MyAppleID @"545549453"
+#define MyAppleID @"567647956"
+#define TestFlightTeamToken @"b127f94be4c8dc66d8fc69b45dcb3cb7_MTQ1MjM5MjAxMi0xMC0yNSAyMTo1MTo0OC43OTUxNTc"
 
 
 #define kDeviceWidth [UIScreen mainScreen].bounds.size.width

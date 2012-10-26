@@ -15,6 +15,7 @@
 #import "DIYMenuOptions.h"
 #import "IIViewDeckController.h"
 
+
 #define kTagMenu        101
 #define kTagRefresh     102
 
@@ -71,10 +72,10 @@ static CGFloat progress = 0;
     UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
     self.navigationItem.leftBarButtonItem = someBarButtonItem;
     
-//    UIButton *lxBtn = [UIButton buttonWithType:UIButtonTypeInfoLight];
-//    [lxBtn addTarget:self action:@selector(lixian:) forControlEvents:UIControlEventTouchUpInside];
-//    UIBarButtonItem* lxItem = [[UIBarButtonItem alloc]initWithCustomView:lxBtn];
-//    self.navigationItem.rightBarButtonItem = lxItem;
+    UIButton *lxBtn = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [lxBtn addTarget:self action:@selector(lixian:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem* lxItem = [[UIBarButtonItem alloc]initWithCustomView:lxBtn];
+    self.navigationItem.rightBarButtonItem = lxItem;
     
     
     statusBar = [[ProgressStatusBar alloc] init];
@@ -154,10 +155,17 @@ static CGFloat progress = 0;
     //每隔一段时间，提示用户去评分
     [self pingFen];
     
+    DLog(@"kDeviceWidth:%f,kDeviceHeight:%f",kDeviceWidth,KDeviceHeight);
+    
+    CGRect bounds = self.view.bounds;
+    DLog(@"bounds.size.width:%f,bounds.size.height:%f",bounds.size.width,bounds.size.height);
+    bounds.size.height = KDeviceHeight - (44);
+    
     
     //添加内容的TableView
     self.m_contentView = [[ContentViewController alloc]initWithNibName:@"ContentViewController" bundle:nil];
-    [m_contentView.view setFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight)];
+    [m_contentView.view setFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight - 44 -20)];
+    DLog(@":%f",m_contentView.view.frame.size.height);
     [m_contentView LoadPageOfQiushiType:_typeQiuShi Time:_timeType];
     [self.view addSubview:m_contentView.view];
     
@@ -166,7 +174,10 @@ static CGFloat progress = 0;
 
     _refreshBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *refreshImg = [UIImage imageNamed:@"refresh.png"];
-    [self.refreshBtn setFrame:CGRectMake(kDeviceWidth-refreshImg.size.width-15, KDeviceHeight-refreshImg.size.height-44-15, refreshImg.size.width, refreshImg.size.height)];
+    [self.refreshBtn setFrame:CGRectMake(kDeviceWidth-refreshImg.size.width-15,
+                                         KDeviceHeight-refreshImg.size.height-44-20-15,
+                                         refreshImg.size.width,
+                                         refreshImg.size.height)];
     [self.refreshBtn setBackgroundImage:refreshImg forState:UIControlStateNormal];
     [self.refreshBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.refreshBtn setTag:kTagRefresh];
@@ -240,13 +251,21 @@ static CGFloat progress = 0;
 
 - (void)lixian:(id)sender
 {
-    [statusBar show];
+
     
+//    [TestFlight openFeedbackView];
     
-    [self startOffline];
-    
-    [m_contentView LoadDataForCache];
+//    [statusBar show];
+//    
+//    
+//    [self startOffline];
+//    
+//    [m_contentView LoadDataForCache];
 }
+
+
+
+
 
 // 模拟离线
 - (void)startOffline

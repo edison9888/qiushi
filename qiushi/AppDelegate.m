@@ -36,14 +36,20 @@
                   clientKey:@"Axa79C9vZRUZBzI90IXbnCUxtPZDMsr64fLjVcLw"];
     
     
+    
+    
     //    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
     //    [testObject setObject:@"bar111" forKey:@"foo"];
     //    [testObject save];
     
     
+    [TestFlight takeOff:TestFlightTeamToken];
+    
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
      UIRemoteNotificationTypeAlert|
      UIRemoteNotificationTypeSound];
+    
+    
     
     //    //暂停2s
     ////    [NSThread sleepForTimeInterval:1.0];

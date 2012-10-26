@@ -28,6 +28,9 @@
 		132044A415FF1362004C8746 /* comm_bg_main_memu2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 132044A115FF1362004C8746 /* comm_bg_main_memu2x.png */; };
 		132044A515FF1362004C8746 /* comm_btn_top_n@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 132044A215FF1362004C8746 /* comm_btn_top_n@2x.png */; };
 		132044A615FF1362004C8746 /* comm_btn_top_s@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 132044A315FF1362004C8746 /* comm_btn_top_s@2x.png */; };
+		132713B9163A22C10011FBE0 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 132713B5163A22C10011FBE0 /* libTestFlight.a */; };
+		132713BA163A22C10011FBE0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 132713B6163A22C10011FBE0 /* README.md */; };
+		132713BB163A22C10011FBE0 /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 132713B7163A22C10011FBE0 /* release_notes.md */; };
 		1329252E162CFD2A00B8B99A /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1329252D162CFD2A00B8B99A /* Parse.framework */; };
 		13292531162CFDB900B8B99A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13292530162CFDB900B8B99A /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		13292533162CFDC000B8B99A /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13292532162CFDC000B8B99A /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -316,6 +319,10 @@
 		132044A115FF1362004C8746 /* comm_bg_main_memu2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comm_bg_main_memu2x.png; sourceTree = "<group>"; };
 		132044A215FF1362004C8746 /* comm_btn_top_n@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comm_btn_top_n@2x.png"; sourceTree = "<group>"; };
 		132044A315FF1362004C8746 /* comm_btn_top_s@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comm_btn_top_s@2x.png"; sourceTree = "<group>"; };
+		132713B5163A22C10011FBE0 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		132713B6163A22C10011FBE0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		132713B7163A22C10011FBE0 /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
+		132713B8163A22C10011FBE0 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		1329252D162CFD2A00B8B99A /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		13292530162CFDB900B8B99A /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		13292532162CFDC000B8B99A /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -745,6 +752,7 @@
 				13C8434E15E47EEC000B8A44 /* CoreGraphics.framework in Frameworks */,
 				1329252E162CFD2A00B8B99A /* Parse.framework in Frameworks */,
 				1344FAC8162FA11300EE6E7B /* libGoogleAdMobAds.a in Frameworks */,
+				132713B9163A22C10011FBE0 /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,6 +779,17 @@
 				1313DAA215EF3281002ACBB2 /* CustomNavigationBar.m */,
 			);
 			path = CustomView;
+			sourceTree = "<group>";
+		};
+		132713B4163A22C10011FBE0 /* TestFlightSDK1.1 */ = {
+			isa = PBXGroup;
+			children = (
+				132713B5163A22C10011FBE0 /* libTestFlight.a */,
+				132713B6163A22C10011FBE0 /* README.md */,
+				132713B7163A22C10011FBE0 /* release_notes.md */,
+				132713B8163A22C10011FBE0 /* TestFlight.h */,
+			);
+			path = TestFlightSDK1.1;
 			sourceTree = "<group>";
 		};
 		13292538162CFE1B00B8B99A /* Parse */ = {
@@ -847,11 +866,11 @@
 			children = (
 				C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */,
 				1313DAB615F054B5002ACBB2 /* README.md */,
-				13C845E315E48AFE000B8A44 /* Frame */,
 				13C8436915E47F39000B8A44 /* Default.png */,
 				13C8436A15E47F39000B8A44 /* Default@2x.png */,
 				13C8436B15E47F39000B8A44 /* Icon.png */,
 				13C8485E15E50778000B8A44 /* Icon@2x.png */,
+				13C845E315E48AFE000B8A44 /* Frame */,
 				13C8473A15E48D86000B8A44 /* Utils */,
 				13C8446315E489F5000B8A44 /* View */,
 				13C843E715E489E8000B8A44 /* Resource */,
@@ -1019,6 +1038,7 @@
 		13C8446315E489F5000B8A44 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				13E0034316379A74005CA0CA /* qiushi */,
 				139A7233162FEE7F00A08978 /* statusbar_close.png */,
 				139A7234162FEE7F00A08978 /* statusbar_close@2x.png */,
 				139A7235162FEE7F00A08978 /* info_offline_flash.png */,
@@ -1030,18 +1050,6 @@
 				13C8446415E489F5000B8A44 /* AboutViewController.h */,
 				13C8446515E489F5000B8A44 /* AboutViewController.m */,
 				13C8446615E489F5000B8A44 /* AboutViewController.xib */,
-				13C8446715E489F5000B8A44 /* Comments.h */,
-				13C8446815E489F5000B8A44 /* Comments.m */,
-				13C8446915E489F5000B8A44 /* CommentsCell.h */,
-				13C8446A15E489F5000B8A44 /* CommentsCell.m */,
-				13C8446B15E489F5000B8A44 /* CommentsViewController.h */,
-				13C8446C15E489F5000B8A44 /* CommentsViewController.m */,
-				13C8446D15E489F5000B8A44 /* CommentsViewController.xib */,
-				13C8446E15E489F5000B8A44 /* ContentCell.h */,
-				13C8446F15E489F5000B8A44 /* ContentCell.m */,
-				13C8447015E489F5000B8A44 /* ContentViewController.h */,
-				13C8447115E489F5000B8A44 /* ContentViewController.m */,
-				13C8447215E489F5000B8A44 /* ContentViewController.xib */,
 				13C8447315E489F5000B8A44 /* LeftController.h */,
 				13C8447415E489F5000B8A44 /* LeftController.m */,
 				1320449115FED5D6004C8746 /* LeftCell.h */,
@@ -1050,8 +1058,6 @@
 				13C8447515E489F5000B8A44 /* MainViewController.h */,
 				13C8447615E489F5000B8A44 /* MainViewController.m */,
 				13C8447715E489F5000B8A44 /* MainViewController.xib */,
-				13C8447815E489F5000B8A44 /* QiuShi.h */,
-				13C8447915E489F5000B8A44 /* QiuShi.m */,
 				13C8447C15E489F5000B8A44 /* SetViewController.h */,
 				13C8447D15E489F5000B8A44 /* SetViewController.m */,
 				13C8447E15E489F5000B8A44 /* SetViewController.xib */,
@@ -1072,6 +1078,7 @@
 		13C845E315E48AFE000B8A44 /* Frame */ = {
 			isa = PBXGroup;
 			children = (
+				132713B4163A22C10011FBE0 /* TestFlightSDK1.1 */,
 				1344FABC162FA11300EE6E7B /* admob */,
 				137CF947162E7D6C00162D11 /* ViewDeck */,
 				13292538162CFE1B00B8B99A /* Parse */,
@@ -1602,6 +1609,27 @@
 			path = DIYMenu;
 			sourceTree = "<group>";
 		};
+		13E0034316379A74005CA0CA /* qiushi */ = {
+			isa = PBXGroup;
+			children = (
+				13C8447815E489F5000B8A44 /* QiuShi.h */,
+				13C8447915E489F5000B8A44 /* QiuShi.m */,
+				13C8446715E489F5000B8A44 /* Comments.h */,
+				13C8446815E489F5000B8A44 /* Comments.m */,
+				13C8446915E489F5000B8A44 /* CommentsCell.h */,
+				13C8446A15E489F5000B8A44 /* CommentsCell.m */,
+				13C8446B15E489F5000B8A44 /* CommentsViewController.h */,
+				13C8446C15E489F5000B8A44 /* CommentsViewController.m */,
+				13C8446D15E489F5000B8A44 /* CommentsViewController.xib */,
+				13C8446E15E489F5000B8A44 /* ContentCell.h */,
+				13C8446F15E489F5000B8A44 /* ContentCell.m */,
+				13C8447015E489F5000B8A44 /* ContentViewController.h */,
+				13C8447115E489F5000B8A44 /* ContentViewController.m */,
+				13C8447215E489F5000B8A44 /* ContentViewController.xib */,
+			);
+			name = qiushi;
+			sourceTree = "<group>";
+		};
 		13F4C73315F1E9E900DD8451 /* iVersion */ = {
 			isa = PBXGroup;
 			children = (
@@ -1807,6 +1835,8 @@
 				139A7239162FEE8000A08978 /* info_offline_flash.png in Resources */,
 				139A723A162FEE8000A08978 /* info_offline_flash@2x.png in Resources */,
 				C9C06C391633A3FC003C0F96 /* Default-568h@2x.png in Resources */,
+				132713BA163A22C10011FBE0 /* README.md in Resources */,
+				132713BB163A22C10011FBE0 /* release_notes.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2035,6 +2065,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/qiushi/Frame/admob\"",
 					"\"$(SRCROOT)/qiushi/Frame/admob/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
+					"\"$(SRCROOT)/qiushi/Frame/TestFlightSDK1.1\"",
 				);
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",
@@ -2053,8 +2084,8 @@
 		13C8436815E47EEC000B8A44 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/qiushi/Frame\"",
@@ -2067,6 +2098,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/qiushi/Frame/admob\"",
 					"\"$(SRCROOT)/qiushi/Frame/admob/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
+					"\"$(SRCROOT)/qiushi/Frame/TestFlightSDK1.1\"",
 				);
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",
