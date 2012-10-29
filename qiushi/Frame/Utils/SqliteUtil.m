@@ -9,7 +9,7 @@
 #import "SqliteUtil.h"
 
 #import "QiuShi.h"
-
+#import "Comments.h"
 
 @implementation SqliteUtil
 
@@ -40,22 +40,7 @@ static NSArray *dirPaths;
     
     if ([filemgr fileExistsAtPath:databasePath] == NO)
     {
-        //        const char *dbpath = [databasePath UTF8String];
-        //        if (sqlite3_open(dbpath, &qiushiDB)==SQLITE_OK)
-        //        {
-        //            char *errMsg;
-        //
-        //
-        //            const char *sql_stmt = "CREATE TABLE IF NOT EXISTS QIUSHIS(ID INTEGER PRIMARY KEY AUTOINCREMENT, QIUSHIID TEXT,IMAGEURL TEXT,IMAGEMIDURL TEXT,TAG TEXT, CONTENT TEXT,COMMENTSCOUNT INTEGER,UPCOUNT INTEGER,DOWNCOUNT INTEGER,ANCHOR TEXT,FBTIME TEXT)";
-        //
-        //            if (sqlite3_exec(qiushiDB, sql_stmt, NULL, NULL, &errMsg)!=SQLITE_OK) {
-        //                NSLog(@"创建表失败\n");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            NSLog(@"创建/打开数据库失败");
-        //        }
+        
     }else
     {
         
@@ -73,7 +58,16 @@ static NSArray *dirPaths;
         if (sqlite3_exec(qiushiDB, sql_stmt, NULL, NULL, &errMsg)!=SQLITE_OK)
         {
             
-            DLog(@"创建表失败,%s",sqlite3_errmsg(qiushiDB));
+            DLog(@"创建主表失败,%s",sqlite3_errmsg(qiushiDB));
+            
+        }
+        
+        const char *sql_stmt1 = "CREATE TABLE IF NOT EXISTS QIUSHIComments(ID INTEGER PRIMARY KEY AUTOINCREMENT, QIUSHIID TEXT,commentId text unique,floor text,content text,anchor text, FOREIGN KEY (QIUSHIID) REFERENCES QIUSHIS (QIUSHIID) on delete cascade) ";
+        
+        if (sqlite3_exec(qiushiDB, sql_stmt1, NULL, NULL, &errMsg)!=SQLITE_OK)
+        {
+            
+            DLog(@"创建评论表失败,%s",sqlite3_errmsg(qiushiDB));
             
         }
     }
@@ -811,6 +805,161 @@ static NSArray *dirPaths;
     
 }
 
+
++ (void)saveCommentWithArray:(NSMutableArray*)commentArray
+{
+    
+    sqlite3_stmt *statement;
+    
+    
+    const char *dbpath = [databasePath UTF8String];
+    
+    if (sqlite3_open(dbpath, &qiushiDB)==SQLITE_OK) {
+        for (int i = 0; i < commentArray.count; i++) {
+            Comments *comment = [commentArray objectAtIndex:i];
+            
+            NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO QIUSHIComments (QIUSHIID,commentid,floor,content,anchor) VALUES( \"%@\",\"%@\",\"%@\",\"%@\",\"%@\")",
+                                   comment.qsId,
+                                   comment.commentsID,
+                                   [NSString stringWithFormat:@"%d",comment.floor],
+                                   comment.content,
+                                   comment.anchor];
+            
+            
+            //        DLog(@"%@",insertSQL);
+            const char *insert_stmt = [insertSQL UTF8String];
+            sqlite3_prepare_v2(qiushiDB, insert_stmt, -1, &statement, NULL);
+            if (sqlite3_step(statement)==SQLITE_DONE) {
+                
+                DLog(@"comments已存储到数据库");
+                
+            }
+            else
+            {
+                DLog(@"comments保存失败:%s",sqlite3_errmsg(qiushiDB));
+                
+            }
+            //这个过程销毁前面被sqlite3_prepare创建的准备语句，每个准备语句都必须使用这个函数去销毁以防止内存泄露。
+            sqlite3_finalize(statement);
+        }
+        
+        sqlite3_close(qiushiDB);
+    }
+}
+
+
++ (NSMutableArray*)queryCommentsById:(NSString*)qiushiId
+{
+    
+    NSMutableArray *selectArray = [[NSMutableArray alloc]init];
+    
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &qiushiDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT  * from QIUSHIComments where QIUSHIID = '%@'",qiushiId];
+        
+        DLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(qiushiDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                
+                
+                NSLog(@"已查到结果");
+                Comments *comment;
+                do {
+                    comment = [[Comments alloc]init];
+                    comment.commentsID = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 2)]];
+                    comment.floor = [[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 3)] intValue];
+                    comment.content = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 4)]];
+                    comment.anchor = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 5)]];
+                    
+                    [selectArray addObject:comment];
+                } while (sqlite3_step(statement) == SQLITE_ROW);
+                
+                
+            }
+            else {
+                
+                
+                DLog(@"查询出错:%s",sqlite3_errmsg(qiushiDB));
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        sqlite3_close(qiushiDB);
+    }
+    
+    if (selectArray.count > 0) {
+        
+        DLog(@"comment:%d条",selectArray.count);
+        
+        return selectArray;
+    }
+    return nil;
+}
+
++ (NSMutableArray*)queryComments
+{
+    
+    NSMutableArray *selectArray = [[NSMutableArray alloc]init];
+    
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &qiushiDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT  * from QIUSHIComments"];
+        
+        DLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(qiushiDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                
+                
+                NSLog(@"已查到结果");
+                Comments *comment;
+                do {
+                    comment = [[Comments alloc]init];
+                    comment.commentsID = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 2)]];
+                    comment.floor = [[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 3)] intValue];
+                    comment.content = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 4)]];
+                    comment.anchor = [self processString:[[NSString alloc] initWithUTF8String: (char *)sqlite3_column_text(statement, 5)]];
+                    
+                    [selectArray addObject:comment];
+                } while (sqlite3_step(statement) == SQLITE_ROW);
+                
+                
+            }
+            else {
+                
+                
+                DLog(@"查询出错:%s",sqlite3_errmsg(qiushiDB));
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        sqlite3_close(qiushiDB);
+    }
+    
+    if (selectArray.count > 0) {
+        
+        DLog(@"comment:%d条",selectArray.count);
+        
+        return selectArray;
+    }
+    return nil;
+}
+
 @end
 
 
@@ -1074,7 +1223,6 @@ static NSArray *dirPaths;
 //@end
 //
 //
-
 
 
 

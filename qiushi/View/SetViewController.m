@@ -214,11 +214,8 @@
         
     }else if (indexPath.row == 2){
         //清除缓存
-        
-        [SqliteUtil delNoSave];
-        EGOCache *cache = [[EGOCache alloc]init];
-        [cache clearCache];
-        [[iToast makeText:@"已完成"] show];
+        [self cleanCache];
+       
         
     }
 }
@@ -267,6 +264,46 @@
     
     
 }
+
+
+- (void)cleanCache
+{
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
+                                                   message:[NSString stringWithFormat:@"亲,确定要清除所有缓存吗?"]
+                                                  delegate:self
+                                         cancelButtonTitle:@"取消"
+                                         otherButtonTitles:@"确定", nil];
+    [alert show];
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 1:
+        {
+            //GCD为Grand Central Dispatch的缩写。
+            //dispatch_queue_t myQueue = dispatch_queue_create("com.iphonedevblog.post", NULL);
+            //          其中，第一个参数是标识队列的，第二个参数是用来定义队列的参数（目前不支持，因此传入NULL）。
+            //            执行一个队列如下会异步执行传入的代码：dispatch_async(myQueue, ^{ [self doSomething]; });
+            //            其中，首先传入之前创建的队列，然后提供由队列运行的代码块。
+            dispatch_queue_t m_queue = dispatch_get_current_queue();
+            
+            dispatch_async(m_queue, ^{
+                [SqliteUtil delNoSave];
+                EGOCache *cache = [[EGOCache alloc]init];
+                [cache clearCache];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[iToast makeText:@"已完成"] show];
+                });
+            });
+
+        }break;
+            
+    }
+}
+
+
 
 
 @end

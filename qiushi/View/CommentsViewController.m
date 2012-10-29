@@ -15,6 +15,7 @@
 #import "SqliteUtil.h"
 #import "iToast.h"
 #import "IIViewDeckController.h"
+#import "SqliteUtil.h"
 
 #define FShareBtn       101
 #define FBackBtn        102
@@ -83,27 +84,27 @@ UITableViewDelegate
     
 
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
-    list = [[NSMutableArray alloc]init];
+    list = [SqliteUtil queryCommentsById:qs.qiushiID];//[[NSMutableArray alloc]init];
     
     
     
     
-//    UIImage* image= [UIImage imageNamed:@"comm_btn_top_n.png"];
-//    UIImage* imagef= [UIImage imageNamed:@"comm_btn_top_s.png"];
-//    CGRect frame_1= CGRectMake(0, 0, image.size.width, image.size.height);
-//    UIButton* backButton= [[UIButton alloc] initWithFrame:frame_1];
-//    [backButton setBackgroundImage:image forState:UIControlStateNormal];
-//    [backButton setBackgroundImage:imagef forState:UIControlStateHighlighted];
-//    [backButton setTitle:@"分享" forState:UIControlStateNormal];
-//    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    backButton.titleLabel.font=[UIFont boldSystemFontOfSize:14];
-//    [backButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    //定制自己的风格的  UIBarButtonItem
-//    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:backButton];
-//    
-//    
-//    [self.navigationItem setRightBarButtonItem:someBarButtonItem];
+    UIImage* image= [UIImage imageNamed:@"comm_btn_top_n.png"];
+    UIImage* imagef= [UIImage imageNamed:@"comm_btn_top_s.png"];
+    CGRect frame_1= CGRectMake(0, 0, image.size.width, image.size.height);
+    UIButton* backButton= [[UIButton alloc] initWithFrame:frame_1];
+    [backButton setBackgroundImage:image forState:UIControlStateNormal];
+    [backButton setBackgroundImage:imagef forState:UIControlStateHighlighted];
+    [backButton setTitle:@"分享" forState:UIControlStateNormal];
+    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    backButton.titleLabel.font=[UIFont boldSystemFontOfSize:14];
+    [backButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //定制自己的风格的  UIBarButtonItem
+    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    
+    [self.navigationItem setRightBarButtonItem:someBarButtonItem];
     
     
     
@@ -257,7 +258,7 @@ UITableViewDelegate
 #pragma mark - Your actions
 
 - (void)loadData{
-    [list removeAllObjects];
+//    [list removeAllObjects];
     NSURL *url = [NSURL URLWithString:CommentsURLString(qs.qiushiID)];
     _asiRequest = [ASIHTTPRequest requestWithURL:url];
     [_asiRequest setDelegate:self];
@@ -275,6 +276,8 @@ UITableViewDelegate
 
 -(void) GetResult:(ASIHTTPRequest *)request
 {
+//    [list removeAllObjects];
+    list = [[NSMutableArray alloc]init];
     NSString *responseString = [request responseString];
     
     
@@ -287,18 +290,24 @@ UITableViewDelegate
         dictionary = [responseString JSONValue];
     }
 
-    
-
-    
-    
     if ([dictionary objectForKey:@"items"]) {
 		NSArray *array = [NSArray arrayWithArray:[dictionary objectForKey:@"items"]];
-        for (NSDictionary *qiushi in array) {
-            Comments *cm = [[Comments alloc]initWithDictionary:qiushi];
+        for (NSDictionary *comments in array) {
+            Comments *cm = [[Comments alloc]initWithDictionary:comments];
+            cm.qsId = qs.qiushiID;
             [list addObject:cm];
         }
     }    
-    [commentView reloadData];
+   
+    dispatch_queue_t m_queue = dispatch_get_current_queue();
+    dispatch_async(m_queue, ^{
+        [SqliteUtil saveCommentWithArray:self.list];
+    });
+    
+    
+
+    
+     [commentView reloadData];
 }
 #pragma mark - TableView*
 

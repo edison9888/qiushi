@@ -19,6 +19,8 @@
 #import "IIViewDeckController.h"
 #import "MyProgressHud.h"
 
+
+
 @interface HistoryViewController ()<
 UITableViewDataSource,
 UITableViewDelegate,
@@ -193,8 +195,21 @@ UIAlertViewDelegate
     editButton.titleLabel.font=[UIFont systemFontOfSize:12];
     [editButton addTarget:self action:@selector(cleanCache:) forControlEvents:UIControlEventTouchUpInside];
     //定制自己的风格的  UIBarButtonItem
-    UIBarButtonItem* addBarButton= [[UIBarButtonItem alloc] initWithCustomView:editButton];
-    [self.navigationItem setRightBarButtonItem:addBarButton];
+    UIBarButtonItem* cleanBarButton = [[UIBarButtonItem alloc] initWithCustomView:editButton];
+    
+    UIButton* listBtn= [UIButton buttonWithType:UIButtonTypeCustom];
+    listBtn.frame = backframe1;
+    [listBtn setBackgroundImage:image1 forState:UIControlStateNormal];
+    [listBtn setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
+    [listBtn setTitle:@"历史列表" forState:UIControlStateNormal];
+    [listBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    listBtn.titleLabel.font=[UIFont systemFontOfSize:12];
+    [listBtn addTarget:self action:@selector(listAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem* listBarButton = [[UIBarButtonItem alloc] initWithCustomView:listBtn];
+    
+    NSArray *btnArray = [NSArray arrayWithObjects:cleanBarButton,listBarButton, nil];
+    [self.navigationItem setRightBarButtonItems:btnArray];
     
     
     
@@ -203,7 +218,7 @@ UIAlertViewDelegate
 - (void)cleanCache:(id)sender
 {
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
-                                                   message:[NSString stringWithFormat:@"亲,确定要清除(%@)所有缓存吗?]",_mDate]
+                                                   message:[NSString stringWithFormat:@"亲,确定要清除(%@)所有缓存吗?",_mDate]
                                                   delegate:self
                                          cancelButtonTitle:@"取消"
                                          otherButtonTitles:@"确定", nil];
@@ -227,6 +242,13 @@ UIAlertViewDelegate
                 [SqliteUtil delCacheByDate:_mDate];
                 EGOCache *cache = [[EGOCache alloc]init];
                 [cache clearCache];
+                
+                
+                
+                [SqliteUtil queryComments];
+                
+                
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[iToast makeText:@"已完成"] show];
                 });
@@ -452,6 +474,12 @@ UIAlertViewDelegate
     [SqliteUtil updateDataIsFavourite:qs.qiushiID isFavourite:@"yes"];
     
     [[iToast makeText:@"已添加到收藏..."] show];
+}
+
+- (void)listAction:(id)sender
+{
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

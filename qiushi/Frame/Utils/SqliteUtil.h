@@ -35,4 +35,7 @@
 + (NSMutableDictionary*)queryDbGroupByData;
 + (NSMutableArray*)queryDbByDate:(NSString *)date;
 + (BOOL)delCacheByDate:(NSString*)date;//删除某一天的
++ (void)saveCommentWithArray:(NSMutableArray*)commentArray;//保存评论
++ (NSMutableArray*)queryCommentsById:(NSString*)qiushiId;
++ (NSMutableArray*)queryComments;
 @end

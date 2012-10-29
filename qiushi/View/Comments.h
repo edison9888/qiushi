@@ -16,13 +16,16 @@
     NSString *content;
     //作者
     NSString *anchor;
-    //糗事id
+    //糗事评论id
     NSString *commentsID;
+    //糗事id
+    NSString *qsId;
 }
 @property (nonatomic,assign) int floor;
 @property (nonatomic,copy) NSString *commentsID;
 @property (nonatomic,copy) NSString *content;
 @property (nonatomic,copy) NSString *anchor;
+@property (nonatomic,copy) NSString *qsId;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

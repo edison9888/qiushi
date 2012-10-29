@@ -14,6 +14,7 @@
 @synthesize content;
 @synthesize floor;
 @synthesize anchor;
+@synthesize qsId;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
 {
@@ -22,6 +23,7 @@
         self.commentsID = [dictionary objectForKey:@"id"];
         self.content = [dictionary objectForKey:@"content"];
         self.floor = [[dictionary objectForKey:@"floor"]intValue];
+        self.qsId = [dictionary objectForKey:@"qsId"];
         id user = [dictionary objectForKey:@"user"];
         if ((NSNull *)user != [NSNull null]) 
         {

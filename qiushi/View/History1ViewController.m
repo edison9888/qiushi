@@ -127,6 +127,7 @@
     
     cell.textLabel.text = [self.mDic.allKeys objectAtIndex:indexPath.row];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@条",[self.mDic.allValues objectAtIndex:indexPath.row]];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
 
     return cell;
