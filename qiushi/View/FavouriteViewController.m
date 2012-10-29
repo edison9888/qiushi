@@ -8,9 +8,7 @@
 
 #import "FavouriteViewController.h"
 
-#import "PullingRefreshTableView.h"
 #import "CommentsViewController.h"
-#import "CJSONDeserializer.h"
 #import "QiuShi.h"
 #import "GADBannerView.h"
 #import "SqliteUtil.h"
@@ -21,23 +19,19 @@
 #import "MyProgressHud.h"
 
 @interface FavouriteViewController () <
-PullingRefreshTableViewDelegate,
 UITableViewDataSource,
 UITableViewDelegate
 >
 
-@property (retain,nonatomic) PullingRefreshTableView *tableView;
+@property (retain,nonatomic) UITableView *tableView;
 @property (retain,nonatomic) NSMutableArray *list;
-@property (nonatomic) BOOL refreshing;
-@property (assign,nonatomic) NSInteger page;
+
 @end
 
 @implementation FavouriteViewController
 
 @synthesize tableView = _tableView;
 @synthesize list = _list;
-@synthesize refreshing = _refreshing;
-@synthesize page = _page;
 @synthesize cacheArray = _cacheArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -99,7 +93,7 @@ UITableViewDelegate
     
     CGRect bounds = self.view.bounds;
     bounds.size.height = KDeviceHeight - (44);
-    self.tableView = [[PullingRefreshTableView alloc] initWithFrame:bounds pullingDelegate:self];
+    self.tableView = [[UITableView alloc] initWithFrame:bounds];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.dataSource = self;
@@ -125,11 +119,7 @@ UITableViewDelegate
                 
                 //数据源去重复
                 [self removeRepeatArray];
-                
-                
-                
-                [self.tableView tableViewDidFinishedLoading];
-                self.tableView.reachedTheEnd  = NO;
+
                 [self.tableView reloadData];
                 
             }
@@ -172,8 +162,9 @@ UITableViewDelegate
     if ([self.viewDeckController leftControllerIsOpen]==YES) {
         [self.viewDeckController closeLeftView];
     }
-    //解决本view与root 共同的手势 冲突
-    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
+//    //解决本view与root 共同的手势 冲突
+//    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
+    [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -241,48 +232,7 @@ UITableViewDelegate
 }
 
 
-- (void)loadData{
-    
-    self.page++;
-        
-    [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
-    self.tableView.reachedTheEnd  = YES;
-    
-}
 
-
-
--(void) GetResult:(ASIHTTPRequest *)request
-{
-    
-    //    NSString *responseString = [request responseString];
-    //    NSLog(@"%@\n",responseString);
-    
-    if (self.refreshing) {
-        self.page = 1;
-        self.refreshing = NO;
-        if (self.list.count > 100) {
-            [self.list removeAllObjects];
-        }
-        
-        [SqliteUtil initDb];
-    }
-    
-        
-        
-		
-
-    
-    if (self.page >= 20) {
-        [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
-        self.tableView.reachedTheEnd  = YES;
-    } else {
-        [self.tableView tableViewDidFinishedLoading];
-        self.tableView.reachedTheEnd  = NO;
-        [self.tableView reloadData];
-    }
-    
-}
 #pragma mark - TableView*
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -393,27 +343,6 @@ UITableViewDelegate
 }
 
 
-
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
-    self.refreshing = YES;
-    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
-}
-
-
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
-    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
-}
-
-#pragma mark - Scroll
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [self.tableView tableViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    [self.tableView tableViewDidEndDragging:scrollView];
-}
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -423,10 +352,7 @@ UITableViewDelegate
     
     
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    
-    
-    
+
     CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
     comments.qs = [self.list objectAtIndex:indexPath.row];
     
@@ -442,15 +368,15 @@ UITableViewDelegate
     
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        DLog(@"delete");
+       
         QiuShi *qs = [self.list objectAtIndex:indexPath.row];
 
         if ([SqliteUtil updateDataIsFavourite:qs.qiushiID isFavourite:@"no"] == YES) {
             [self.list removeObjectAtIndex:indexPath.row];
             [self.tableView reloadData];
-            DLog(@"设置成功");
+            DLog(@"delete成功");
         }else
-            DLog(@"设置失败");
+            DLog(@"delete失败");
        
         
     }
@@ -504,7 +430,7 @@ UITableViewDelegate
     
     self.list = filterResults;
 //    DLog(@"之后：%d",self.list.count);
-    //    self.list = [NSMutableArray arrayWithArray:[self.list sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
+  
     
 }
 
@@ -521,12 +447,7 @@ UITableViewDelegate
 }
 
 
-#ifdef _FOR_DEBUG_
--(BOOL) respondsToSelector:(SEL)aSelector {
-    printf("SELECTOR: %s\n", [NSStringFromSelector(aSelector) UTF8String]);
-    return [super respondsToSelector:aSelector];
-}
-#endif
+
 
 
 @end

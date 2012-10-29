@@ -11,9 +11,9 @@
 
 #import "SqliteUtil.h"
 #import "ContentViewController.h"
-#import "SVStatusHUD.h"
 #import "DIYMenuOptions.h"
 #import "IIViewDeckController.h"
+#import "iToast.h"
 
 
 #define kTagMenu        101
@@ -350,8 +350,8 @@ static CGFloat progress = 0;
     {
         
         AudioServicesPlaySystemSound (soundID);
-        
-        [SVStatusHUD showWithImage:[UIImage imageNamed:@"icon_shake.png"] status:@"摇动刷新哦，亲~~"];
+
+        [[iToast makeText:@"亲,摇动刷新哦"] show];
         //刷新 数据
         [self refreshDate];
         
@@ -426,12 +426,6 @@ static CGFloat progress = 0;
 }
 
 
-#ifdef _FOR_DEBUG_
--(BOOL) respondsToSelector:(SEL)aSelector {
-    printf("SELECTOR: %s\n", [NSStringFromSelector(aSelector) UTF8String]);
-    return [super respondsToSelector:aSelector];
-}
-#endif
 
 
 @end

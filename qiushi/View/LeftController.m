@@ -15,7 +15,7 @@
 #import "PurchaseInViewController.h"
 #import "MyNavigationController.h"
 #import "FavouriteViewController.h"
-#import "HistoryViewController.h"
+#import "History1ViewController.h"
 #import "IIViewDeckController.h"
 #import "LoginViewController.h"
 
@@ -231,14 +231,14 @@
         
     }else if (indexPath.row == 0){
         
-        [self.navController popToRootViewControllerAnimated:YES];
+        [self.navController popToRootViewControllerAnimated:NO];
         self.mainViewController.title = @"";
         
         self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
         [self.mainViewController refreshDate];
        
     }else if (indexPath.row == 1 || indexPath.row == 2){
-        [self.navController popToRootViewControllerAnimated:YES];
+        [self.navController popToRootViewControllerAnimated:NO];
         self.mainViewController.title = [NSString stringWithFormat:@"%@", [self.items objectAtIndex:indexPath.row]];
         
         self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
@@ -247,23 +247,23 @@
     }else if (indexPath.row == 3){
         FavouriteViewController *favourite = [[FavouriteViewController alloc]initWithNibName:@"FavouriteViewController" bundle:nil];
         
-        [self.navController pushViewController:favourite animated:YES];
+        [self.navController pushViewController:favourite animated:NO];
         
         
     }else if (indexPath.row == 4){
-        HistoryViewController *history = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
+        History1ViewController *history = [[History1ViewController alloc]initWithNibName:@"History1ViewController" bundle:nil];
         
-        [self.navController pushViewController:history animated:YES];
+        [self.navController pushViewController:history animated:NO];
         
         
     }else if (indexPath.row == 6){
         SetViewController *set = [[SetViewController alloc]initWithNibName:@"SetViewController" bundle:nil];
         
-        [self.navController pushViewController:set animated:YES];
+        [self.navController pushViewController:set animated:NO];
         
     }else if (indexPath.row == 7){
         AboutViewController *about = [[AboutViewController alloc]initWithNibName:@"AboutViewController" bundle:nil];
-        [self.navController pushViewController:about animated:YES];
+        [self.navController pushViewController:about animated:NO];
         
         
     }
@@ -281,13 +281,13 @@
     {
         //程序内购买
         PurchaseInViewController *purchase = [[PurchaseInViewController alloc]initWithNibName:@"PurchaseInViewController" bundle:nil];
-        [self.navController pushViewController:purchase animated:YES];
+        [self.navController pushViewController:purchase animated:NO];
         
         
     }else if (idx == 1)
     {
         LoginViewController *login = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
-        [self.navController pushViewController:login animated:YES];
+        [self.navController pushViewController:login animated:NO];
     }
     [self.viewDeckController closeLeftViewAnimated:YES];
 }
@@ -311,11 +311,5 @@
 
 
 
-#ifdef _FOR_DEBUG_
--(BOOL) respondsToSelector:(SEL)aSelector {
-    printf("SELECTOR: %s\n", [NSStringFromSelector(aSelector) UTF8String]);
-    return [super respondsToSelector:aSelector];
-}
-#endif
 
 @end

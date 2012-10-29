@@ -12,6 +12,10 @@
 #import "GADBannerView.h"
 @class PhotoViewer;
 
+#define kTagGetNormal    1001
+#define kTagGetOffline   1002
+#define kTagGetOfflineOk    1003
+
 @interface ContentViewController : UIViewController<EGOImageButtonDelegate>
 {
     //http 请求

@@ -8,7 +8,7 @@
 
 #import "CommentsViewController.h"
 
-#import "CJSONDeserializer.h"
+#import "JSON.h"
 #import "QiuShi.h"
 
 #import "SHSShareViewController.h"
@@ -275,8 +275,22 @@ UITableViewDelegate
 
 -(void) GetResult:(ASIHTTPRequest *)request
 {
-    NSData *data =[request responseData];
-    NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:data error:nil];
+    NSString *responseString = [request responseString];
+    
+    
+    NSMutableDictionary *dictionary;
+    
+    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
+        dictionary = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUnicodeStringEncoding] options:NSJSONReadingMutableLeaves error:nil];
+    }else {
+        dictionary = [responseString JSONValue];
+    }
+
+    
+
+    
+    
     if ([dictionary objectForKey:@"items"]) {
 		NSArray *array = [NSArray arrayWithArray:[dictionary objectForKey:@"items"]];
         for (NSDictionary *qiushi in array) {
@@ -488,10 +502,5 @@ UITableViewDelegate
     self.asiRequest.delegate = nil;
 }
 
-#ifdef _FOR_DEBUG_
--(BOOL) respondsToSelector:(SEL)aSelector {
-    printf("SELECTOR: %s\n", [NSStringFromSelector(aSelector) UTF8String]);
-    return [super respondsToSelector:aSelector];
-}
-#endif
+
 @end

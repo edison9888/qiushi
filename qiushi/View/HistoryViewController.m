@@ -8,13 +8,10 @@
 
 #import "HistoryViewController.h"
 
-#import "PullingRefreshTableView.h"
 #import "CommentsViewController.h"
-#import "CJSONDeserializer.h"
 #import "QiuShi.h"
 #import "GADBannerView.h"
 #import "SqliteUtil.h"
-
 #import "MyNavigationController.h"
 #import "AppDelegate.h"
 #import "iToast.h"
@@ -23,15 +20,13 @@
 #import "MyProgressHud.h"
 
 @interface HistoryViewController ()<
-PullingRefreshTableViewDelegate,
 UITableViewDataSource,
-UITableViewDelegate,UIAlertViewDelegate
+UITableViewDelegate,
+UIAlertViewDelegate
 >
 
-@property (retain,nonatomic) PullingRefreshTableView *tableView;
+@property (retain,nonatomic) UITableView *tableView;
 @property (retain,nonatomic) NSMutableArray *list;
-@property (nonatomic) BOOL refreshing;
-@property (assign,nonatomic) NSInteger page;
 
 @end
 
@@ -39,9 +34,8 @@ UITableViewDelegate,UIAlertViewDelegate
 
 @synthesize tableView = _tableView;
 @synthesize list = _list;
-@synthesize refreshing = _refreshing;
-@synthesize page = _page;
 @synthesize cacheArray = _cacheArray;
+@synthesize mDate = _mDate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -61,17 +55,8 @@ UITableViewDelegate,UIAlertViewDelegate
     self.navigationItem.hidesBackButton = YES;
     
     
+    [self setBarButtonItems];
     
-    UIImage *image = [UIImage imageNamed:@"nav_menu_icon.png"];
-    UIImage *imagef = [UIImage imageNamed:@"nav_menu_icon_f.png"];
-    CGRect backframe= CGRectMake(0, 0, image.size.width, image.size.height);
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [btn setFrame:backframe];
-    [btn setBackgroundImage:image forState:UIControlStateNormal];
-    [btn setBackgroundImage:imagef forState:UIControlStateHighlighted];
-    [btn addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
-    self.navigationItem.leftBarButtonItem = someBarButtonItem;
     
     
 
@@ -102,7 +87,7 @@ UITableViewDelegate,UIAlertViewDelegate
     
     CGRect bounds = self.view.bounds;
     bounds.size.height = KDeviceHeight - (44);
-    self.tableView = [[PullingRefreshTableView alloc] initWithFrame:bounds pullingDelegate:self];
+    self.tableView = [[UITableView alloc] initWithFrame:bounds];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.dataSource = self;
@@ -111,11 +96,12 @@ UITableViewDelegate,UIAlertViewDelegate
     
     
     
-    [self setBarButtonItems];
+    
     
     [self.view addSubview:[MyProgressHud getInstance]];
     dispatch_async(dispatch_get_current_queue(), ^{
-        _cacheArray = [SqliteUtil queryDb];
+        
+        _cacheArray = [SqliteUtil queryDbByDate:_mDate];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_cacheArray != nil) {
@@ -123,18 +109,14 @@ UITableViewDelegate,UIAlertViewDelegate
                 for (QiuShi *qiushi in _cacheArray)
                 {
                     QiuShi *qs = [[QiuShi alloc]initWithQiushi:qiushi];
-                    
+                    NSLog(@"%@",qs.fbTime);
                     [self.list addObject:qs];
                     
                 }
                 
                 //数据源去重复
                 [self removeRepeatArray];
-                
-                
-                
-                [self.tableView tableViewDidFinishedLoading];
-                self.tableView.reachedTheEnd  = NO;
+
                 [self.tableView reloadData];
                 
             }
@@ -149,13 +131,7 @@ UITableViewDelegate,UIAlertViewDelegate
         });
                 
     });
-    
-    
-        
-    
-    
-    
-    
+
     
     
 }
@@ -177,8 +153,9 @@ UITableViewDelegate,UIAlertViewDelegate
     if ([self.viewDeckController leftControllerIsOpen]==YES) {
         [self.viewDeckController closeLeftView];
     }
-    //解决本view与root 共同的手势 冲突
-    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
+//    //解决本view与root 共同的手势 冲突
+//    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
+    [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -192,6 +169,18 @@ UITableViewDelegate,UIAlertViewDelegate
 
 - (void) setBarButtonItems
 {
+    UIImage *image = [UIImage imageNamed:@"nav_menu_icon.png"];
+    UIImage *imagef = [UIImage imageNamed:@"nav_menu_icon_f.png"];
+    CGRect backframe= CGRectMake(0, 0, image.size.width, image.size.height);
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setFrame:backframe];
+    [btn setBackgroundImage:image forState:UIControlStateNormal];
+    [btn setBackgroundImage:imagef forState:UIControlStateHighlighted];
+    [btn addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.leftBarButtonItem = someBarButtonItem;
+    
+    
     UIImage* image1= [UIImage imageNamed:@"comm_btn_top_n.png"];
     UIImage* imagef1 = [UIImage imageNamed:@"comm_btn_top_s.png"];
     CGRect backframe1= CGRectMake(0, 0, image1.size.width, image1.size.height);
@@ -214,7 +203,7 @@ UITableViewDelegate,UIAlertViewDelegate
 - (void)cleanCache:(id)sender
 {
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示"
-                                                   message:@"亲,确定要清除所有缓存吗?"
+                                                   message:[NSString stringWithFormat:@"亲,确定要清除(%@)所有缓存吗?]",_mDate]
                                                   delegate:self
                                          cancelButtonTitle:@"取消"
                                          otherButtonTitles:@"确定", nil];
@@ -235,7 +224,7 @@ UITableViewDelegate,UIAlertViewDelegate
             dispatch_queue_t m_queue = dispatch_get_current_queue();
             
             dispatch_async(m_queue, ^{
-                [SqliteUtil delNoSave];
+                [SqliteUtil delCacheByDate:_mDate];
                 EGOCache *cache = [[EGOCache alloc]init];
                 [cache clearCache];
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -250,18 +239,6 @@ UITableViewDelegate,UIAlertViewDelegate
             
     }
 }
-
-
-- (void)loadData{
-    
-    self.page++;
-    
-    [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
-    self.tableView.reachedTheEnd  = YES;
-    
-}
-
-
 
 
 #pragma mark - TableView*
@@ -374,39 +351,13 @@ UITableViewDelegate,UIAlertViewDelegate
 }
 
 
-
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
-    self.refreshing = YES;
-    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
-}
-
-
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
-    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
-}
-
-#pragma mark - Scroll
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [self.tableView tableViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    [self.tableView tableViewDidEndDragging:scrollView];
-}
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
-    
-    
-    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    
 
     
+    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
     CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
     comments.qs = [self.list objectAtIndex:indexPath.row];
@@ -417,27 +368,27 @@ UITableViewDelegate,UIAlertViewDelegate
 }
 
 
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        
-       
-        dispatch_async(dispatch_get_current_queue(), ^{
-            QiuShi *qs = [self.list objectAtIndex:indexPath.row];
-            [SqliteUtil deleteData:qs.qiushiID];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.list removeObjectAtIndex:indexPath.row];
-                [self.tableView reloadData];
-            });
-        });
-        
-        
-    }
-    
-}
+//// Override to support editing the table view.
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    
+//    if (editingStyle == UITableViewCellEditingStyleDelete)
+//    {
+//        
+//       
+//        dispatch_async(dispatch_get_current_queue(), ^{
+//            QiuShi *qs = [self.list objectAtIndex:indexPath.row];
+//            [SqliteUtil deleteData:qs.qiushiID];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self.list removeObjectAtIndex:indexPath.row];
+//                [self.tableView reloadData];
+//            });
+//        });
+//        
+//        
+//    }
+//    
+//}
 
 
 
@@ -504,12 +455,5 @@ UITableViewDelegate,UIAlertViewDelegate
 }
 
 
-
-#ifdef _FOR_DEBUG_
--(BOOL) respondsToSelector:(SEL)aSelector {
-    printf("SELECTOR: %s\n", [NSStringFromSelector(aSelector) UTF8String]);
-    return [super respondsToSelector:aSelector];
-}
-#endif
 
 @end

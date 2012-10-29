@@ -10,7 +10,6 @@
 
 #import "PullingRefreshTableView.h"
 #import "CommentsViewController.h"
-#import "CJSONDeserializer.h"
 #import "QiuShi.h"
 #import "SqliteUtil.h"
 #import "MyNavigationController.h"
@@ -18,6 +17,7 @@
 #import "PhotoViewer.h"
 #import "iToast.h"
 #import "IsNetWorkUtil.h"
+#import "JSON.h"
 
 
 @interface ContentViewController () <
@@ -117,7 +117,7 @@ UITableViewDelegate
         [self removeRepeatArray];
         
         //打乱顺序
-        //        self.list = [self randArray:self.list];
+        self.list = [self randArray:self.list];
         //        DLog(@"读取缓存%d条",self.list.count);
         
         [self.tableView tableViewDidFinishedLoading];
@@ -217,6 +217,7 @@ UITableViewDelegate
     [_asiRequest setDelegate:self];
     [_asiRequest setDidFinishSelector:@selector(GetResult:)];
     [_asiRequest setDidFailSelector:@selector(GetErr:)];
+    [_asiRequest setTag:kTagGetNormal];
     [_asiRequest startAsynchronous];
     
     
@@ -230,13 +231,13 @@ UITableViewDelegate
     [self.tableView tableViewDidFinishedLoading];
     
     
-    
+#ifdef DEBUG
     NSString *responseString = [request responseString];
     NSLog(@"%@\n",responseString);
     NSError *error = [request error];
     NSLog(@"-------------------------------\n");
     NSLog(@"error:%@",error);
-    
+#endif
     
     
     [[iToast makeText:@"网络连接失败"] show];
@@ -248,11 +249,7 @@ UITableViewDelegate
 -(void) GetResult:(ASIHTTPRequest *)request
 {
     
-    //    NSString *responseString = [request responseString];
-    //    NSLog(@"%@\n",responseString);
-    
-    
-    if (self.refreshing) {
+    if (self.refreshing && [request tag] == kTagGetNormal) {
         self.page = 1;
         self.refreshing = NO;
         
@@ -261,9 +258,20 @@ UITableViewDelegate
         
         [SqliteUtil initDb];
     }
-    NSData *data =[request responseData];
-    NSMutableDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:data error:nil];
+
+    NSString *responseString = [request responseString];
+    //    NSLog(@"%@\n",responseString);
     
+    
+   
+    NSMutableDictionary *dictionary;
+    
+    
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
+        dictionary = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUnicodeStringEncoding] options:NSJSONReadingMutableLeaves error:nil];
+    }else {
+        dictionary = [responseString JSONValue];
+    }
     
     
     if ([dictionary objectForKey:@"items"]) {
@@ -272,29 +280,22 @@ UITableViewDelegate
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"yy-MM-dd HH:mm"];
+        [dateFormatter setDateFormat:@"yy年MM月dd日"];//[dateFormatter setDateFormat:@"yy-MM-dd HH:mm"];
         
         for (NSDictionary *qiushi in array)
         {
             QiuShi *qs = [[QiuShi alloc]initWithDictionary:qiushi];
             
-            qs.fbTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:qs.published_at]];
-            
+//            qs.fbTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:qs.published_at]];
+            qs.fbTime =  [dateFormatter stringFromDate:[NSDate date]];
             
             //            //ttttttttttt
-            //            qs.content = @"中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试111";
             //            qs.content = @"test...";
             //            qs.imageURL = @"http://img.qiushibaike.com/system/pictures/6317243/small/app6317243.jpg";
             //            qs.imageMidURL = @"http://img.qiushibaike.com/system/pictures/6317243/medium/app6317243.jpg";
+//                        qs.fbTime = @"12-10-28";
             //            //tttttttttttt
-            
-            
-            
-            
-            //            //保存到数据库
-            //            [SqliteUtil saveDb:qs];
-            
-            
+
             
             [self.list addObject:qs];
             
@@ -306,23 +307,36 @@ UITableViewDelegate
             
         }
         
-        //数据源去重复
-        [self removeRepeatArray];
-        //保存到数据库
-        [NSThread detachNewThreadSelector:@selector(init_backup:) toTarget:self withObject:nil];
-        
-        
-        //预先加载 图片
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        int loadType = [[ud objectForKey:@"loadImage"] intValue];
-        if (loadType == 0) {//全部加载
-            [self getImageCache];
-        }else if (loadType == 1){//仅wifi加载
-            if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
-                [self getImageCache];
-            }
-        }else if (loadType == 2){//不加载
+        if ([request tag] == kTagGetNormal) {
+            //数据源去重复
+            [self removeRepeatArray];
+            //保存到数据库
+            dispatch_async(dispatch_get_current_queue(), ^{
+                [SqliteUtil saveDbWithArray:self.list];
+            });
             
+            
+            //预先加载 图片
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+            int loadType = [[ud objectForKey:@"loadImage"] intValue];
+            if (loadType == 0) {//全部加载
+                [self getImageCache];
+            }else if (loadType == 1){//仅wifi加载
+                if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
+                    [self getImageCache];
+                }
+            }else if (loadType == 2){//不加载
+                
+            }
+
+        }else if ([request tag] == kTagGetOfflineOk){
+            //保存到数据库
+            
+            dispatch_async(dispatch_get_current_queue(), ^{
+                [SqliteUtil saveDbWithArray:_lxArray];
+                //预先加载 图片
+                [self getImageCache1];
+            });
         }
         
     }
@@ -340,64 +354,6 @@ UITableViewDelegate
     
 }
 
-
--(void) GetResult1:(ASIHTTPRequest *)request
-{
-
-          
-//        [SqliteUtil initDb];
-     NSData *data =[request responseData];
-    NSMutableDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:data error:nil];
-    
-    
-    
-    if ([dictionary objectForKey:@"items"]) {
-		NSArray *array = [NSArray arrayWithArray:[dictionary objectForKey:@"items"]];
-        
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"yy-MM-dd HH:mm"];
-        
-        for (NSDictionary *qiushi in array)
-        {
-            QiuShi *qs = [[QiuShi alloc]initWithDictionary:qiushi];
-            
-            qs.fbTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:qs.published_at]];
-            [_lxArray addObject:qs];
-            
-            if (qs.imageURL != nil && qs.imageURL != @"") {
-                [self.lxImgArray addObject:qs.imageURL];
-                [self.lxImgArray addObject:qs.imageMidURL];
-            }
-
-        }
-        
-        
-
-        
-        
-
-    }
-    
-    NSLog(@"得到结果");
-    if ([request tag]== 100 + (5*20)-1) {
-        //保存到数据库
-        
-        dispatch_async(dispatch_get_current_queue(), ^{
-            [SqliteUtil saveDbWithArray:_lxArray];
-            //预先加载 图片
-            [self getImageCache1];
-        });
-    }
-    
-}
-
-
-- (void)init_backup:(id)sender
-{
-    [SqliteUtil saveDbWithArray:self.list];
-}
 
 
 #pragma mark - TableView data source
@@ -462,7 +418,7 @@ UITableViewDelegate
     [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
     
     //发布时间
-    cell.txtTime.text = [NSString stringWithFormat:@"%@ %d/%d",qs.fbTime,indexPath.row+1,[self.list count]];//qs.fbTime;
+    cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.row+1,[self.list count]];//qs.fbTime;
     
     [cell.saveBtn setTag:(indexPath.row +100) ];
     [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -583,9 +539,12 @@ UITableViewDelegate
         
         _asiRequest = [ASIHTTPRequest requestWithURL:url];
         [_asiRequest setDelegate:self];
-        [_asiRequest setTag:j+100];
-        NSLog(@"tag:%d",j+100);
-        [_asiRequest setDidFinishSelector:@selector(GetResult1:)];
+        if (j == (urlArray.count - 1)) {
+            [_asiRequest setTag:kTagGetOfflineOk];
+        }else{
+            [_asiRequest setTag:kTagGetOffline];
+        }
+        [_asiRequest setDidFinishSelector:@selector(GetResult:)];
         [_asiRequest setDidFailSelector:@selector(GetErr:)];
         [_asiRequest startAsynchronous];
     }
@@ -728,12 +687,7 @@ UITableViewDelegate
     NSLog(@"预下载图片失败");
 }
 
-#ifdef _FOR_DEBUG_
--(BOOL) respondsToSelector:(SEL)aSelector {
-    printf("SELECTOR: %s\n", [NSStringFromSelector(aSelector) UTF8String]);
-    return [super respondsToSelector:aSelector];
-}
-#endif
+
 
 
 @end

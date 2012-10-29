@@ -42,7 +42,7 @@
     //    [testObject save];
     
     
-    [TestFlight takeOff:TestFlightTeamToken];
+//    [TestFlight takeOff:TestFlightTeamToken];
     
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
      UIRemoteNotificationTypeAlert|

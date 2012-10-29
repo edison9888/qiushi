@@ -20,7 +20,7 @@
 
 + (void)initDb;
 + (void)saveDb:(QiuShi*)qs;
-+ (NSMutableArray*)queryDb;
++ (NSMutableArray*)queryDbAll;//查询所有数据
 + (NSString*)processString:(NSString*)str;
 
 + (BOOL)delAll;//删除所有数据（删除表）
@@ -32,4 +32,7 @@
 + (BOOL)autoDelNoSave;
 + (NSMutableArray*)queryDbTop;//查询最新的100条
 + (BOOL) deleteData:(NSString*)qiushiid;
++ (NSMutableDictionary*)queryDbGroupByData;
++ (NSMutableArray*)queryDbByDate:(NSString *)date;
++ (BOOL)delCacheByDate:(NSString*)date;//删除某一天的
 @end
