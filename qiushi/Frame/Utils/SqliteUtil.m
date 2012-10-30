@@ -5,6 +5,7 @@
 //  Created by xyxd mac on 12-8-17.
 //
 //
+//目前sqlite3版本能识别外键，但不支持 级联删除
 
 #import "SqliteUtil.h"
 
@@ -17,11 +18,13 @@ static sqlite3 *qiushiDB;
 static NSString *databasePath;
 static NSArray *dirPaths;
 
+#define kVersion    1210301457
+#define kTableQiushis   @"QIUSHIS"
+#define kTableComments  @"QIUSHICOMMENTS"
+
 
 +(void) initDb
 {
-    
-    
     
     /*根据路径创建数据库并创建一个表contact(id nametext addresstext phonetext)*/
     
@@ -52,7 +55,33 @@ static NSArray *dirPaths;
     {
         char *errMsg;
         
-        
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        int version = [[ud objectForKey:@"mSqlVersion"] intValue];
+        if (kVersion > version) {
+            
+           
+            
+            const char *sql_stmt = "DROP  TABLE  IF  EXISTS  QIUSHIS";
+            
+            if (sqlite3_exec(qiushiDB, sql_stmt, NULL, NULL, &errMsg)!=SQLITE_OK)
+            {
+                
+                DLog(@"删除qiushi表失败,%s",sqlite3_errmsg(qiushiDB));
+                
+            }
+            
+            const char *sql_stmt1 = "DROP  TABLE  IF  EXISTS  QIUSHIComments";
+            
+            if (sqlite3_exec(qiushiDB, sql_stmt1, NULL, NULL, &errMsg)!=SQLITE_OK)
+            {
+                
+                DLog(@"创建comment表失败,%s",sqlite3_errmsg(qiushiDB));
+                
+            }
+            
+           
+
+        }
         const char *sql_stmt = "CREATE TABLE IF NOT EXISTS QIUSHIS(ID INTEGER PRIMARY KEY AUTOINCREMENT, QIUSHIID TEXT unique,IMAGEURL TEXT,IMAGEMIDURL TEXT,TAG TEXT, CONTENT TEXT,COMMENTSCOUNT TEXT,UPCOUNT TEXT,DOWNCOUNT TEXT,ANCHOR TEXT,FBTIME TEXT,isSave text)";
         
         if (sqlite3_exec(qiushiDB, sql_stmt, NULL, NULL, &errMsg)!=SQLITE_OK)
@@ -62,7 +91,7 @@ static NSArray *dirPaths;
             
         }
         
-        const char *sql_stmt1 = "CREATE TABLE IF NOT EXISTS QIUSHIComments(ID INTEGER PRIMARY KEY AUTOINCREMENT, QIUSHIID TEXT,commentId text unique,floor text,content text,anchor text, FOREIGN KEY (QIUSHIID) REFERENCES QIUSHIS (QIUSHIID) on delete cascade) ";
+        const char *sql_stmt1 = "CREATE TABLE IF NOT EXISTS QIUSHIComments(ID INTEGER PRIMARY KEY AUTOINCREMENT, QIUSHIID TEXT,commentId text unique,floor text,content text,anchor text,createTime text, FOREIGN KEY (QIUSHIID) REFERENCES QIUSHIS (QIUSHIID) on delete cascade) ";//外键约束无效
         
         if (sqlite3_exec(qiushiDB, sql_stmt1, NULL, NULL, &errMsg)!=SQLITE_OK)
         {
@@ -70,6 +99,9 @@ static NSArray *dirPaths;
             DLog(@"创建评论表失败,%s",sqlite3_errmsg(qiushiDB));
             
         }
+        
+        
+        [ud setObject:[NSNumber numberWithInt:kVersion]  forKey:@"mSqlVersion"];
     }
     else
     {
@@ -151,7 +183,7 @@ static NSArray *dirPaths;
     }
 }
 
-//查询所有
+#pragma mark - 查询 所有 qiushi
 + (NSMutableArray*)queryDbAll
 {
     
@@ -219,6 +251,7 @@ static NSArray *dirPaths;
     return nil;
 }
 
+#pragma mark - 查询 最新100条 qiushi
 + (NSMutableArray*)queryDbTop//查询最新的100条
 {
     
@@ -818,12 +851,13 @@ static NSArray *dirPaths;
         for (int i = 0; i < commentArray.count; i++) {
             Comments *comment = [commentArray objectAtIndex:i];
             
-            NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO QIUSHIComments (QIUSHIID,commentid,floor,content,anchor) VALUES( \"%@\",\"%@\",\"%@\",\"%@\",\"%@\")",
+            NSString *insertSQL = [NSString stringWithFormat:@"INSERT INTO QIUSHIComments (QIUSHIID,commentid,floor,content,anchor,createTime) VALUES( \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\")",
                                    comment.qsId,
                                    comment.commentsID,
                                    [NSString stringWithFormat:@"%d",comment.floor],
                                    comment.content,
-                                   comment.anchor];
+                                   comment.anchor,
+                                   comment.createTime];
             
             
             //        DLog(@"%@",insertSQL);
@@ -958,6 +992,124 @@ static NSArray *dirPaths;
         return selectArray;
     }
     return nil;
+}
+
+#pragma mark - 删除 某一天的 评论
++ (BOOL)delCacheCommentsByDate:(NSString*)date
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &qiushiDB) == SQLITE_OK)
+    {
+        NSString *deleteSqlStr = [NSString stringWithFormat:@"delete from QIUSHIComments where createTime = '%@'",date];
+        
+        const char *deleteSql  = [deleteSqlStr UTF8String];
+        int deleteSqlOk = sqlite3_prepare_v2(qiushiDB, deleteSql, -1, &statement, nil);
+        if (deleteSqlOk != SQLITE_OK) {
+            
+            
+            DLog(@"删除出错:%s",sqlite3_errmsg(qiushiDB));
+            
+            
+            sqlite3_close(qiushiDB);
+            return NO;
+        }
+        
+        
+        int execDeleteSqlOk = sqlite3_step(statement);
+        sqlite3_finalize(statement);
+        
+        if (execDeleteSqlOk == SQLITE_ERROR) {
+            sqlite3_close(qiushiDB);
+            return NO;
+        }
+        
+    }
+    DLog(@"删除成功");
+    
+    sqlite3_close(qiushiDB);
+    return YES;
+    
+}
+
+
+#pragma mark - 删除 某一qiushi的 评论
++ (BOOL)delCacheCommentsByQiushiid:(NSString*)mid
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &qiushiDB) == SQLITE_OK)
+    {
+        NSString *deleteSqlStr = [NSString stringWithFormat:@"delete from QIUSHIComments where QIUSHIID = '%@'",mid];
+        
+        const char *deleteSql  = [deleteSqlStr UTF8String];
+        int deleteSqlOk = sqlite3_prepare_v2(qiushiDB, deleteSql, -1, &statement, nil);
+        if (deleteSqlOk != SQLITE_OK) {
+            
+            
+            DLog(@"删除出错:%s",sqlite3_errmsg(qiushiDB));
+            
+            
+            sqlite3_close(qiushiDB);
+            return NO;
+        }
+        
+        
+        int execDeleteSqlOk = sqlite3_step(statement);
+        sqlite3_finalize(statement);
+        
+        if (execDeleteSqlOk == SQLITE_ERROR) {
+            sqlite3_close(qiushiDB);
+            return NO;
+        }
+        
+    }
+    DLog(@"删除成功");
+    
+    sqlite3_close(qiushiDB);
+    return YES;
+    
+}
+
+#pragma mark - 删除 所有 评论
++ (BOOL)delAllComments
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &qiushiDB) == SQLITE_OK)
+    {
+        NSString *deleteSqlStr = [NSString stringWithFormat:@"delete from %@",kTableComments];
+        
+        const char *deleteSql  = [deleteSqlStr UTF8String];
+        int deleteSqlOk = sqlite3_prepare_v2(qiushiDB, deleteSql, -1, &statement, nil);
+        if (deleteSqlOk != SQLITE_OK) {
+            
+            
+            DLog(@"删除出错:%s",sqlite3_errmsg(qiushiDB));
+            
+            
+            sqlite3_close(qiushiDB);
+            return NO;
+        }
+        
+        
+        int execDeleteSqlOk = sqlite3_step(statement);
+        sqlite3_finalize(statement);
+        
+        if (execDeleteSqlOk == SQLITE_ERROR) {
+            sqlite3_close(qiushiDB);
+            return NO;
+        }
+        
+    }
+    DLog(@"删除成功");
+    
+    sqlite3_close(qiushiDB);
+    return YES;
+    
 }
 
 @end

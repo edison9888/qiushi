@@ -38,4 +38,7 @@
 + (void)saveCommentWithArray:(NSMutableArray*)commentArray;//保存评论
 + (NSMutableArray*)queryCommentsById:(NSString*)qiushiId;
 + (NSMutableArray*)queryComments;
++ (BOOL)delCacheCommentsByDate:(NSString*)date;
++ (BOOL)delCacheCommentsByQiushiid:(NSString*)mid;
++ (BOOL)delAllComments;
 @end

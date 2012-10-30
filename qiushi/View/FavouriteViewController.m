@@ -349,15 +349,15 @@ UITableViewDelegate
 {
     
     
-    
-    
-    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if ([self.viewDeckController leftControllerIsOpen]==YES) {
+        [self.viewDeckController closeLeftView];
+    }else{
+        AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
+        comments.qs = [self.list objectAtIndex:indexPath.row];
+        [[delegate navController] pushViewController:comments animated:YES];
+    }
 
-    CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
-    comments.qs = [self.list objectAtIndex:indexPath.row];
-    
-    
-    [[delegate navController] pushViewController:comments animated:YES];
     
 }
 

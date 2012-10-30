@@ -291,6 +291,7 @@
             
             dispatch_async(m_queue, ^{
                 [SqliteUtil delNoSave];
+                [SqliteUtil delAllComments];
                 EGOCache *cache = [[EGOCache alloc]init];
                 [cache clearCache];
                 dispatch_async(dispatch_get_main_queue(), ^{

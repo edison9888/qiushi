@@ -295,12 +295,14 @@ UITableViewDelegate
         for (NSDictionary *comments in array) {
             Comments *cm = [[Comments alloc]initWithDictionary:comments];
             cm.qsId = qs.qiushiID;
+            cm.createTime = qs.fbTime;
             [list addObject:cm];
         }
     }    
    
-    dispatch_queue_t m_queue = dispatch_get_current_queue();
-    dispatch_async(m_queue, ^{
+    //保存到数据库
+     dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(newThread, ^{
         [SqliteUtil saveCommentWithArray:self.list];
     });
     

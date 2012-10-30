@@ -33,6 +33,7 @@
 		13292537162CFDFF00B8B99A /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13292536162CFDFE00B8B99A /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		1344FAC8162FA11300EE6E7B /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1344FAC6162FA11300EE6E7B /* libGoogleAdMobAds.a */; };
 		1344FAC9162FA11300EE6E7B /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1344FAC7162FA11300EE6E7B /* README.txt */; };
+		13601A91163F7A4000B7F3B7 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 13601A90163F7A4000B7F3B7 /* Utils.m */; };
 		1367B563163E4FB400D35A3D /* History1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1367B561163E4FB400D35A3D /* History1ViewController.m */; };
 		1367B564163E4FB400D35A3D /* History1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1367B562163E4FB400D35A3D /* History1ViewController.xib */; };
 		1367B572163E6B5C00D35A3D /* CustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1367B56B163E6B5C00D35A3D /* CustomNavigationBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -322,6 +323,8 @@
 		1344FAC5162FA11300EE6E7B /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
 		1344FAC6162FA11300EE6E7B /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
 		1344FAC7162FA11300EE6E7B /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		13601A8F163F7A4000B7F3B7 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		13601A90163F7A4000B7F3B7 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		1367B560163E4FB400D35A3D /* History1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = History1ViewController.h; sourceTree = "<group>"; };
 		1367B561163E4FB400D35A3D /* History1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = History1ViewController.m; sourceTree = "<group>"; };
 		1367B562163E4FB400D35A3D /* History1ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = History1ViewController.xib; sourceTree = "<group>"; };
@@ -1115,6 +1118,8 @@
 				13C8473E15E48D87000B8A44 /* SqliteUtil.m */,
 				136A2E6415F5EE7D00E402D8 /* MyProgressHud.h */,
 				136A2E6515F5EE7D00E402D8 /* MyProgressHud.m */,
+				13601A8F163F7A4000B7F3B7 /* Utils.h */,
+				13601A90163F7A4000B7F3B7 /* Utils.m */,
 			);
 			name = Utils;
 			path = qiushi/Frame/Utils;
@@ -1866,6 +1871,7 @@
 				1367B572163E6B5C00D35A3D /* CustomNavigationBar.m in Sources */,
 				1367B573163E6B5C00D35A3D /* MyNavigationController.m in Sources */,
 				1367B574163E6B5C00D35A3D /* TestNavigationBar.m in Sources */,
+				13601A91163F7A4000B7F3B7 /* Utils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

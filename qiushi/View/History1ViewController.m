@@ -12,9 +12,14 @@
 #import "iToast.h"
 #import "HistoryViewController.h"
 #import "IIViewDeckController.h"
-
+#import "SqliteUtil.h"
 @interface History1ViewController ()
-
+{
+    NSMutableArray *_allKeys;
+    NSMutableArray *_allValues;
+}
+@property (nonatomic, retain) NSMutableArray *allKeys;
+@property (nonatomic, retain) NSMutableArray *allValues;
 @end
 
 @implementation History1ViewController
@@ -36,6 +41,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+
     
     self.navigationItem.hidesBackButton = YES;
 
@@ -51,29 +57,9 @@
     self.navigationItem.leftBarButtonItem = someBarButtonItem;
     
     
-    [self.view addSubview:[MyProgressHud getInstance]];
-    dispatch_async(dispatch_get_current_queue(), ^{
-        
-        _mDic = [SqliteUtil queryDbGroupByData];
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (_mDic != nil) {
-                
-                [self.mTableView reloadData];
-                              
-            }
-
-            
-            if (_mDic.count == 0) {
-                [[iToast makeText:@"亲,暂时还没有缓存..."] show];
-            }
-            
-            [MyProgressHud remove];
-            
-        });
+    [self setBarButtonItems];
         
-    });
-    
 
 }
 
@@ -94,6 +80,30 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
+    
+    //获取缓存
+    [self.view addSubview:[MyProgressHud getInstance]];
+    dispatch_async(dispatch_get_current_queue(), ^{
+        
+        _mDic = [SqliteUtil queryDbGroupByData];
+        _allKeys = [NSMutableArray arrayWithArray:_mDic.allKeys];
+        _allValues = [NSMutableArray arrayWithArray:_mDic.allValues];
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (_mDic.count == 0) {
+                [[iToast makeText:@"亲,暂时还没有缓存..."] show];
+            }
+            
+            [MyProgressHud remove];
+            
+            [self.mTableView reloadData];
+            
+        });
+        
+    });
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -103,6 +113,63 @@
     
 }
 
+
+- (void) setBarButtonItems
+{
+	if (_mTableView.isEditing)
+        //		self.navigationItem.rightBarButtonItem = SYSBARBUTTON(@"完成",UIBarButtonItemStyleDone, @selector(leaveEditMode));
+    {
+        UIImage* image1= [UIImage imageNamed:@"comm_btn_top_n.png"];
+        UIImage* imagef1 = [UIImage imageNamed:@"comm_btn_top_s.png"];
+        CGRect backframe1= CGRectMake(0, 0, image1.size.width, image1.size.height);
+        UIButton* editButton= [UIButton buttonWithType:UIButtonTypeCustom];
+        editButton.frame = backframe1;
+        [editButton setBackgroundImage:image1 forState:UIControlStateNormal];
+        [editButton setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
+        [editButton setTitle:@"完成" forState:UIControlStateNormal];
+        [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        editButton.titleLabel.font=[UIFont systemFontOfSize:12];
+        [editButton addTarget:self action:@selector(leaveEditMode) forControlEvents:UIControlEventTouchUpInside];
+        //定制自己的风格的  UIBarButtonItem
+        UIBarButtonItem* addBarButton= [[UIBarButtonItem alloc] initWithCustomView:editButton];
+        [self.navigationItem setRightBarButtonItem:addBarButton];
+    }
+	else
+        //        self.navigationItem.rightBarButtonItem = SYSBARBUTTON(@"编辑",UIBarButtonItemStylePlain, @selector(enterEditMode));
+    {
+        UIImage* image1= [UIImage imageNamed:@"comm_btn_top_n.png"];
+        UIImage* imagef1 = [UIImage imageNamed:@"comm_btn_top_s.png"];
+        CGRect backframe1= CGRectMake(0, 0, image1.size.width, image1.size.height);
+        UIButton* editButton= [UIButton buttonWithType:UIButtonTypeCustom];
+        editButton.frame = backframe1;
+        [editButton setBackgroundImage:image1 forState:UIControlStateNormal];
+        [editButton setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
+        [editButton setTitle:@"编辑" forState:UIControlStateNormal];
+        [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        editButton.titleLabel.font=[UIFont systemFontOfSize:12];
+        [editButton addTarget:self action:@selector(enterEditMode) forControlEvents:UIControlEventTouchUpInside];
+        //定制自己的风格的  UIBarButtonItem
+        UIBarButtonItem* addBarButton= [[UIBarButtonItem alloc] initWithCustomView:editButton];
+        [self.navigationItem setRightBarButtonItem:addBarButton];
+    }
+    
+    
+}
+
+-(void)enterEditMode
+{
+	[_mTableView deselectRowAtIndexPath:[_mTableView indexPathForSelectedRow] animated:YES];
+	[_mTableView setEditing:YES animated:YES];
+    [self setBarButtonItems];
+    
+}
+-(void)leaveEditMode
+{
+	[_mTableView setEditing:NO animated:YES];
+	[self setBarButtonItems];
+}
+
+
 #pragma mark - TableView*
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -110,7 +177,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self.mDic count];
+    return [self.allKeys count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -125,23 +192,51 @@
         
     }
     
-    cell.textLabel.text = [self.mDic.allKeys objectAtIndex:indexPath.row];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@条",[self.mDic.allValues objectAtIndex:indexPath.row]];
+    cell.textLabel.text = [self.allKeys objectAtIndex:indexPath.row];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@条",[self.allValues objectAtIndex:indexPath.row]];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
 
     return cell;
 }
-
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [self.view addSubview:[MyProgressHud getInstance]];
+        dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(newThread, ^{
+            [SqliteUtil delCacheByDate:[self.mDic.allKeys objectAtIndex:indexPath.row]];
+            [SqliteUtil delCacheCommentsByDate:[self.mDic.allKeys objectAtIndex:indexPath.row]];
+            [self.allKeys removeObjectAtIndex:indexPath.row];
+            [self.allValues removeObjectAtIndex:indexPath.row];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MyProgressHud remove];
+                [self.mTableView reloadData];
+            });
+        });
+        
+        
+    }
+    
+}
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    HistoryViewController *history = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
-    history.mDate = [self.mDic.allKeys objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:history animated:YES];
+    if ([self.viewDeckController leftControllerIsOpen]==YES) {
+        [self.viewDeckController closeLeftView];
+    }else{
+        HistoryViewController *history = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
+        history.mDate = [self.mDic.allKeys objectAtIndex:indexPath.row];
+        [self.navigationController pushViewController:history animated:YES];
+    }
+
+   
     
 }
 

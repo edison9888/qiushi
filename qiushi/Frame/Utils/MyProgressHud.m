@@ -12,11 +12,6 @@ static MyProgressHud *instance;
 @implementation MyProgressHud
 
 
-
-
-
-
-
 + (MyProgressHud *)getInstance {
     
     @synchronized(self){

@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>qiushi copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>qiushi.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -17,6 +22,16 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>13236ECA163FE15C005D4517</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>13236FE8163FE218005D4517</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>13C8434415E47EEC000B8A44</key>
 		<dict>
 			<key>primary</key>

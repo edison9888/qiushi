@@ -22,7 +22,7 @@
 
 //启动一定次数，引导用户去评分
 #define kQDCS @"qdcs"  //启动次数
-#define kTime 10
+#define kTime 1000
 
 
 @interface MainViewController ()
@@ -252,15 +252,13 @@ static CGFloat progress = 0;
 - (void)lixian:(id)sender
 {
 
-    
-//    [TestFlight openFeedbackView];
-    
+//    
 //    [statusBar show];
-//    
-//    
+//
 //    [self startOffline];
-//    
-//    [m_contentView LoadDataForCache];
+
+    [m_contentView LoadDataForCache];
+
 }
 
 

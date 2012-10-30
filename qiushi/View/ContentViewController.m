@@ -18,6 +18,8 @@
 #import "iToast.h"
 #import "IsNetWorkUtil.h"
 #import "JSON.h"
+#import "Utils.h"
+#import "IIViewDeckController.h"
 
 
 @interface ContentViewController () <
@@ -57,7 +59,6 @@ UITableViewDelegate
 @synthesize iLixian = _iLixian;
 @synthesize lxArray = _lxArray;
 @synthesize lxImgArray = _lxImgArray;
-
 
 - (void)viewDidLoad
 {
@@ -114,10 +115,10 @@ UITableViewDelegate
         }
         
         //数据源去重复
-        [self removeRepeatArray];
+        self.list = [Utils removeRepeatArray:self.list];
         
         //打乱顺序
-        self.list = [self randArray:self.list];
+        self.list = [Utils randArray:self.list];
         //        DLog(@"读取缓存%d条",self.list.count);
         
         [self.tableView tableViewDidFinishedLoading];
@@ -258,12 +259,10 @@ UITableViewDelegate
         
         [SqliteUtil initDb];
     }
-
+    
     NSString *responseString = [request responseString];
     //    NSLog(@"%@\n",responseString);
     
-    
-   
     NSMutableDictionary *dictionary;
     
     
@@ -274,9 +273,9 @@ UITableViewDelegate
     }
     
     
-    if ([dictionary objectForKey:@"items"]) {
+    if ([dictionary objectForKey:@"items"])
+    {
 		NSArray *array = [NSArray arrayWithArray:[dictionary objectForKey:@"items"]];
-        
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         //设定时间格式,这里可以设置成自己需要的格式
@@ -286,73 +285,93 @@ UITableViewDelegate
         {
             QiuShi *qs = [[QiuShi alloc]initWithDictionary:qiushi];
             
-//            qs.fbTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:qs.published_at]];
+            //            qs.fbTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:qs.published_at]];
             qs.fbTime =  [dateFormatter stringFromDate:[NSDate date]];
             
             //            //ttttttttttt
             //            qs.content = @"test...";
             //            qs.imageURL = @"http://img.qiushibaike.com/system/pictures/6317243/small/app6317243.jpg";
             //            qs.imageMidURL = @"http://img.qiushibaike.com/system/pictures/6317243/medium/app6317243.jpg";
-//                        qs.fbTime = @"12-10-28";
+            //            qs.fbTime = @"12-10-28";
             //            //tttttttttttt
-
             
-            [self.list addObject:qs];
-            
-            if (qs.imageURL != nil && qs.imageURL != @"") {
-                [self.imageUrlArray addObject:qs.imageURL];
-                [self.imageUrlArray addObject:qs.imageMidURL];
-            }
+                if ([request tag] == kTagGetNormal) {
+                    
+                    [self.list addObject:qs];
+                    
+                    if (qs.imageURL != nil && qs.imageURL != @"") {
+                        [self.imageUrlArray addObject:qs.imageURL];
+                        [self.imageUrlArray addObject:qs.imageMidURL];
+                    }
+                }else if ([request tag] == kTagGetOffline){
+                    [self.lxArray addObject:qs];
+                    if (qs.imageURL != nil && qs.imageURL != @"") {
+                        [self.lxImgArray addObject:qs.imageURL];
+                        [self.lxImgArray addObject:qs.imageMidURL];
+                        
+                        
+                    }
+                }
             
             
         }
         
-        if ([request tag] == kTagGetNormal) {
-            //数据源去重复
-            [self removeRepeatArray];
-            //保存到数据库
-            dispatch_async(dispatch_get_current_queue(), ^{
-                [SqliteUtil saveDbWithArray:self.list];
-            });
-            
-            
-            //预先加载 图片
-            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-            int loadType = [[ud objectForKey:@"loadImage"] intValue];
-            if (loadType == 0) {//全部加载
-                [self getImageCache];
-            }else if (loadType == 1){//仅wifi加载
-                if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
-                    [self getImageCache];
-                }
-            }else if (loadType == 2){//不加载
-                
-            }
-
-        }else if ([request tag] == kTagGetOfflineOk){
-            //保存到数据库
-            
-            dispatch_async(dispatch_get_current_queue(), ^{
-                [SqliteUtil saveDbWithArray:_lxArray];
-                //预先加载 图片
-                [self getImageCache1];
-            });
-        }
         
     }
     
-    
-    
-    if (self.page >= 20) {
-        [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
-        self.tableView.reachedTheEnd  = YES;
-    } else {
-        [self.tableView tableViewDidFinishedLoading];
-        self.tableView.reachedTheEnd  = NO;
-        [self.tableView reloadData];
+    if ([request tag] == kTagGetNormal) {
+        //数据源去重复
+        self.list = [Utils removeRepeatArray:self.list];
+        //保存到数据库
+        dispatch_async(dispatch_get_current_queue(), ^{
+            [SqliteUtil saveDbWithArray:self.list];
+        });
+        
+        
+        //预先加载 图片
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        int loadType = [[ud objectForKey:@"loadImage"] intValue];
+        if (loadType == 0) {//全部加载
+            [self getImageCache:kTagGetNormal];
+        }else if (loadType == 1){//仅wifi加载
+            if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
+                [self getImageCache:kTagGetNormal];
+            }
+        }else if (loadType == 2){//不加载
+            
+        }
+        
+        if (self.page >= 20) {
+            [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
+            self.tableView.reachedTheEnd  = YES;
+        } else {
+            [self.tableView tableViewDidFinishedLoading];
+            self.tableView.reachedTheEnd  = NO;
+            [self.tableView reloadData];
+        }
+        
+        
+    }else if ([request tag] == kTagGetOfflineOk){
+        //保存到数据库
+        
+        DLog(@"%d",_lxArray.count);
+        dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(newThread, ^{
+            [SqliteUtil saveDbWithArray:_lxArray];
+            //预先加载 图片
+            [self getImageCache:kTagGetOfflineOk];
+            
+        });
+        
+        
+        
     }
     
 }
+
+
+
+
 
 
 
@@ -450,8 +469,6 @@ UITableViewDelegate
    	
 }
 
-
-
 //自定义 头高度
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -492,15 +509,15 @@ UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([self.viewDeckController leftControllerIsOpen]==YES) {
+        [self.viewDeckController closeLeftView];
+    }else{
+        AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
+        comments.qs = [self.list objectAtIndex:indexPath.row];
+        [[delegate navController] pushViewController:comments animated:YES];
+    }
     
-    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    
-    CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
-    comments.qs = [self.list objectAtIndex:indexPath.row];
-    
-    
-    [[delegate navController] pushViewController:comments animated:YES];
     
 }
 
@@ -521,7 +538,7 @@ UITableViewDelegate
     _lxImgArray = [[NSMutableArray alloc]init];
     NSURL *url;
     NSMutableArray *urlArray = [[NSMutableArray alloc]init];
-    for (int i = 0; i<20; i++) {
+    for (int i = 1; i<2; i++) {
         
         [urlArray addObject:[NSURL URLWithString:SuggestURLString(10,i)]];
         [urlArray addObject:[NSURL URLWithString:WeakURlString(10,i)]];
@@ -534,7 +551,7 @@ UITableViewDelegate
     for (int j=0; j<urlArray.count; j++) {
         url = [urlArray objectAtIndex:j];
         
-        NSLog(@"%@",url);
+        NSLog(@"%d,%d,%@",j,urlArray.count,url);
         
         
         _asiRequest = [ASIHTTPRequest requestWithURL:url];
@@ -548,11 +565,6 @@ UITableViewDelegate
         [_asiRequest setDidFailSelector:@selector(GetErr:)];
         [_asiRequest startAsynchronous];
     }
-    
-    
-    
-    
-    
     
     
 }
@@ -582,52 +594,6 @@ UITableViewDelegate
 }
 
 
-//去掉 重复数据
-- (void)removeRepeatArray
-{
-    //    DLog(@"原来：%d",self.list.count);
-    NSMutableArray* filterResults = [[NSMutableArray alloc] init];
-    BOOL copy;
-    if (![self.list count] == 0) {
-        for (QiuShi *a1 in self.list) {
-            copy = YES;
-            for (QiuShi *a2 in filterResults) {
-                if ([a1.qiushiID isEqualToString:a2.qiushiID] && [a1.anchor isEqualToString:a2.anchor]) {
-                    copy = NO;
-                    break;
-                }
-            }
-            if (copy) {
-                [filterResults addObject:a1];
-            }
-        }
-    }
-    
-    self.list = filterResults;
-    //    DLog(@"之后：%d",self.list.count);
-    //    self.list = [NSMutableArray arrayWithArray:[self.list sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
-    
-    
-    
-    
-}
-
-
-#pragma mark –
-#pragma mark NSMutableArray 重排序
-- (NSMutableArray *)randArray:(NSMutableArray *)ary{
-    NSMutableArray *tmpAry = [NSMutableArray arrayWithArray:ary];
-    NSUInteger count = [ary count];
-    for (NSUInteger i = 0; i < count; ++i) {
-        int nElements = count - i;
-        srandom(time(NULL));
-        int n = (random() % nElements) + i;
-        [tmpAry exchangeObjectAtIndex:i withObjectAtIndex:n];
-    }
-    return tmpAry;
-}
-
-
 
 - (void)favoriteAction:(id)sender
 {
@@ -642,12 +608,14 @@ UITableViewDelegate
 }
 
 
-- (void)getImageCache
+- (void)getImageCache:(int)type
 {
     
-    NSLog(@"图片数：%d",self.imageUrlArray.count);
+    NSLog(@"图片数：%d",type==kTagGetNormal?self.imageUrlArray.count:self.lxImgArray.count);
+    
+    
     tem = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"main_background.png"] delegate:self];
-    for (NSString* strUrl in self.imageUrlArray)
+    for (NSString* strUrl in (type==kTagGetNormal?self.imageUrlArray:self.lxImgArray))
     {
         
         [tem setImageURL:[NSURL URLWithString:strUrl]];
@@ -655,25 +623,10 @@ UITableViewDelegate
         
     }
     
-    
     NSLog(@"获取缓存完成");
+    
 }
-- (void)getImageCache1
-{
-    
-    NSLog(@"图片数：%d",self.lxImgArray.count);
-    tem = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"main_background.png"] delegate:self];
-    for (NSString* strUrl in self.lxImgArray)
-    {
-        
-        [tem setImageURL:[NSURL URLWithString:strUrl]];
-        
-        
-    }
-    
-    
-    NSLog(@"获取缓存完成");
-}
+
 
 - (void)imageButtonLoadedImage:(EGOImageButton*)imageButton
 {

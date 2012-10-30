@@ -20,12 +20,15 @@
     NSString *commentsID;
     //糗事id
     NSString *qsId;
+    //db创建日期（为了删除）
+    NSString *createTime;
 }
 @property (nonatomic,assign) int floor;
 @property (nonatomic,copy) NSString *commentsID;
 @property (nonatomic,copy) NSString *content;
 @property (nonatomic,copy) NSString *anchor;
 @property (nonatomic,copy) NSString *qsId;
+@property (nonatomic,copy) NSString *createTime;
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

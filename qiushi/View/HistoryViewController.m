@@ -18,7 +18,7 @@
 #import "EGOCache.h"
 #import "IIViewDeckController.h"
 #import "MyProgressHud.h"
-
+#import "Utils.h"
 
 
 @interface HistoryViewController ()<
@@ -61,7 +61,7 @@ UIAlertViewDelegate
     
     
     
-
+    
     
     //设置背景颜色
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
@@ -101,7 +101,8 @@ UIAlertViewDelegate
     
     
     [self.view addSubview:[MyProgressHud getInstance]];
-    dispatch_async(dispatch_get_current_queue(), ^{
+    dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(newThread, ^{
         
         _cacheArray = [SqliteUtil queryDbByDate:_mDate];
         
@@ -117,8 +118,8 @@ UIAlertViewDelegate
                 }
                 
                 //数据源去重复
-                [self removeRepeatArray];
-
+                self.list = [Utils removeRepeatArray:self.list];
+                
                 [self.tableView reloadData];
                 
             }
@@ -127,13 +128,13 @@ UIAlertViewDelegate
             if (_cacheArray.count == 0) {
                 [[iToast makeText:@"亲,暂时还没有缓存..."] show];
             }
-
+            
             [MyProgressHud remove];
             
         });
-                
+        
     });
-
+    
     
     
 }
@@ -155,8 +156,8 @@ UIAlertViewDelegate
     if ([self.viewDeckController leftControllerIsOpen]==YES) {
         [self.viewDeckController closeLeftView];
     }
-//    //解决本view与root 共同的手势 冲突
-//    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
+    //    //解决本view与root 共同的手势 冲突
+    //    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
     [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
 }
 - (void)viewDidDisappear:(BOOL)animated
@@ -240,14 +241,10 @@ UIAlertViewDelegate
             
             dispatch_async(m_queue, ^{
                 [SqliteUtil delCacheByDate:_mDate];
+                [SqliteUtil delCacheCommentsByDate:_mDate];
+                
                 EGOCache *cache = [[EGOCache alloc]init];
                 [cache clearCache];
-                
-                
-                
-                [SqliteUtil queryComments];
-                
-                
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[iToast makeText:@"已完成"] show];
@@ -328,7 +325,7 @@ UIAlertViewDelegate
     cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.row+1,[self.list count]];//qs.fbTime;
     
     
-    [cell.saveBtn setTag:(indexPath.row +100) ];
+    [cell.saveBtn setTag:indexPath.row ];
     [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
     
     //自适应函数
@@ -377,15 +374,16 @@ UIAlertViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     
-    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    if ([self.viewDeckController leftControllerIsOpen]==YES) {
+        [self.viewDeckController closeLeftView];
+    }else{
+        AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
+        comments.qs = [self.list objectAtIndex:indexPath.row];
+        [[delegate navController] pushViewController:comments animated:YES];
+    }
     
-    CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
-    comments.qs = [self.list objectAtIndex:indexPath.row];
-    
-    
-    [[delegate navController] pushViewController:comments animated:YES];
     
 }
 
@@ -393,11 +391,11 @@ UIAlertViewDelegate
 //// Override to support editing the table view.
 //- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 //{
-//    
+//
 //    if (editingStyle == UITableViewCellEditingStyleDelete)
 //    {
-//        
-//       
+//
+//
 //        dispatch_async(dispatch_get_current_queue(), ^{
 //            QiuShi *qs = [self.list objectAtIndex:indexPath.row];
 //            [SqliteUtil deleteData:qs.qiushiID];
@@ -406,10 +404,10 @@ UIAlertViewDelegate
 //                [self.tableView reloadData];
 //            });
 //        });
-//        
-//        
+//
+//
 //    }
-//    
+//
 //}
 
 
@@ -437,48 +435,21 @@ UIAlertViewDelegate
     return height;
 }
 
-- (void)removeRepeatArray
-{
-//    DLog(@"原来：%d",self.list.count);
-    NSMutableArray* filterResults = [[NSMutableArray alloc] init];
-    BOOL copy;
-    if (![self.list count] == 0) {
-        for (QiuShi *a1 in self.list) {
-            copy = YES;
-            for (QiuShi *a2 in filterResults) {
-                if ([a1.qiushiID isEqualToString:a2.qiushiID] && [a1.anchor isEqualToString:a2.anchor]) {
-                    copy = NO;
-                    break;
-                }
-            }
-            if (copy) {
-                [filterResults addObject:a1];
-            }
-        }
-    }
-    
-    self.list = filterResults;
-//    DLog(@"之后：%d",self.list.count);
-    //    self.list = [NSMutableArray arrayWithArray:[self.list sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]];
-    
-}
+
 
 
 - (void)favoriteAction:(id)sender
 {
     UIButton *btn = (UIButton*)sender;
-    int index = ([btn tag] - 100) ;
-    QiuShi *qs = [self.list objectAtIndex:index];
-    
+    QiuShi *qs = [self.list objectAtIndex:[btn tag]];
     DLog(@"%@",qs.qiushiID);
     [SqliteUtil updateDataIsFavourite:qs.qiushiID isFavourite:@"yes"];
-    
     [[iToast makeText:@"已添加到收藏..."] show];
 }
 
 - (void)listAction:(id)sender
 {
-
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
