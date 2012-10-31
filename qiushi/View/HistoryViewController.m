@@ -26,7 +26,11 @@ UITableViewDataSource,
 UITableViewDelegate,
 UIAlertViewDelegate
 >
-
+{
+    NSMutableArray *_alphaArray;
+    
+}
+@property (nonatomic, retain) NSMutableArray *alphaArray;
 @property (retain,nonatomic) UITableView *tableView;
 @property (retain,nonatomic) NSMutableArray *list;
 
@@ -38,6 +42,7 @@ UIAlertViewDelegate
 @synthesize list = _list;
 @synthesize cacheArray = _cacheArray;
 @synthesize mDate = _mDate;
+@synthesize alphaArray = _alphaArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -81,14 +86,14 @@ UIAlertViewDelegate
     
     bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
     bannerView_.rootViewController = self;
-#ifdef DEBUG
-#else
+//#ifdef DEBUG
+//#else
     [bannerView_ loadRequest:[GADRequest request]];
-#endif
+//#endif
     
     
     CGRect bounds = self.view.bounds;
-    bounds.size.height = KDeviceHeight - (44);
+    bounds.size.height = KDeviceHeight - (44 + 20);
     self.tableView = [[UITableView alloc] initWithFrame:bounds];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
@@ -109,11 +114,15 @@ UIAlertViewDelegate
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_cacheArray != nil) {
                 [self.list removeAllObjects];
-                for (QiuShi *qiushi in _cacheArray)
+                _alphaArray = [[NSMutableArray alloc]init];
+                
+                //                for (QiuShi *qiushi in _cacheArray)
+                for (int i = 0; i < _cacheArray.count; i++)
                 {
-                    QiuShi *qs = [[QiuShi alloc]initWithQiushi:qiushi];
-                    NSLog(@"%@",qs.fbTime);
+                    QiuShi *qs = [[QiuShi alloc]initWithQiushi:[_cacheArray objectAtIndex:i]];
+//                    NSLog(@"%@",qs.fbTime);
                     [self.list addObject:qs];
+                    [_alphaArray addObject:[NSString stringWithFormat:@"%d",i+1]];
                     
                 }
                 
@@ -263,11 +272,11 @@ UIAlertViewDelegate
 #pragma mark - TableView*
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return _alphaArray.count;//1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self.list count];
+    return 1;//[self.list count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -281,8 +290,10 @@ UIAlertViewDelegate
         cell.contentView.backgroundColor = [UIColor clearColor];
         
     }
-    
-    QiuShi *qs = [self.list objectAtIndex:[indexPath row]];
+//    CGRect frame = cell.txtContent.frame;
+//    frame.size.width = 200;
+//    cell.txtContent.frame = frame;
+    QiuShi *qs = [self.list objectAtIndex:[indexPath section]];
     //设置内容
     cell.txtContent.text = qs.content;
     
@@ -322,20 +333,20 @@ UIAlertViewDelegate
     [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
     
     //发布时间
-    cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.row+1,[self.list count]];//qs.fbTime;
+    cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.section+1,[self.list count]];//qs.fbTime;
     
     
     [cell.saveBtn setTag:indexPath.row ];
     [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
     
     //自适应函数
-    [cell resizeTheHeight:kTypeMain];
+    [cell resizeTheHeight:kTypeHistory];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self getTheHeight:indexPath.row];
+    return [self getTheHeight:indexPath.section];
 }
 
 //自定义 头内容
@@ -358,14 +369,19 @@ UIAlertViewDelegate
 //自定义 头高度
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    //是否显示广告
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    
-    if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
-        return GAD_SIZE_320x50.height;;
+    if (section == 0) {
+        //是否显示广告
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        
+        if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
+            return GAD_SIZE_320x50.height;;
+        }else{
+            return .0f;
+        }
     }else{
         return .0f;
     }
+    
     
 }
 
@@ -385,9 +401,33 @@ UIAlertViewDelegate
     }
     
     
+    
 }
 
 
+
+//index
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)aTableView
+{
+	if (aTableView == self.tableView)  // regular table
+	{
+        
+        return self.alphaArray;
+        
+		
+	}
+	else return nil; // search table
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    return index;
+}
+
+
+
+//滑动删除
 //// Override to support editing the table view.
 //- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 //{
@@ -412,9 +452,10 @@ UIAlertViewDelegate
 
 
 
+
 -(CGFloat) getTheHeight:(NSInteger)row
 {
-    CGFloat contentWidth = 280;
+    CGFloat contentWidth = 250;
     // 设置字体
     UIFont *font = [UIFont fontWithName:@"微软雅黑" size:14];
     

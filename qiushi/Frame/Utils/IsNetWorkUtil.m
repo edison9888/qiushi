@@ -20,9 +20,9 @@ static int typeInternet = kTypeNO;
 + (void)initNetWorkStatus{
     
     //判断是否联网
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(reachabilityChanged1:) 
-                                                 name:kReachabilityChangedNotification 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged1:)
+                                                 name:kReachabilityChangedNotification
                                                object:nil];
     
     Reachability * reach = [Reachability reachabilityWithHostname:@"www.baidu.com"];
@@ -36,8 +36,7 @@ static int typeInternet = kTypeNO;
             
             isNetWork = YES;
             
-            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-            [ud setObject:[NSNumber numberWithBool:YES]  forKey:@"showAD"];
+            
             
         });
     };
@@ -48,8 +47,7 @@ static int typeInternet = kTypeNO;
             
             DLog( @"Block Says Unreachable---");
             isNetWork = NO;
-            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-            [ud setObject:[NSNumber numberWithBool:NO]  forKey:@"showAD"];
+            
             
         });
     };
@@ -69,20 +67,18 @@ static int typeInternet = kTypeNO;
     
     if([reach isReachable])
     {
-
-
+        
+        
         isNetWork = YES;
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        [ud setObject:[NSNumber numberWithBool:YES]  forKey:@"showAD"];
+        
         
     }
     else
     {
         
-
+        
         isNetWork = NO;
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        [ud setObject:[NSNumber numberWithBool:NO]  forKey:@"showAD"];
+        
         
     }
     

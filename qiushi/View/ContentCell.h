@@ -13,6 +13,7 @@
 
 #define kTypeMain   1001
 #define kTypeContent 1002
+#define kTypeHistory    1003
 
 @interface ContentCell : UITableViewCell<EGOImageButtonDelegate>
 {

@@ -8,12 +8,6 @@
 
 #import "PurchaseInViewController.h"
 
-#define ProductID_IAP0p99 @"com.xyxd.qiushis.qcgg"//$0.99
-#define ProductID_IAP1p99 @"com.buytest.two" //$1.99
-#define ProductID_IAP4p99 @"com.buytest.three" //$4.99
-#define ProductID_IAP9p99 @"com.buytest.four" //$19.99
-#define ProductID_IAP24p99 @"com.buytest.five" //$24.99
-
 @interface PurchaseInViewController ()
 
 @end
@@ -64,6 +58,8 @@
 
 
 
+
+
 -(void)buy:(int)type
 {
     buyType = type;
@@ -76,11 +72,11 @@
     {
         DLog(@"不允许程序内付费购买");
         UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:@"Alert"
-                                                            message:@"You can‘t purchase in app store（Himi说你没允许应用程序内购买）"
+                                                            message:@"You can‘t purchase in app store（不允许应用程序内购买）"
                                                            delegate:nil cancelButtonTitle:NSLocalizedString(@"Close（关闭）",nil) otherButtonTitles:nil];
         
         [alerView show];
-//        [alerView release];
+
         
     }
 }
@@ -107,10 +103,7 @@
         case IAP9p99:
             product=[[NSArray alloc] initWithObjects:ProductID_IAP9p99,nil];
             break;
-        case IAP24p99:
-            product=[[NSArray alloc] initWithObjects:ProductID_IAP24p99,nil];
-            break;
-            
+                    
         default:
             break;
     }
@@ -118,7 +111,7 @@
     SKProductsRequest *request=[[SKProductsRequest alloc] initWithProductIdentifiers: nsset];
     request.delegate=self;
     [request start];
-//    [product release];
+
 }
 //<SKProductsRequestDelegate> 请求协议
 //收到的产品信息
@@ -151,9 +144,7 @@
         case IAP9p99:
             payment  = [SKPayment paymentWithProductIdentifier:ProductID_IAP9p99];    //支付$19.99
             break;
-        case IAP24p99:
-            payment  = [SKPayment paymentWithProductIdentifier:ProductID_IAP24p99];    //支付$29.99
-            break;
+            
         default:
             break;
     }
@@ -208,13 +199,12 @@
             {
                 [self completeTransaction:transaction];
                 DLog(@"-----交易完成 --------");
-                DLog(@"不允许程序内付费购买");
                 UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:@"Alert"
                                                                     message:@"Himi说你购买成功啦～娃哈哈"
                                                                    delegate:nil cancelButtonTitle:NSLocalizedString(@"Close（关闭）",nil) otherButtonTitles:nil];
                 
                 [alerView show];
-//                [alerView release];
+
             }break;
             case SKPaymentTransactionStateFailed://交易失败
             {
@@ -225,7 +215,7 @@
                                                                     delegate:nil cancelButtonTitle:NSLocalizedString(@"Close（关闭）",nil) otherButtonTitles:nil];
                 
                 [alerView2 show];
-//                [alerView2 release];
+
             }break;
             case SKPaymentTransactionStateRestored://已经购买过该商品
             {

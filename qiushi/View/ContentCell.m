@@ -150,13 +150,19 @@
 
 
 -(void) resizeTheHeight:(int)type
-{   
-    CGFloat contentWidth = 280;  
+{
+    CGFloat contentWidth;
+    if (type != kTypeHistory) {
+        contentWidth = 280;  
+    }else{
+        contentWidth = 250;
+    }
+
  
     UIFont *font = [UIFont fontWithName:@"微软雅黑" size:14];
     
     CGSize size = CGSizeMake(0, 0);
-    if (type == kTypeMain)
+    if (type == kTypeMain || type == kTypeHistory)
     {
         size = [txtContent.text sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];
     }else if (type == kTypeContent)

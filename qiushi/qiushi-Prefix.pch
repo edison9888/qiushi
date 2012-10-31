@@ -26,6 +26,12 @@
 #define kPushChannelDebug    @"ParsePushChannelDebug"
 #define kPushChannelProduct     @"ParsePushChannelProduct"
 
+#define kParseApplicationId @"vXGdzFpCmfMoSWuUX27sLCGKhOfFAB9NHll59IUp"
+#define kParseClientKey     @"Axa79C9vZRUZBzI90IXbnCUxtPZDMsr64fLjVcLw"
+#define kParseJavascript    @"jWB7cbvNL8QbkMxSm6QpJcrob4HuuB8RdKx5IS7m"
+#define kParseREST          @"IyqPK0lfFqhOUiHUl6TlmLLpwk0sRvVFiWKKKdLU"
+#define kParseMaster        @"66ASP48i8uPjrJ0GlfIEB1i3E7IicpW0CSJ3zhR9"
+
 
 #define kDeviceWidth [UIScreen mainScreen].bounds.size.width
 #define KDeviceHeight [UIScreen mainScreen].bounds.size.height

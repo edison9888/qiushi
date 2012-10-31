@@ -85,10 +85,10 @@ UITableViewDelegate
     
     bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
     bannerView_.rootViewController = self;
-#ifdef DEBUG
-#else
+//#ifdef DEBUG
+//#else
     [bannerView_ loadRequest:[GADRequest request]];
-#endif
+//#endif
     
     
     CGRect bounds = self.view.bounds;

@@ -9,6 +9,11 @@
 #import "LoginViewController.h"
 #import <Parse/Parse.h>
 #import "iToast.h"
+#import "ASIHTTPRequest.h"
+#import "ASIFormDataRequest.h"
+#import "IsNetWorkUtil.h"
+#import "MyProgressHud.h"
+#import "JSON.h"
 @interface LoginViewController ()
 
 @end
@@ -17,6 +22,8 @@
 @synthesize nameTextField  = _nameTextField;
 @synthesize pswTextField = _pswTextField;
 @synthesize mTest = _mTest;
+@synthesize httpRequest = _httpRequest;
+@synthesize formRequest = _formRequest;
 
 #pragma mark - view lifecycle
 
@@ -51,6 +58,12 @@
     [self setMTest:nil];
     [super viewDidUnload];
 }
+
+- (void)dealloc
+{
+    self.httpRequest.delegate = nil;
+    
+}
 #pragma mark - delegate textField
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -70,7 +83,7 @@
         if ([textField.text length]>15)
         {
             textField.text=[textField.text substringToIndex:15];
-
+            
         }
     }
     
@@ -108,9 +121,110 @@
 }
 
 - (IBAction)pushTest:(id)sender {
-    [PFPush sendPushMessageToChannelInBackground:kPushChannelDebug
-                                     withMessage:@"啦啦啦，收到了吗"];
+    //    [PFPush sendPushMessageToChannelInBackground:kPushChannelDebug
+    //                                     withMessage:@"啦啦啦，收到了吗"];
+    
+    //
+//    [self requestNetWork];
+    
+    
 }
+
+#pragma mark - 网络请求
+- (void)requestNetWork
+{
+    if (![IsNetWorkUtil isNetWork1])
+    {
+        
+        return;
+    }
+    
+    
+    
+    NSString *urlString = [NSString stringWithFormat:@"https://api.parse.com/1/classes/GameScoreTest"];
+    
+    self.httpRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    
+    
+    [self.httpRequest addRequestHeader:@"X-Parse-Application-Id" value:kParseApplicationId];
+    [self.httpRequest addRequestHeader:@"X-Parse-REST-API-Key" value:kParseREST];
+    [self.httpRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+    
+    
+    NSMutableDictionary *tempDic = [[NSMutableDictionary alloc]initWithObjectsAndKeys:
+                                    kParseApplicationId,@"appkey",
+                                    kParseClientKey,@"mrid",
+                                    kParseJavascript,@"bought_time",
+                                    nil];
+    
+    DLog(@"%@",[tempDic description]);
+    
+//    NSString *body = [ NSString stringWithFormat:@"{\"appkey\":\"%@\"}",kParseApplicationId];
+//    [self.formRequest appendPostData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
+        [self.httpRequest appendPostData:[NSJSONSerialization dataWithJSONObject:tempDic options:NSJSONReadingMutableLeaves error:nil]];
+    }else {
+        [self.httpRequest appendPostData:[[tempDic JSONFragment] dataUsingEncoding: NSUTF8StringEncoding]];
+    }
+
+    [self.httpRequest setDidFailSelector:@selector(getInfoFail:)];
+    [self.httpRequest setDidFinishSelector:@selector(getInfoSuccess:)];
+    [self.httpRequest setDelegate:self];
+    [self.httpRequest startAsynchronous];
+    
+    
+    [self.view addSubview:[MyProgressHud getInstance]];
+    
+}
+-(void)getInfoFail:(ASIHTTPRequest *)request{
+    
+    [MyProgressHud remove];
+    
+    
+    NSError *error = [request error];
+    DLog(@"-------------------------------\n");
+    DLog(@"error:%@",error);
+    
+    NSString *temp = [NSString stringWithFormat:@"%@",error];
+    NSString *jap = @"NSLocalizedDescription=The request timed out";
+    NSRange foundObj=[temp rangeOfString:jap options:NSCaseInsensitiveSearch];
+    if(foundObj.length>0)
+    {
+        
+        
+        [[iToast makeText:@"网络连接超时，请稍后再试"] show];
+        return;
+        
+    }
+    
+    NSString *responseString = [request responseString];
+    
+    
+    DLog(@"%@\n",responseString);
+    
+    
+    
+}
+
+-(void)getInfoSuccess:(ASIHTTPRequest *)request{
+    
+    [MyProgressHud remove];
+    
+    // 当以文本形式读取返回内容时用这个方法
+    NSString *responseString = [request responseString];
+    
+    
+    DLog(@"%@\n",responseString);
+    
+    if ([request responseStatusCode]==200) {
+        
+        
+    }
+    
+    
+}
+
+
 
 
 

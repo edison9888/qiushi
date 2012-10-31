@@ -34,6 +34,7 @@ UITableViewDelegate
     int _iLixian;//离线用到的
     NSMutableArray *_lxArray;
     NSMutableArray *_lxImgArray;
+    BOOL isShowAd;//是否展示Ad
     
 }
 -(void) GetErr:(ASIHTTPRequest *)request;
@@ -82,10 +83,9 @@ UITableViewDelegate
     
     bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
     bannerView_.rootViewController = self;
-#ifdef DEBUG
-#else
+    bannerView_.delegate = self;
     [bannerView_ loadRequest:[GADRequest request]];
-#endif
+
     
     
     
@@ -98,9 +98,8 @@ UITableViewDelegate
     _tableView.delegate = self;
     DLog(@"==:%f",_tableView.frame.size.height);
     [self.view addSubview:self.tableView];
-    
-    
-    
+//    _tableView.tableHeaderView = bannerView_;
+    isShowAd = NO;
     
     //读取缓存100条(实际上99条)
     _cacheArray = [SqliteUtil queryDbTop];
@@ -135,6 +134,7 @@ UITableViewDelegate
 
 - (void)viewDidUnload
 {
+    bannerView_.delegate = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -161,12 +161,12 @@ UITableViewDelegate
         [self.tableView reloadData];
         return;
     }
-    
+
     //刷新一下AD
-#ifdef DEBUG
-#else
+//#ifdef DEBUG
+//#else
     [bannerView_ loadRequest:[GADRequest request]];
-#endif
+//#endif
     
     self.page++;
     NSURL *url;
@@ -386,6 +386,7 @@ UITableViewDelegate
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     static NSString *Contentidentifier = @"_ContentCELL";
     ContentCell *cell = [tableView dequeueReusableCellWithIdentifier:Contentidentifier];
     if (cell == nil){
@@ -457,29 +458,37 @@ UITableViewDelegate
 //自定义 头内容
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    
-    //是否显示广告
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    
-    if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
-        return bannerView_;
+    if (isShowAd == YES) {
+        //是否显示广告
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        
+        if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
+            return bannerView_;
+        }else{
+            return nil;
+        }
     }else{
         return nil;
     }
+    
    	
 }
 
 //自定义 头高度
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    //是否显示广告
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    
-    if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
-        return GAD_SIZE_320x50.height;;
-    }else{
+    if (isShowAd == YES) {
+        //是否显示广告
+        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+        
+        if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
+            return GAD_SIZE_320x50.height;;
+        }else{
+            return .0f;
+        }
+    }else
         return .0f;
-    }
+    
     
 }
 
@@ -640,6 +649,23 @@ UITableViewDelegate
     NSLog(@"预下载图片失败");
 }
 
+
+#pragma mark - delegate ad 
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView
+{
+    DLog(@"收到 Ad");
+    isShowAd = YES;
+    [self.tableView reloadData];
+}
+
+- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error
+{
+    isShowAd = NO;
+    [self.tableView reloadData];
+    DLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
+
+}
 
 
 
