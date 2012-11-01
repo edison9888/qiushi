@@ -19,6 +19,10 @@
 
 
 @interface ContentCell()
+{
+    UIImage *tagImage;
+    UIImage *saveImage;
+}
 -(void) BtnClicked:(id)sender;
 -(void) ImageBtnClicked:(id)sender;
 @end;
@@ -83,20 +87,21 @@
         [txtTag setTextColor:[UIColor brownColor]];
         [self addSubview:txtTag];
         
-        TagPhoto = [[UIImageView alloc]initWithFrame:CGRectMake(15, 200, 24, 24)];
-        [TagPhoto setImage:[UIImage imageNamed:@"icon_tag.png"]];
+        tagImage = [UIImage imageNamed:@"icon_tag.png"];
+        TagPhoto = [[UIImageView alloc]initWithFrame:CGRectMake(15, 200, tagImage.size.width, tagImage.size.height)];
+        [TagPhoto setImage:tagImage];
         [self addSubview:TagPhoto];
         
         UIImage *footimage = [UIImage imageNamed:@"block_foot_background.png"];
         footView = [[UIImageView alloc]initWithImage:footimage];
-        [footView setFrame:CGRectMake(0, txtContent.frame.size.height, 320, 15)];
+        [footView setFrame:CGRectMake(0, txtContent.frame.size.height, footimage.size.width, footimage.size.height)];
         [self addSubview:footView];
        
         //添加Button，顶，踩，评论  
         goodbtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [goodbtn setFrame:CGRectMake(10,txtContent.frame.size.height-30,70,32)];
-        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
-        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
+//        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
+//        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
         [goodbtn setUserInteractionEnabled:NO];
         [goodbtn setImage:[UIImage imageNamed:@"icon_for_good.png"] forState:UIControlStateNormal];
         [goodbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
@@ -112,8 +117,8 @@
         [badbtn setFrame:CGRectMake(90,txtContent.frame.size.height-30,70,32)];
         [badbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
         [badbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
-        [badbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
-        [badbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
+//        [badbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
+//        [badbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
         [badbtn setImage:[UIImage imageNamed:@"icon_for_bad.png"] forState:UIControlStateNormal];
         [badbtn setTitle:@"0" forState:UIControlStateNormal];
         [badbtn.titleLabel setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
@@ -124,8 +129,8 @@
         
         commentsbtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [commentsbtn setFrame:CGRectMake(170,txtContent.frame.size.height-30,70,32)];
-        [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
-        [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
+//        [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
+//        [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
         [commentsbtn setImage:[UIImage imageNamed:@"icon_for_comment.png"] forState:UIControlStateNormal];
         [commentsbtn setUserInteractionEnabled:NO];
         [commentsbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
@@ -137,11 +142,10 @@
         [commentsbtn setTag:FCOMMITE];
         [self addSubview:commentsbtn];
      
+        saveImage = [UIImage imageNamed:@"button_save.png"];
         _saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_saveBtn setFrame:CGRectMake(260,txtContent.frame.size.height-30,25,25)];
-//        [_saveBtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
-//        [_saveBtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
-        [_saveBtn setImage:[UIImage imageNamed:@"button_save.png"] forState:UIControlStateNormal];
+        [_saveBtn setFrame:CGRectMake(260,txtContent.frame.size.height-30,saveImage.size.width,saveImage.size.height)];
+        [_saveBtn setImage:saveImage forState:UIControlStateNormal];
         [_saveBtn setTag:FSave];
         [self addSubview:_saveBtn];
     }
@@ -190,9 +194,10 @@
     [goodbtn setFrame:CGRectMake(10,centerimageView.frame.size.height-28,70,32)];
     [badbtn setFrame:CGRectMake(90,centerimageView.frame.size.height-28,70,32)];
     [commentsbtn setFrame:CGRectMake(170,centerimageView.frame.size.height-28,70,32)];
-    [_saveBtn setFrame:CGRectMake(260, centerimageView.frame.size.height-28, 25, 25)];
+    [_saveBtn setFrame:CGRectMake(260, centerimageView.frame.size.height-28, saveImage.size.width,saveImage.size.height)];
     [txtTag setFrame:CGRectMake(40,centerimageView.frame.size.height-50,200, 30)];
-    [TagPhoto setFrame:CGRectMake(15,centerimageView.frame.size.height-50,24, 24)];
+    [TagPhoto setFrame:CGRectMake(15,centerimageView.frame.size.height-50,tagImage.size.width, tagImage.size.height)];
+
     
 }
 

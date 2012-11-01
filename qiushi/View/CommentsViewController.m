@@ -86,24 +86,24 @@ UITableViewDelegate
     
     
     
-    
-    UIImage* image= [UIImage imageNamed:@"comm_btn_top_n.png"];
-    UIImage* imagef= [UIImage imageNamed:@"comm_btn_top_s.png"];
-    CGRect frame_1= CGRectMake(0, 0, image.size.width, image.size.height);
-    UIButton* backButton= [[UIButton alloc] initWithFrame:frame_1];
-    [backButton setBackgroundImage:image forState:UIControlStateNormal];
-    [backButton setBackgroundImage:imagef forState:UIControlStateHighlighted];
-    [backButton setTitle:@"分享" forState:UIControlStateNormal];
-    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    backButton.titleLabel.font=[UIFont boldSystemFontOfSize:14];
-    [backButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    //定制自己的风格的  UIBarButtonItem
-    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    
-    
-    [self.navigationItem setRightBarButtonItem:someBarButtonItem];
-    
+#ifdef DEBUG
+//    UIImage* image= [UIImage imageNamed:@"comm_btn_top_n.png"];
+//    UIImage* imagef= [UIImage imageNamed:@"comm_btn_top_s.png"];
+//    CGRect frame_1= CGRectMake(0, 0, image.size.width, image.size.height);
+//    UIButton* backButton= [[UIButton alloc] initWithFrame:frame_1];
+//    [backButton setBackgroundImage:image forState:UIControlStateNormal];
+//    [backButton setBackgroundImage:imagef forState:UIControlStateHighlighted];
+//    [backButton setTitle:@"分享" forState:UIControlStateNormal];
+//    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    backButton.titleLabel.font=[UIFont boldSystemFontOfSize:14];
+//    [backButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    //定制自己的风格的  UIBarButtonItem
+//    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:backButton];
+//    
+//    
+//    [self.navigationItem setRightBarButtonItem:someBarButtonItem];
+#endif
     
     
     //糗事列表
@@ -367,11 +367,11 @@ UITableViewDelegate
         }
         //设置up ，down and commits
         [cell.goodbtn setTitle:[NSString stringWithFormat:@"%d",qs.upCount] forState:UIControlStateNormal];
-        [cell.goodbtn setEnabled:NO];
+//        [cell.goodbtn setEnabled:NO];
         [cell.badbtn setTitle:[NSString stringWithFormat:@"%d",qs.downCount] forState:UIControlStateNormal];
-        [cell.badbtn setEnabled:NO];
+//        [cell.badbtn setEnabled:NO];
         [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
-        [cell.commentsbtn setEnabled:NO];
+//        [cell.commentsbtn setEnabled:NO];
         
         
         [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];

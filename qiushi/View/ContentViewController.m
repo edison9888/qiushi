@@ -393,8 +393,7 @@ UITableViewDelegate
         //设置cell 样式
         cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Contentidentifier] ;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor clearColor];
-        cell.contentView.backgroundColor = [UIColor clearColor];
+        cell.opaque = YES;
         
     }
     
@@ -425,12 +424,15 @@ UITableViewDelegate
         cell.txtAnchor.text = @"匿名";
     }
     //设置标签
-    if (qs.tag!=nil && qs.tag!= @"")
+    if (qs.tag==nil || [qs.tag isEqualToString:@""] || qs.tag.length == 0)
     {
+        
         cell.txtTag.text = qs.tag;
+       
     }else
     {
         cell.txtTag.text = @"";
+       
     }
     //设置up ，down and commits
     [cell.goodbtn setTitle:[NSString stringWithFormat:@"%d",qs.upCount] forState:UIControlStateNormal];
@@ -440,7 +442,7 @@ UITableViewDelegate
     //发布时间
     cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.row+1,[self.list count]];//qs.fbTime;
     
-    [cell.saveBtn setTag:(indexPath.row +100) ];
+    [cell.saveBtn setTag:indexPath.row ];
     [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
     
     //自适应函数
@@ -607,7 +609,7 @@ UITableViewDelegate
 - (void)favoriteAction:(id)sender
 {
     UIButton *btn = (UIButton*)sender;
-    int index = ([btn tag] - 100) ;
+    int index = [btn tag] ;
     QiuShi *qs = [self.list objectAtIndex:index];
     
     DLog(@"%@",qs.qiushiID);

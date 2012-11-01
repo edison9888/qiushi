@@ -135,8 +135,9 @@
     
     QuadCurveMenu *menu = [[QuadCurveMenu alloc] initWithFrame:self.view.bounds menus:menus];
     menu.delegate = self;
-    [self.view addSubview:menu];
-    
+#ifdef DEBUG
+//    [self.view addSubview:menu];
+#endif
     
 }
 

@@ -33,8 +33,9 @@ static NSArray *dirPaths;
     
     // Get the documents directory
     dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
+    //"/var/mobile/Applications/BA5FF18A-440B-4C0E-ABEB-977E9F1B79CA/Documents"
     docsDir = [dirPaths objectAtIndex:0];
+    ///var/mobile/Applications/BA5FF18A-440B-4C0E-ABEB-977E9F1B79CA/Documents
     
     // Build the path to the database file
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"qiushis.db"]];

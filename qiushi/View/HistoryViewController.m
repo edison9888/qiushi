@@ -201,9 +201,11 @@ UIAlertViewDelegate
     [editButton setBackgroundImage:image1 forState:UIControlStateNormal];
     [editButton setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
     [editButton setTitle:@"清除" forState:UIControlStateNormal];
+//    [editButton setImage:[UIImage imageNamed:@"icon_bin.png"] forState:UIControlStateNormal];
     [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     editButton.titleLabel.font=[UIFont systemFontOfSize:12];
     [editButton addTarget:self action:@selector(cleanCache:) forControlEvents:UIControlEventTouchUpInside];
+    [editButton setShowsTouchWhenHighlighted:YES];
     //定制自己的风格的  UIBarButtonItem
     UIBarButtonItem* cleanBarButton = [[UIBarButtonItem alloc] initWithCustomView:editButton];
     
@@ -211,9 +213,11 @@ UIAlertViewDelegate
     listBtn.frame = backframe1;
     [listBtn setBackgroundImage:image1 forState:UIControlStateNormal];
     [listBtn setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
-    [listBtn setTitle:@"历史列表" forState:UIControlStateNormal];
+//    [listBtn setImage:[UIImage imageNamed:@"icon_list.png"] forState:UIControlStateNormal];
+    [listBtn setTitle:@"列表" forState:UIControlStateNormal];
     [listBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     listBtn.titleLabel.font=[UIFont systemFontOfSize:12];
+    [listBtn setShowsTouchWhenHighlighted:YES];
     [listBtn addTarget:self action:@selector(listAction:) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem* listBarButton = [[UIBarButtonItem alloc] initWithCustomView:listBtn];
@@ -396,7 +400,7 @@ UIAlertViewDelegate
     }else{
         AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
         CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
-        comments.qs = [self.list objectAtIndex:indexPath.row];
+        comments.qs = [self.list objectAtIndex:indexPath.section];
         [[delegate navController] pushViewController:comments animated:YES];
     }
     

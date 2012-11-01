@@ -72,10 +72,30 @@ static CGFloat progress = 0;
     UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
     self.navigationItem.leftBarButtonItem = someBarButtonItem;
     
-    UIButton *lxBtn = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    [lxBtn addTarget:self action:@selector(lixian:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem* lxItem = [[UIBarButtonItem alloc]initWithCustomView:lxBtn];
-    self.navigationItem.rightBarButtonItem = lxItem;
+   
+#ifdef DEBUG
+//    UIButton *lxBtn = [UIButton buttonWithType:UIButtonTypeInfoLight];
+//    [lxBtn addTarget:self action:@selector(lixian:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem* lxItem = [[UIBarButtonItem alloc]initWithCustomView:lxBtn];
+//    self.navigationItem.rightBarButtonItem = lxItem;
+#endif
+    
+    UIImage* image1= [UIImage imageNamed:@"comm_btn_top_n.png"];
+    UIImage* imagef1 = [UIImage imageNamed:@"comm_btn_top_s.png"];
+    CGRect backframe1= CGRectMake(0, 0, image1.size.width, image1.size.height);
+    UIButton* btn1= [UIButton buttonWithType:UIButtonTypeCustom];
+    btn1.frame = backframe1;
+    [btn1 setBackgroundImage:image1 forState:UIControlStateNormal];
+    [btn1 setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
+//    [btn1 setImage:[UIImage imageNamed:@"refresh.png"] forState:UIControlStateNormal];
+    [btn1 setTitle:@"刷新" forState:UIControlStateNormal];
+    [btn1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    btn1.titleLabel.font=[UIFont systemFontOfSize:12];
+    [btn1 setShowsTouchWhenHighlighted:YES];
+    [btn1 addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [btn1 setTag:kTagRefresh];
+    UIBarButtonItem* someBarButtonItem1 = [[UIBarButtonItem alloc] initWithCustomView:btn1];
+    self.navigationItem.rightBarButtonItem = someBarButtonItem1;
     
     
     statusBar = [[ProgressStatusBar alloc] init];
@@ -172,16 +192,17 @@ static CGFloat progress = 0;
  
     
 
-    _refreshBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *refreshImg = [UIImage imageNamed:@"refresh.png"];
-    [self.refreshBtn setFrame:CGRectMake(kDeviceWidth-refreshImg.size.width-15,
-                                         KDeviceHeight-refreshImg.size.height-44-20-15,
-                                         refreshImg.size.width,
-                                         refreshImg.size.height)];
-    [self.refreshBtn setBackgroundImage:refreshImg forState:UIControlStateNormal];
-    [self.refreshBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.refreshBtn setTag:kTagRefresh];
-    [self.view addSubview:_refreshBtn];
+//    _refreshBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    UIImage *refreshImg = [UIImage imageNamed:@"refresh.png"];
+//    [self.refreshBtn setFrame:CGRectMake(kDeviceWidth-refreshImg.size.width-15,
+//                                         KDeviceHeight-refreshImg.size.height-44-20-15,
+//                                         refreshImg.size.width,
+//                                         refreshImg.size.height)];
+//    [self.refreshBtn setBackgroundImage:refreshImg forState:UIControlStateNormal];
+//    [self.refreshBtn setImage:[UIImage imageNamed:@"icon_bg.png"] forState:UIControlStateNormal];
+//    [self.refreshBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.refreshBtn setTag:kTagRefresh];
+//    [self.view addSubview:_refreshBtn];
 
     
     

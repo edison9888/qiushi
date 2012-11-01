@@ -126,6 +126,76 @@
     
     //
 //    [self requestNetWork];
+//    [PFGeoPoint geoPointForCurrentLocationInBackground:^(PFGeoPoint *geoPoint, NSError *error) {
+//        if (!error) {
+//            NSLog(@"User is currently at %f, %f", geoPoint.latitude, geoPoint.longitude);
+//            
+//            [[PFUser currentUser] setObject:geoPoint forKey:@"currentLocation"];
+//            [[PFUser currentUser] saveInBackground];
+//        }
+//    }];
+    
+
+//    
+//    NSString * path = [[NSBundle mainBundle] pathForResource: @"wryh.ttf" ofType: @"zip"];
+////
+////    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+////    NSString *documentsDirectory = [paths lastObject];
+////    NSLog(@"%@",path);
+////    PFFile *file = [PFFile fileWithName:@"wryh.ttf.zip" contentsAtPath:path];
+//    
+//
+//    
+////    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+////        if (succeeded == YES) {
+////            DLog(@"upload ok");
+////        }else{
+////            DLog(@"%@",[error description]);
+////        }
+////    } progressBlock:^(int percentDone) {
+////        DLog(@"%d",percentDone);
+////    }];
+//    
+//    
+//
+//    
+//    PFObject *jobApplication = [PFObject objectWithClassName:@"Font"];
+////    [jobApplication setObject:file         forKey:@"wryh"];
+////    [jobApplication saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+////        if (succeeded == YES) {
+////            DLog(@"upload ok");
+////        }else{
+////            DLog(@"%@",[error description]);
+////        }
+////    }];
+//    
+//    PFFile *file = [jobApplication objectForKey:@"wryh"];
+////    [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+////        if (data != nil) {
+////            DLog(@"download ok");
+////        }else{
+////            DLog(@"%@",[error description]);
+////        }
+////    } progressBlock:^(int percentDone) {
+////         DLog(@"%d",percentDone);
+////    }];
+////    
+////    file getData
+//    NSData *resumeData = [file getData];
+//    DLog(@"%@",[resumeData description]);
+////
+////    DLog(@"%@",file.url);、、
+    
+    PFObject *jobApplication = [PFObject objectWithClassName:@"Font"];
+    [jobApplication setObject:@"wryh.ttf" forKey:@"name"];
+    [jobApplication setObject:@"http://www.baidupcs.com/file/wryh.ttf?fid=455211554-250528-877467126&time=1351752238&sign=FPDTAE-DCb740ccc5511e5e8fedcff06b081203-v28MTDOl3C%2FJnoxSsekTpDfAhlQ%3D&expires=8h&digest=98491135d6e47f30a34a8260ed665cf8" forKey:@"url"];
+    [jobApplication saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (succeeded == YES) {
+            DLog(@"upload ok");
+        }else{
+            DLog(@"%@",[error description]);
+        }
+    }];
     
     
 }
