@@ -119,9 +119,11 @@
             // Hooray! Let them use the app now.
             DLog(@"注册成功");
         } else {
+#ifdef DEBUG
             NSString *errorString = [[error userInfo] objectForKey:@"error"];
             // Show the errorString somewhere and let the user try again.
             DLog(@"注册失败，%@",errorString);
+#endif
         }
     }];
 

@@ -162,11 +162,9 @@ UITableViewDelegate
         return;
     }
 
-    //刷新一下AD
-//#ifdef DEBUG
-//#else
+
     [bannerView_ loadRequest:[GADRequest request]];
-//#endif
+
     
     self.page++;
     NSURL *url;

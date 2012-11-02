@@ -267,11 +267,12 @@
         
     }
     
+#ifdef DEBUG
     NSString *responseString = [request responseString];
     
     
     DLog(@"%@\n",responseString);
-    
+#endif
     
     
 }
@@ -279,7 +280,7 @@
 -(void)getInfoSuccess:(ASIHTTPRequest *)request{
     
     [MyProgressHud remove];
-    
+#ifdef DEBUG    
     // 当以文本形式读取返回内容时用这个方法
     NSString *responseString = [request responseString];
     
@@ -290,6 +291,8 @@
         
         
     }
+    
+#endif
     
     
 }
