@@ -7,18 +7,29 @@
 //
 
 #import "PurchaseInViewController.h"
-
+#import "iToast.h"
 @interface PurchaseInViewController ()
-
+{
+    NSMutableArray *_itemsArray;
+    NSMutableArray *_subItemsArray;
+    NSMutableArray *_valuesArray;
+}
+@property (nonatomic, retain) NSMutableArray *itemsArray;
+@property (nonatomic, retain) NSMutableArray *subItemsArray;
+@property (nonatomic, retain) NSMutableArray *valuesArray;
 @end
 
 @implementation PurchaseInViewController
+@synthesize itemsArray = _itemsArray;
+@synthesize subItemsArray = _subItemsArray;
+@synthesize valuesArray = _valuesArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.title = @"支持我们";
     }
     return self;
 }
@@ -27,6 +38,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    
     
     //---------------------
     //----监听购买结果
@@ -41,11 +54,20 @@
      IAP24p99,
      }buyCoinsTag;
      */
-    [self buy:IAP0p99];
+    _itemsArray = [[NSMutableArray alloc]initWithObjects:@"去除广告",@"赞助",@"赞助",@"赞助",@"恢复购买",@"捐赠", nil];
+    _subItemsArray = [[NSMutableArray alloc]initWithObjects:@"￥6",@"￥18",@"￥40",@"￥98",@"",@"", nil];
+    _valuesArray = [[NSMutableArray alloc]initWithObjects:
+                    [NSNumber numberWithInt:IAP0p99],
+                    [NSNumber numberWithInt:IAP1p99],
+                    [NSNumber numberWithInt:IAP4p99],
+                    [NSNumber numberWithInt:IAP9p99], nil];
+    
+   
 }
 
 - (void)viewDidUnload
 {
+    [self setMTableView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -59,6 +81,53 @@
 
 
 
+#pragma mark - TableView data
+- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return [self.itemsArray count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *Contentidentifier = @"_ContentCELL";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Contentidentifier];
+    if (!cell){
+        //设置cell 样式
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:Contentidentifier] ;
+        cell.backgroundColor = [UIColor clearColor];
+        cell.contentView.backgroundColor = [UIColor clearColor];
+        
+    }
+    
+    cell.textLabel.text = [self.itemsArray objectAtIndex:indexPath.row];
+    cell.detailTextLabel.text = [self.subItemsArray objectAtIndex:indexPath.row];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    
+    return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.row == 4) {
+        [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+    }else if (indexPath.row == 5){
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://me.alipay.com/xyxdasnjss"]];
+    }
+    else{
+        [self buy:[[_valuesArray objectAtIndex:indexPath.row] intValue]];
+    }
+    
+    
+}
+
+
 
 -(void)buy:(int)type
 {
@@ -70,13 +139,8 @@
     }
     else
     {
-        DLog(@"不允许程序内付费购买");
-        UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:@"Alert"
-                                                            message:@"You can‘t purchase in app store（不允许应用程序内购买）"
-                                                           delegate:nil cancelButtonTitle:NSLocalizedString(@"Close（关闭）",nil) otherButtonTitles:nil];
+        [[iToast makeText:@"不允许程序内付费购买" ] show];
         
-        [alerView show];
-
         
     }
 }
@@ -108,7 +172,7 @@
             break;
     }
     NSSet *nsset = [NSSet setWithArray:product];
-    SKProductsRequest *request=[[SKProductsRequest alloc] initWithProductIdentifiers: nsset];
+    request=[[SKProductsRequest alloc] initWithProductIdentifiers: nsset];
     request.delegate=self;
     [request start];
 
@@ -165,11 +229,9 @@
 //弹出错误信息
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error{
     DLog(@"-------弹出错误信息----------");
-    UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Alert",NULL) message:[error localizedDescription]
-                                                       delegate:nil cancelButtonTitle:NSLocalizedString(@"Close",nil) otherButtonTitles:nil];
-    [alerView show];
-//    [alerView release];
-}
+
+    [[iToast makeText:[error localizedDescription]] show];
+ }
 
 -(void) requestDidFinish:(SKRequest *)request
 {
@@ -199,22 +261,17 @@
             {
                 [self completeTransaction:transaction];
                 DLog(@"-----交易完成 --------");
-                UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:@"Alert"
-                                                                    message:@"Himi说你购买成功啦～娃哈哈"
-                                                                   delegate:nil cancelButtonTitle:NSLocalizedString(@"Close（关闭）",nil) otherButtonTitles:nil];
+                [[iToast makeText:@"购买成功 (ˇˍˇ）"] show];
                 
-                [alerView show];
+                
 
             }break;
             case SKPaymentTransactionStateFailed://交易失败
             {
                 [self failedTransaction:transaction];
                 DLog(@"-----交易失败 --------");
-                UIAlertView *alerView2 =  [[UIAlertView alloc] initWithTitle:@"Alert"
-                                                                     message:@"Himi说你购买失败，请重新尝试购买～"
-                                                                    delegate:nil cancelButtonTitle:NSLocalizedString(@"Close（关闭）",nil) otherButtonTitles:nil];
-                
-                [alerView2 show];
+
+                [[iToast makeText:@"购买失败,请重新尝试购买"] show];
 
             }break;
             case SKPaymentTransactionStateRestored://已经购买过该商品
@@ -280,6 +337,11 @@
 {
     NSLog(@" 交易恢复处理");
     
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setObject:[NSNumber numberWithBool:YES] forKey:@"isAdvanced"];
+    
+    [[iToast makeText:@"恢复购买成功..."] show];
+    
 }
 
 -(void) paymentQueue:(SKPaymentQueue *) paymentQueue restoreCompletedTransactionsFailedWithError:(NSError *)error{
@@ -326,6 +388,14 @@
 {
     [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];//解除监听
 //    [super dealloc];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    DLog(@"viewDidDisappear~~");
+    request.delegate = nil;
+    [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];//解除监听
+    
 }
 
 @end

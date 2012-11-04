@@ -64,7 +64,7 @@ UITableViewDelegate
     //是否显示广告
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     
-    if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
+    if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
         bannerView_ = [[GADBannerView alloc]
                        initWithFrame:CGRectMake(0.0,
                                                 KDeviceHeight -GAD_SIZE_320x50.height - 44 -20,
@@ -74,6 +74,8 @@ UITableViewDelegate
         
         bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
         bannerView_.rootViewController = self;
+
+        
         [self.view addSubview:bannerView_];//添加bannerview到你的试图
         [bannerView_ loadRequest:[GADRequest request]];
 
@@ -116,7 +118,7 @@ UITableViewDelegate
     [commentView addSubview:tableView];
     
     //是否显示广告
-    if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
+    if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
         //评论列表
         commentView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight-60-5-GAD_SIZE_320x50.height)];
     }else{

@@ -69,13 +69,7 @@
     //想摇就写在这～～～
     application.applicationSupportsShakeToEdit=YES;
     
-    //默认显示广告
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-//#ifdef DEBUG
-//    [ud setObject:[NSNumber numberWithBool:NO]  forKey:@"showAD"];
-//#else
-    [ud setObject:[NSNumber numberWithBool:YES]  forKey:@"showAD"];
-//#endif
+
     
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

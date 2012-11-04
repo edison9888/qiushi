@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GADBannerView.h"
 
 @class MainViewController;
 @class LeftController;
@@ -17,7 +16,6 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
-    GADBannerView *bannerView_;//实例变量 bannerView_是一个view
     
     MainViewController *_mainController;
     MyNavigationController *_navController;

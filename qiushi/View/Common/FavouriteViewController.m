@@ -77,18 +77,19 @@ UITableViewDelegate
    
     
     //ad
-    bannerView_ = [[GADBannerView alloc]
-                   initWithFrame:CGRectMake(0.0,
-                                            KDeviceHeight - GAD_SIZE_320x50.height,
-                                            GAD_SIZE_320x50.width,
-                                            GAD_SIZE_320x50.height)];//设置位置
-    
-    bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
-    bannerView_.rootViewController = self;
-//#ifdef DEBUG
-//#else
-    [bannerView_ loadRequest:[GADRequest request]];
-//#endif
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    if ([[ud objectForKey:@"isAdvanced"] boolValue] == false)
+    {
+        bannerView_ = [[GADBannerView alloc]
+                       initWithFrame:CGRectMake(0.0,
+                                                KDeviceHeight - GAD_SIZE_320x50.height,
+                                                GAD_SIZE_320x50.width,
+                                                GAD_SIZE_320x50.height)];//设置位置
+        
+        bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
+        bannerView_.rootViewController = self;
+        [bannerView_ loadRequest:[GADRequest request]];
+    }
     
     
     CGRect bounds = self.view.bounds;

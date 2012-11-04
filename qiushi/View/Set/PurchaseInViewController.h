@@ -22,11 +22,15 @@ enum{
     IAP1p99,
     IAP4p99,
     IAP9p99,
+    IAP24p99,
 }buyCoinsTag;
 
-@interface PurchaseInViewController : ViewController<SKProductsRequestDelegate,SKPaymentTransactionObserver>
+@interface PurchaseInViewController : ViewController<SKProductsRequestDelegate,SKPaymentTransactionObserver,UITableViewDataSource,UITableViewDelegate>
 {
+    SKProductsRequest *request;
     int buyType;
 }
+
+@property (unsafe_unretained, nonatomic) IBOutlet UITableView *mTableView;
 
 @end

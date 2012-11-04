@@ -12,7 +12,8 @@
 #import "SqliteUtil.h"
 #import "EGOCache.h"
 #import "IIViewDeckController.h"
-
+#import "FeedBackViewController.h"
+#import "PurchaseInViewController.h"
 @interface SetViewController ()
 {
     UIBarButtonItem *leftMenuBtn;
@@ -29,7 +30,6 @@
 @synthesize items = _items;
 @synthesize subItems = _subItems;
 @synthesize mTable = _mTable;
-@synthesize adSwitch = _adSwitch;
 @synthesize loadItems = _loadItems;
 @synthesize typeLoad = _typeLoad;
 
@@ -85,28 +85,18 @@
     [self.mTable setBackgroundView:nil];
     [self.view addSubview:_mTable];
     
-//    _items = [[NSMutableArray alloc]initWithObjects:@"显示广告",@"去给评个分吧",@"图片加载方式",@"清除缓存", nil];
-        _items = [[NSMutableArray alloc]initWithObjects:@"去给评个分吧",@"图片加载方式",@"清除缓存", nil];
+
+    _items = [[NSMutableArray alloc]initWithObjects:@"去给评个分吧",@"图片加载方式",@"清除缓存",@"意见反馈",@"升级", nil];
     _subItems = [[NSMutableArray alloc]initWithObjects:@"", nil];
     
-    
-    
-    _adSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-    [_adSwitch setOn:[[ud objectForKey:@"showAD"] boolValue] animated:NO];
-    [_adSwitch addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-    
-
-    
-    
-
+   
     
 }
 
 - (void)viewDidUnload
 {
     
-    self.adSwitch = nil;
-    self.items = nil;
+      self.items = nil;
     self.subItems = nil;
     self.mTable = nil;
     
@@ -114,15 +104,6 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
-
-
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 
 
 
@@ -151,22 +132,8 @@
    
     cell.textLabel.font = [UIFont fontWithName:@"微软雅黑" size:15.0];
     cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
-   
-    
-//    if (indexPath.row == 0) {
-//        
-//        cell.accessoryView = _adSwitch;
-//        
-//    }
-//    else{
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//    }
-//    
-//    if (indexPath.row == 2) {
-//        cell.detailTextLabel.text = [_loadItems objectAtIndex:_typeLoad];
-//    }
 
-         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   
     
     if (indexPath.row == 1) {
@@ -182,11 +149,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-//    if (indexPath.row == 0) {
-//        
-//        
-//        
-//    }else
+
         if (indexPath.row == 0){
         
         //多次跳转，没有下面的好
@@ -217,6 +180,14 @@
         [self cleanCache];
        
         
+    }else if (indexPath.row == 3){//意见反馈
+        
+        FeedBackViewController *feedback = [[FeedBackViewController alloc]initWithNibName:@"FeedBackViewController" bundle:nil];
+        [self.navigationController pushViewController:feedback animated:YES];
+        
+    }else if (indexPath.row == 4){//升级，ipa
+        PurchaseInViewController *purchase = [[PurchaseInViewController alloc]initWithNibName:@"PurchaseInViewController" bundle:nil];
+        [self.navigationController pushViewController:purchase animated:YES];
     }
 }
 
@@ -250,19 +221,6 @@
     [_mTable reloadData];
     
 
-}
-
-
-- (void) switchChanged:(id)sender
-{
-    UISwitch* switchControl = sender;
-    NSLog( @"The switch is %@", switchControl.on ? @"ON" : @"OFF" );
-    
-    
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    [ud setObject:[NSNumber numberWithBool:switchControl.on]  forKey:@"showAD"];
-    
-    
 }
 
 

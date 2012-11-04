@@ -75,6 +75,8 @@ UITableViewDelegate
     
     
     //ad
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    if ([[ud objectForKey:@"isAdvanced"] boolValue] == false) {
     bannerView_ = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0.0,
                                             KDeviceHeight - GAD_SIZE_320x50.height,
@@ -84,7 +86,13 @@ UITableViewDelegate
     bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
     bannerView_.rootViewController = self;
     bannerView_.delegate = self;
-    [bannerView_ loadRequest:[GADRequest request]];
+    
+    
+        [bannerView_ loadRequest:[GADRequest request]];
+    }
+    
+
+    
 
     
     
@@ -162,8 +170,11 @@ UITableViewDelegate
         return;
     }
 
-
-    [bannerView_ loadRequest:[GADRequest request]];
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    if ([[ud objectForKey:@"isAdvanced"] boolValue] == false) {
+        [bannerView_ loadRequest:[GADRequest request]];
+    }
+    
 
     
     self.page++;
@@ -462,7 +473,7 @@ UITableViewDelegate
         //是否显示广告
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         
-        if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
+        if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
             return bannerView_;
         }else{
             return nil;
@@ -481,7 +492,7 @@ UITableViewDelegate
         //是否显示广告
         NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
         
-        if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
+        if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
             return GAD_SIZE_320x50.height;;
         }else{
             return .0f;
