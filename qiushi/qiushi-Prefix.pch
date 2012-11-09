@@ -32,6 +32,8 @@
 #define kParseREST          @"IyqPK0lfFqhOUiHUl6TlmLLpwk0sRvVFiWKKKdLU"
 #define kParseMaster        @"66ASP48i8uPjrJ0GlfIEB1i3E7IicpW0CSJ3zhR9"
 
+#define kFlurryAppKey       @"2WMCGZK7RKGGNRQ2F6MX"
+
 
 #define kDeviceWidth [UIScreen mainScreen].bounds.size.width
 #define KDeviceHeight [UIScreen mainScreen].bounds.size.height

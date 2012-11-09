@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "13236ECA163FE15C005D4517"
-               BuildableName = "qiushi copy.app"
-               BlueprintName = "qiushi copy"
+               BlueprintIdentifier = "13C8434415E47EEC000B8A44"
+               BuildableName = "qiushi.app"
+               BlueprintName = "qiushi"
                ReferencedContainer = "container:qiushi.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,16 +32,16 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13236ECA163FE15C005D4517"
-            BuildableName = "qiushi copy.app"
-            BlueprintName = "qiushi copy"
+            BlueprintIdentifier = "13C8434415E47EEC000B8A44"
+            BuildableName = "qiushi.app"
+            BlueprintName = "qiushi"
             ReferencedContainer = "container:qiushi.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
    <LaunchAction
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
@@ -51,9 +51,9 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13236ECA163FE15C005D4517"
-            BuildableName = "qiushi copy.app"
-            BlueprintName = "qiushi copy"
+            BlueprintIdentifier = "13C8434415E47EEC000B8A44"
+            BuildableName = "qiushi.app"
+            BlueprintName = "qiushi"
             ReferencedContainer = "container:qiushi.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -69,9 +69,9 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "13236ECA163FE15C005D4517"
-            BuildableName = "qiushi copy.app"
-            BlueprintName = "qiushi copy"
+            BlueprintIdentifier = "13C8434415E47EEC000B8A44"
+            BuildableName = "qiushi.app"
+            BlueprintName = "qiushi"
             ReferencedContainer = "container:qiushi.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

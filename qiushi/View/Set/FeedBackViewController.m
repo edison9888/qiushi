@@ -10,6 +10,7 @@
 #import "iToast.h"
 #import <Parse/Parse.h>
 #import "MyProgressHud.h"
+#import "IsNetWorkUtil.h"
 @interface FeedBackViewController ()
 
 @end
@@ -106,21 +107,26 @@
     [self.mTextView resignFirstResponder];
     [self.mName resignFirstResponder];
     
+    if ([IsNetWorkUtil isNetWork1] == NO) {
+        return;
+    }
+    
     if ([self.mTextView.text isEqualToString:@"我们期待您的反馈并会快速处理."] || [self.mTextView.text isEqualToString:@""] || self.mTextView.text.length == 0) {
         [[iToast makeText:@"请输入反馈建议..."] show];
         return;
     }
     
-    
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     NSString *strName = self.mName.text;
     if (strName.length == 0) {
         strName = @"anonymous";
     }
-    PFObject *gameScore = [PFObject objectWithClassName:@"FeedBack"];
-    [gameScore setObject:self.mName.text forKey:@"contact"];
-    [gameScore setObject:self.mTextView.text forKey:@"content"];
+    PFObject *feedback = [PFObject objectWithClassName:@"FeedBack"];
+    [feedback setObject:self.mName.text forKey:@"contact"];
+    [feedback setObject:self.mTextView.text forKey:@"content"];
+    [feedback setObject:version forKey:@"version"];
     [self.view addSubview:[MyProgressHud getInstance]];
-    [gameScore saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    [feedback saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         [MyProgressHud remove];
         if (succeeded == YES) {
             [[iToast makeText:@"提交成功"] show];

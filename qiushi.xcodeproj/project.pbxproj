@@ -235,6 +235,7 @@
 		13D4BC1D15FD9A9900AD8B8B /* exploreIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D4BC1715FD9A9900AD8B8B /* exploreIcon@2x.png */; };
 		13D4BC1E15FD9A9900AD8B8B /* portfolioIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D4BC1815FD9A9900AD8B8B /* portfolioIcon@2x.png */; };
 		13D4BC2015FD9A9900AD8B8B /* skillsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D4BC1A15FD9A9900AD8B8B /* skillsIcon@2x.png */; };
+		13DBBE6C164A39FE00FDC85A /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13DBBE6B164A39FE00FDC85A /* libFlurry.a */; };
 		13F4C73815F1E9E900DD8451 /* iVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F4C73615F1E9E900DD8451 /* iVersion.m */; };
 		13F4C74715F1FFB500DD8451 /* iVersion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 13F4C74615F1FFB500DD8451 /* iVersion.bundle */; };
 		C9C06C391633A3FC003C0F96 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */; };
@@ -622,6 +623,8 @@
 		13D4BC1715FD9A9900AD8B8B /* exploreIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "exploreIcon@2x.png"; sourceTree = "<group>"; };
 		13D4BC1815FD9A9900AD8B8B /* portfolioIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "portfolioIcon@2x.png"; sourceTree = "<group>"; };
 		13D4BC1A15FD9A9900AD8B8B /* skillsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skillsIcon@2x.png"; sourceTree = "<group>"; };
+		13DBBE6A164A39FE00FDC85A /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		13DBBE6B164A39FE00FDC85A /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		13F4C73515F1E9E900DD8451 /* iVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iVersion.h; sourceTree = "<group>"; };
 		13F4C73615F1E9E900DD8451 /* iVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iVersion.m; sourceTree = "<group>"; };
 		13F4C74615F1FFB500DD8451 /* iVersion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iVersion.bundle; sourceTree = "<group>"; };
@@ -702,6 +705,7 @@
 				13C8434E15E47EEC000B8A44 /* CoreGraphics.framework in Frameworks */,
 				1344FAC8162FA11300EE6E7B /* libGoogleAdMobAds.a in Frameworks */,
 				137666F71641324C004A3DF8 /* Parse.framework in Frameworks */,
+				13DBBE6C164A39FE00FDC85A /* libFlurry.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -971,6 +975,7 @@
 		13C845E315E48AFE000B8A44 /* Frame */ = {
 			isa = PBXGroup;
 			children = (
+				13DBBE69164A39FE00FDC85A /* Flurry4.0.6 */,
 				137666F61641324C004A3DF8 /* Parse.framework */,
 				1344FABC162FA11300EE6E7B /* admob */,
 				137CF947162E7D6C00162D11 /* ViewDeck */,
@@ -1445,6 +1450,15 @@
 				13D4BC1A15FD9A9900AD8B8B /* skillsIcon@2x.png */,
 			);
 			path = DIYMenu;
+			sourceTree = "<group>";
+		};
+		13DBBE69164A39FE00FDC85A /* Flurry4.0.6 */ = {
+			isa = PBXGroup;
+			children = (
+				13DBBE6A164A39FE00FDC85A /* Flurry.h */,
+				13DBBE6B164A39FE00FDC85A /* libFlurry.a */,
+			);
+			path = Flurry4.0.6;
 			sourceTree = "<group>";
 		};
 		13F4C73315F1E9E900DD8451 /* iVersion */ = {
@@ -1950,6 +1964,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/qiushi/Frame/admob\"",
 					"\"$(SRCROOT)/qiushi/Frame/admob/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
+					"\"$(SRCROOT)/qiushi/Frame/Flurry4.0.6\"",
 				);
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",
@@ -1982,6 +1997,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/qiushi/Frame/admob\"",
 					"\"$(SRCROOT)/qiushi/Frame/admob/Add-ons/GoogleAnalyticsiOS_2.0beta3/Library\"",
+					"\"$(SRCROOT)/qiushi/Frame/Flurry4.0.6\"",
 				);
 				OTHER_LDFLAGS = (
 					"-fobjc-arc",

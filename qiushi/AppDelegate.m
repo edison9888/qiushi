@@ -17,6 +17,7 @@
 
 #import <Parse/Parse.h>
 #import "IIViewDeckController.h"
+#import "Flurry.h"
 
 
 
@@ -36,6 +37,9 @@
     [Parse setApplicationId:@"vXGdzFpCmfMoSWuUX27sLCGKhOfFAB9NHll59IUp"
                   clientKey:@"Axa79C9vZRUZBzI90IXbnCUxtPZDMsr64fLjVcLw"];
 
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    [Flurry setAppVersion:version];
+    [Flurry startSession:kFlurryAppKey];
     
     //    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
     //    [testObject setObject:@"bar111" forKey:@"foo"];
@@ -200,6 +204,11 @@
 void uncaughtExceptionHandler(NSException *exception) {
     NSLog(@"CRASH: %@", exception);
     NSLog(@"Stack Trace: %@", [exception callStackSymbols]);
+    
+    PFObject *testObject = [PFObject objectWithClassName:@"Exception"];
+    [testObject setObject:[NSString stringWithFormat:@"%@",exception] forKey:@"crash"];
+    [testObject setObject:[NSString stringWithFormat:@"%@",[exception callStackSymbols]] forKey:@"Stack Trace"];
+    [testObject saveInBackground];
     // Internal error reporting
 }
 
