@@ -690,10 +690,10 @@ static NSArray *dirPaths;
 
 
 #pragma mark - 获取缓存 1/2:获取缓存列表
-+ (NSMutableDictionary*)queryDbGroupByData
++ (NSMutableArray*)queryDbGroupByData
 {
     
-    NSMutableDictionary *temDic = [[NSMutableDictionary alloc]init];
+    NSMutableArray *temArray = [[NSMutableArray alloc]init];
     
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
@@ -701,7 +701,7 @@ static NSArray *dirPaths;
     if (sqlite3_open(dbpath, &qiushiDB) == SQLITE_OK)
     {
         
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT  FBTime,count(id) from QIUSHIS group by FBTIME"];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT  FBTime,count(id) from QIUSHIS group by FBTIME order by FBTime desc"];
         
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(qiushiDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -715,8 +715,9 @@ static NSArray *dirPaths;
                     char *field1 = (char *)sqlite3_column_text(statement, 1);
                     int mValue = field1 ? [[[NSString alloc] initWithUTF8String:field1] intValue] : 0;
                     
-                    
+                    NSMutableDictionary *temDic = [[NSMutableDictionary alloc]init];
                     [temDic setObject:[NSNumber numberWithInt:mValue] forKey:mKey];
+                    [temArray addObject:temDic];
                 } while (sqlite3_step(statement) == SQLITE_ROW);
                 
                 
@@ -732,12 +733,13 @@ static NSArray *dirPaths;
         sqlite3_close(qiushiDB);
     }
     
-    if (temDic.count > 0) {
+    if (temArray.count > 0) {
         
-        return temDic;
+        return temArray;
     }
     return nil;
 }
+
 
 #pragma mark - 获取缓存 2/2:获取某一天的缓存
 + (NSMutableArray*)queryDbByDate:(NSString *)date

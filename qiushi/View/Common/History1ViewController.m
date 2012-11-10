@@ -14,17 +14,13 @@
 #import "IIViewDeckController.h"
 #import "SqliteUtil.h"
 @interface History1ViewController ()
-{
-    NSMutableArray *_allKeys;
-    NSMutableArray *_allValues;
-}
-@property (nonatomic, retain) NSMutableArray *allKeys;
-@property (nonatomic, retain) NSMutableArray *allValues;
+
+
 @end
 
 @implementation History1ViewController
 @synthesize mTableView = _mTableView;
-@synthesize mDic = _mDic;
+@synthesize mArray = _mArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -85,14 +81,12 @@
     [self.view addSubview:[MyProgressHud getInstance]];
     dispatch_async(dispatch_get_current_queue(), ^{
         
-        _mDic = [SqliteUtil queryDbGroupByData];
-        _allKeys = [NSMutableArray arrayWithArray:_mDic.allKeys];
-        _allValues = [NSMutableArray arrayWithArray:_mDic.allValues];
+        _mArray = [SqliteUtil queryDbGroupByData];
         
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            if (_mDic.count == 0) {
+            if (_mArray.count == 0) {
                 [[iToast makeText:@"亲,暂时还没有缓存..."] show];
             }
             
@@ -177,7 +171,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self.allKeys count];
+    return [self.mArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -192,8 +186,10 @@
         
     }
     
-    cell.textLabel.text = [self.allKeys objectAtIndex:indexPath.row];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@条",[self.allValues objectAtIndex:indexPath.row]];
+    NSMutableDictionary *temDic = [self.mArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@",[temDic.allKeys objectAtIndex:0]];
+    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@条",[temDic.allValues objectAtIndex:0]];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
 
@@ -208,10 +204,11 @@
         [self.view addSubview:[MyProgressHud getInstance]];
         dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_async(newThread, ^{
-            [SqliteUtil delCacheByDate:[self.mDic.allKeys objectAtIndex:indexPath.row]];
-            [SqliteUtil delCacheCommentsByDate:[self.mDic.allKeys objectAtIndex:indexPath.row]];
-            [self.allKeys removeObjectAtIndex:indexPath.row];
-            [self.allValues removeObjectAtIndex:indexPath.row];
+            
+            NSMutableDictionary *temDic = [self.mArray objectAtIndex:indexPath.row];
+            [SqliteUtil delCacheByDate:[temDic.allKeys objectAtIndex:0]];
+            [SqliteUtil delCacheCommentsByDate:[temDic.allKeys objectAtIndex:0]];
+            [self.mArray removeObjectAtIndex:indexPath.row];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MyProgressHud remove];
@@ -232,7 +229,8 @@
         [self.viewDeckController closeLeftView];
     }else{
         HistoryViewController *history = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
-        history.mDate = [self.mDic.allKeys objectAtIndex:indexPath.row];
+        NSMutableDictionary *temDic = [self.mArray objectAtIndex:indexPath.row];
+        history.mDate = [NSString stringWithFormat:@"%@",[temDic.allKeys objectAtIndex:0]];
         [self.navigationController pushViewController:history animated:YES];
     }
 

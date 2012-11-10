@@ -32,7 +32,7 @@
 + (BOOL)autoDelNoSave;
 + (NSMutableArray*)queryDbTop;//查询最新的100条
 + (BOOL) deleteData:(NSString*)qiushiid;
-+ (NSMutableDictionary*)queryDbGroupByData;
++ (NSMutableArray*)queryDbGroupByData;
 + (NSMutableArray*)queryDbByDate:(NSString *)date;
 + (BOOL)delCacheByDate:(NSString*)date;//删除某一天的
 + (void)saveCommentWithArray:(NSMutableArray*)commentArray;//保存评论

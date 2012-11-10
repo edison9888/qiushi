@@ -14,9 +14,9 @@ UITableViewDataSource,
 UITableViewDelegate
 >
 {
-    NSMutableDictionary *_mDic;
+    NSMutableArray *_mArray;
 }
 @property (unsafe_unretained, nonatomic) IBOutlet UITableView *mTableView;
-@property (nonatomic, retain) NSMutableDictionary *mDic;
+@property (nonatomic, retain) NSMutableArray *mArray;
 
 @end
