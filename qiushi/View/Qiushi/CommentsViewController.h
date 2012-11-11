@@ -36,6 +36,10 @@
    
     
     SHSShareViewController *_shareView;
+    
+    NSMutableArray *_qsList;
+    int _index;
+    BOOL _isHidden;//是否隐藏 cell三个按钮;正常时显示;收藏/缓存 时,不显示
 }
 @property (nonatomic,retain) UITableView *commentView;
 @property (nonatomic,retain) UITableView *tableView;
@@ -43,6 +47,9 @@
 @property (nonatomic,retain) ASIHTTPRequest *asiRequest;
 @property (nonatomic,retain) QiuShi *qs;
 @property (nonatomic,retain) SHSShareViewController *shareView;
+@property (retain,nonatomic) NSMutableArray *qsList;
+@property (nonatomic, assign) int index;
+@property (nonatomic, assign) BOOL isHidden;
 -(CGFloat) getTheHeight;
 -(CGFloat) getTheCellHeight:(int) row;
 @end

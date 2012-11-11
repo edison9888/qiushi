@@ -291,9 +291,12 @@ UITableViewDelegate
         cell.txtTag.text = @"";
     }
     //设置up ，down and commits
-    [cell.goodbtn setTitle:[NSString stringWithFormat:@"%d",qs.upCount] forState:UIControlStateNormal];
-    [cell.badbtn setTitle:[NSString stringWithFormat:@"%d",qs.downCount] forState:UIControlStateNormal];
-    [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
+//    [cell.goodbtn setTitle:[NSString stringWithFormat:@"%d",qs.upCount] forState:UIControlStateNormal];
+//    [cell.badbtn setTitle:[NSString stringWithFormat:@"%d",qs.downCount] forState:UIControlStateNormal];
+//    [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
+    [cell.goodbtn setHidden:YES];
+    [cell.badbtn setHidden:YES];
+    [cell.commentsbtn setHidden:YES];
     
     //发布时间
     cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.row+1,[self.list count]];//qs.fbTime;
@@ -356,6 +359,7 @@ UITableViewDelegate
         AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
         CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
         comments.qs = [self.list objectAtIndex:indexPath.row];
+        comments.isHidden = YES;
         [[delegate navController] pushViewController:comments animated:YES];
     }
 

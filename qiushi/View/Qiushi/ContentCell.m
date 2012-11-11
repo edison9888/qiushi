@@ -102,7 +102,7 @@
         [goodbtn setFrame:CGRectMake(10,txtContent.frame.size.height-30,70,32)];
 //        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
 //        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
-        [goodbtn setUserInteractionEnabled:NO];
+//        [goodbtn setUserInteractionEnabled:NO];
         [goodbtn setImage:[UIImage imageNamed:@"icon_for_good.png"] forState:UIControlStateNormal];
         [goodbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
         [goodbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
@@ -110,7 +110,8 @@
         [goodbtn.titleLabel setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
         [goodbtn.titleLabel setTextAlignment:UITextAlignmentRight];
         [goodbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//        [goodbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [goodbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [goodbtn setTag:FGOOD];
         [self addSubview:goodbtn];
         
         badbtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -123,8 +124,9 @@
         [badbtn setTitle:@"0" forState:UIControlStateNormal];
         [badbtn.titleLabel setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
         [badbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [badbtn setUserInteractionEnabled:NO];
+//        [badbtn setUserInteractionEnabled:NO];
         [badbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [badbtn setTag:FBAD];
         [self addSubview:badbtn];
         
         commentsbtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -132,7 +134,7 @@
 //        [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
 //        [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
         [commentsbtn setImage:[UIImage imageNamed:@"icon_for_comment.png"] forState:UIControlStateNormal];
-        [commentsbtn setUserInteractionEnabled:NO];
+//        [commentsbtn setUserInteractionEnabled:NO];
         [commentsbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
         [commentsbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
         [commentsbtn.titleLabel setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
@@ -225,11 +227,18 @@
     switch (btn.tag) {
         case FGOOD:    //顶
         {
-            
+//            NSString *str = btn.currentTitle ;
+//            
+//            int i = [str intValue];
+//            i += 1;
+//            [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
         }break;
         case FBAD:     //踩 
         {
-            
+//            NSString *str = btn.currentTitle ;
+//            int i = [str intValue];
+//            i -= 1;
+//            [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
         }break;
         case FCOMMITE: //评论 
         {

@@ -14,6 +14,8 @@
 #import "DIYMenuOptions.h"
 #import "IIViewDeckController.h"
 #import "iToast.h"
+#import "ContentViewController.h"
+#import "PullingRefreshTableView.h"
 
 
 #define kTagMenu        101
@@ -245,7 +247,9 @@ static CGFloat progress = 0;
 - (void)viewWillAppear:(BOOL)animated
 {
     DLog("viewWillAppear");
+    [self.m_contentView.tableView reloadData];
     [super viewWillAppear:animated];
+    
 }
 
 

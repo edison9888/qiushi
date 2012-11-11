@@ -39,8 +39,7 @@ UITableViewDelegate
 }
 -(void) GetErr:(ASIHTTPRequest *)request;
 -(void) GetResult:(ASIHTTPRequest *)request;
-@property (retain,nonatomic) PullingRefreshTableView *tableView;
-@property (retain,nonatomic) NSMutableArray *list;
+
 @property (nonatomic) BOOL refreshing;
 @property (assign,nonatomic) NSInteger page;
 @property (nonatomic, assign) int iLixian;
@@ -156,6 +155,11 @@ UITableViewDelegate
 {
     //    NSLog(@"dealloc content");
     self.asiRequest.delegate = nil;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.tableView reloadData];
 }
 
 #pragma mark - Your actions
@@ -454,6 +458,19 @@ UITableViewDelegate
     [cell.saveBtn setTag:indexPath.row ];
     [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
     
+
+        [cell.commentsbtn setTag:indexPath.row];
+        
+        [cell.commentsbtn addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell.goodbtn setTag:indexPath.row];
+        [cell.goodbtn addTarget:self action:@selector(goodClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell.badbtn setTag:indexPath.row];
+        [cell.badbtn addTarget:self action:@selector(badClick:) forControlEvents:UIControlEventTouchUpInside];
+
+    //        [cell.badbtn addTarget:self action:@selector(updateSumAction:) forControlEvents:UIControlEventTouchUpInside];
+    
     //自适应函数
     [cell resizeTheHeight:kTypeMain];
     
@@ -535,6 +552,8 @@ UITableViewDelegate
         AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
         CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
         comments.qs = [self.list objectAtIndex:indexPath.row];
+        comments.qsList = self.list;
+        comments.index = indexPath.row;
         [[delegate navController] pushViewController:comments animated:YES];
     }
     
@@ -626,6 +645,55 @@ UITableViewDelegate
     
     [[iToast makeText:@"已添加到收藏..."] show];
 }
+
+
+- (void)commentAction:(id)sender
+{
+    UIButton *btn = (UIButton*)sender;
+    int index = [btn tag] ;
+    
+    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
+    comments.qs = [self.list objectAtIndex:index];
+    comments.qsList = self.list;
+    comments.index = index;
+    [[delegate navController] pushViewController:comments animated:YES];
+    
+    
+}
+
+- (void) goodClick:(id)sender
+{
+    UIButton *btn = (UIButton*)sender;
+    int tag = [btn tag] ;
+    
+    NSString *str = btn.currentTitle ;
+    
+    int i = [str intValue];
+    i += 1;
+    [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
+    
+    QiuShi *qs = [self.list objectAtIndex:tag];
+    qs.upCount = i;
+    [self.list replaceObjectAtIndex:tag withObject:qs];
+}
+
+- (void) badClick:(id)sender
+{
+    UIButton *btn = (UIButton*)sender;
+    int tag = [btn tag] ;
+    
+    NSString *str = btn.currentTitle ;
+    
+    int i = [str intValue];
+    i -= 1;
+    [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
+    
+    QiuShi *qs = [self.list objectAtIndex:tag];
+    qs.downCount = i;
+    [self.list replaceObjectAtIndex:tag withObject:qs];
+}
+
 
 
 - (void)getImageCache:(int)type
