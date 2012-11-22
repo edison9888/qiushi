@@ -8,6 +8,7 @@
 
 #import "PurchaseInViewController.h"
 #import "iToast.h"
+#import "IsNetWorkUtil.h"
 @interface PurchaseInViewController ()
 {
     NSMutableArray *_itemsArray;
@@ -115,6 +116,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if ([IsNetWorkUtil isNetWork1] == NO) {
+        return;
+    }
     if (indexPath.row == 4) {
         [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
     }else if (indexPath.row == 5){
@@ -261,8 +266,17 @@
             {
                 [self completeTransaction:transaction];
                 DLog(@"-----交易完成 --------");
-                [[iToast makeText:@"购买成功 (ˇˍˇ）"] show];
+//                [[iToast makeText:@"购买成功 (ˇˍˇ）"] show];
+                UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:@"感谢"//Thank You
+                                                                    message:@"您购买成功啦～"//Your purchase was successful.
+                                                                   delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",@"OK")
+                                                          otherButtonTitles:nil];
                 
+                [alerView show];
+                
+//                [self recordTransaction:transaction.originalTransaction];
+//                [self provideContent:transaction.originalTransaction.payment.productIdentifier];
+//                [self finishTransaction:transaction wasSuccessful:YES];
                 
 
             }break;
@@ -288,8 +302,8 @@
         }
     }
 }
+//当用户成功的购买了一个项目时，你的观察者就会为你提供刚购买的产品。
 - (void) completeTransaction: (SKPaymentTransaction *)transaction
-
 {
     DLog(@"-----completeTransaction--------");
     // Your application should implement these two methods.
@@ -299,25 +313,26 @@
         NSArray *tt = [product componentsSeparatedByString:@"."];
         NSString *bookid = [tt lastObject];
         if ([bookid length] > 0) {
+            ////    你的应用程序应该 实现这两个方法
             [self recordTransaction:bookid];
             [self provideContent:bookid];
         }
     }
     
     // Remove the transaction from the payment queue.
-    
+    // //从付费队列中删除交易
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
     
 }
 
 //记录交易
 -(void)recordTransaction:(NSString *)product{
-    DLog(@"-----记录交易--------");
+    DLog(@"-----记录交易--------Product:%@",product);
 }
 
 //处理下载内容
 -(void)provideContent:(NSString *)product{
-    DLog(@"-----下载--------");
+    DLog(@"-----下载--------Product:%@",product);
 }
 
 - (void) failedTransaction: (SKPaymentTransaction *)transaction{
