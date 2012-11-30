@@ -10,6 +10,7 @@
 #import "GADBannerView.h"
 
 @interface HistoryViewController : UIViewController
+<GADBannerViewDelegate>
 {
     GADBannerView *bannerView_;
     

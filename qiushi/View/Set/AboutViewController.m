@@ -67,21 +67,21 @@
     _name = [[UILabel alloc]initWithFrame:CGRectMake(0, 101, 320, 21)];
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     _name.text = [NSString stringWithFormat:@"糗事囧事 v%@",version];
-    _name.font = [UIFont fontWithName:@"微软雅黑" size:17];
+    _name.font = [UIFont fontWithName:kFont size:17];
     _name.textAlignment = UITextAlignmentCenter;
     _name.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_name];
     
     _copyright1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 346, 320, 21)];
     _copyright1.text = @"内容及版权归 糗事百科 所有";
-    _copyright1.font = [UIFont fontWithName:@"微软雅黑" size:15];
+    _copyright1.font = [UIFont fontWithName:kFont size:15];
     _copyright1.textAlignment = UITextAlignmentCenter;
     _copyright1.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_copyright1];
 
     _copyright2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 375, 320, 21)];
     _copyright2.text = @"个人仅作学习之用";
-    _copyright2.font = [UIFont fontWithName:@"微软雅黑" size:15];
+    _copyright2.font = [UIFont fontWithName:kFont size:15];
     _copyright2.textAlignment = UITextAlignmentCenter;
     _copyright2.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_copyright2];
@@ -150,8 +150,8 @@
     cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
     cell.detailTextLabel.text = [self.subItems objectAtIndex:indexPath.row];
     
-    cell.textLabel.font = [UIFont fontWithName:@"微软雅黑" size:15.0];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"微软雅黑" size:14.0];
+    cell.textLabel.font = [UIFont fontWithName:kFont size:15.0];
+    cell.detailTextLabel.font = [UIFont fontWithName:kFont size:14.0];
     
     return cell;
 }

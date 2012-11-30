@@ -28,14 +28,14 @@
         txtContent = [[UILabel alloc]init];
         [txtContent setBackgroundColor:[UIColor clearColor]];
         [txtContent setFrame:CGRectMake(20, 32, 280, 220)];
-        [txtContent setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
+        [txtContent setFont:[UIFont fontWithName:kFont size:14]];
         [txtContent setLineBreakMode:UILineBreakModeTailTruncation];
         [self addSubview:txtContent];
    
         
         txtAnchor = [[UILabel alloc]initWithFrame:CGRectMake(10,4, 200, 30)];
         [txtAnchor setText:@"匿名"];
-        [txtAnchor setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
+        [txtAnchor setFont:[UIFont fontWithName:kFont size:14]];
         [txtAnchor setBackgroundColor:[UIColor clearColor]];
         [txtAnchor setTextColor:[UIColor brownColor]];
         [self addSubview:txtAnchor];
@@ -43,7 +43,7 @@
         
         txtfloor = [[UILabel alloc]initWithFrame:CGRectMake(290,4, 50, 30)];
         [txtfloor setText:@"1"];
-        [txtfloor setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
+        [txtfloor setFont:[UIFont fontWithName:kFont size:14]];
         [txtfloor setBackgroundColor:[UIColor clearColor]];
         [txtfloor setTextColor:[UIColor brownColor]];
         [self addSubview:txtfloor];
@@ -65,7 +65,7 @@
 {
     CGFloat contentWidth = 280;  
 
-    UIFont *font = [UIFont fontWithName:@"微软雅黑" size:14];  
+    UIFont *font = [UIFont fontWithName:kFont size:14];  
     
     CGSize size = [txtContent.text sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];  
     

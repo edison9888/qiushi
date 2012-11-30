@@ -19,7 +19,7 @@
 
 //#define MENUFONT_FAMILY @"Helvetica-Neue"
 //#define MENUFONT_SIZE 32
-#define MENUFONT_FAMILY @"微软雅黑"
+#define MENUFONT_FAMILY kFont
 #define MENUFONT_SIZE 20
 
 #endif

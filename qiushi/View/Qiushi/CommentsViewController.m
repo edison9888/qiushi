@@ -156,7 +156,7 @@ UITableViewDelegate
     //    [addcomments setFrame:CGRectMake(20,2,280,28)];
     //    [addcomments setBackgroundImage:[[UIImage imageNamed:@"button_vote.png"]stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
     //    [addcomments setTitleColor:[UIColor brownColor] forState:UIControlStateNormal];
-    //    [addcomments.titleLabel setFont: [UIFont fontWithName:@"微软雅黑" size:14]];
+    //    [addcomments.titleLabel setFont: [UIFont fontWithName:kFont size:14]];
     //    [addcomments setTitle:@"点击发表评论" forState:UIControlStateNormal];
     //    [addcomments addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     //    [addcomments setTag:FAddComments];
@@ -489,7 +489,7 @@ UITableViewDelegate
 {
     CGFloat contentWidth = 280;
     // 设置字体
-    UIFont *font = [UIFont fontWithName:@"微软雅黑" size:14];
+    UIFont *font = [UIFont fontWithName:kFont size:14];
     // 显示的内容
     NSString *content = qs.content;
     // 计算出长宽
@@ -509,7 +509,7 @@ UITableViewDelegate
 {
     CGFloat contentWidth = 280;
     // 设置字体
-    UIFont *font = [UIFont fontWithName:@"微软雅黑" size:14];
+    UIFont *font = [UIFont fontWithName:kFont size:14];
     
     Comments *cm = [self.list objectAtIndex:row];
     // 显示的内容
@@ -565,6 +565,25 @@ UITableViewDelegate
 {
     //    NSLog(@"dealloc comments");
     self.asiRequest.delegate = nil;
+}
+
+
+- (void)adViewWillLeaveApplication:(GADBannerView *)adView
+{
+    DLog(@"adViewWillLeaveApplication");
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setObject:[NSNumber numberWithBool:YES] forKey:@"isAdvanced"];
+    
+    //实例化一个NSDateFormatter对象
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设定时间格式,这里可以设置成自己需要的格式
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    //用[NSDate date]可以获取系统当前时间
+    NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+    [ud setObject:currentDateStr forKey:@"lastClickAd"];
+    
+   commentView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight-60-5)];
 }
 
 

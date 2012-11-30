@@ -179,7 +179,7 @@
     
     
     cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
-    cell.textLabel.font = [UIFont fontWithName:@"微软雅黑" size:15.0];
+    cell.textLabel.font = [UIFont fontWithName:kFont size:15.0];
     [cell.textLabel setTextColor:[UIColor whiteColor]];
     
     

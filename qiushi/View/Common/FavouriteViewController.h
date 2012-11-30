@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-@class GADBannerView;
+#import "GADBannerView.h"
 
 @interface FavouriteViewController : UIViewController
+<GADBannerViewDelegate>
 {
     GADBannerView *bannerView_;
     

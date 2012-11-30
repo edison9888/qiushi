@@ -86,7 +86,7 @@
     [self.view addSubview:_mTable];
     
 
-    _items = [[NSMutableArray alloc]initWithObjects:@"去给评个分吧",@"图片加载方式",@"清除缓存",@"意见反馈",@"升级", nil];
+    _items = [[NSMutableArray alloc]initWithObjects:@"去给评个分吧",@"图片加载方式",@"清除缓存",@"意见反馈", nil];
     _subItems = [[NSMutableArray alloc]initWithObjects:@"", nil];
     
    
@@ -130,7 +130,7 @@
     cell.backgroundColor = [UIColor clearColor];
     cell.contentView.backgroundColor = [UIColor clearColor];
    
-    cell.textLabel.font = [UIFont fontWithName:@"微软雅黑" size:15.0];
+    cell.textLabel.font = [UIFont fontWithName:kFont size:15.0];
     cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

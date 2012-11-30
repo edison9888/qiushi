@@ -16,7 +16,8 @@
 #import "GADBannerView.h"
 
 @class SHSShareViewController;
-@interface CommentsViewController : UIViewController<UIGestureRecognizerDelegate>
+@interface CommentsViewController : UIViewController
+<UIGestureRecognizerDelegate,GADBannerViewDelegate>
 {
     //糗事内容的TableView
     UITableView *tableView;

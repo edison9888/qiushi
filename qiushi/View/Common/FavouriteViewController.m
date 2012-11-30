@@ -394,7 +394,7 @@ UITableViewDelegate
 {
     CGFloat contentWidth = 280;
     // 设置字体
-    UIFont *font = [UIFont fontWithName:@"微软雅黑" size:14];
+    UIFont *font = [UIFont fontWithName:kFont size:14];
     
     QiuShi *qs =[self.list objectAtIndex:row];
     // 显示的内容
@@ -451,7 +451,21 @@ UITableViewDelegate
     [[iToast makeText:@"已添加到收藏..."] show];
 }
 
-
+- (void)adViewWillLeaveApplication:(GADBannerView *)adView
+{
+    DLog(@"adViewWillLeaveApplication");
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setObject:[NSNumber numberWithBool:YES] forKey:@"isAdvanced"];
+    
+    //实例化一个NSDateFormatter对象
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设定时间格式,这里可以设置成自己需要的格式
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    //用[NSDate date]可以获取系统当前时间
+    NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+    [ud setObject:currentDateStr forKey:@"lastClickAd"];
+}
 
 
 

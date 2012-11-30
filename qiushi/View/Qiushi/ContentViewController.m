@@ -613,7 +613,7 @@ UITableViewDelegate
 {
     CGFloat contentWidth = 280;
     // 设置字体
-    UIFont *font = [UIFont fontWithName:@"微软雅黑" size:14];
+    UIFont *font = [UIFont fontWithName:kFont size:14];
     
     QiuShi *qs =[self.list objectAtIndex:row];
     // 显示的内容
@@ -746,6 +746,45 @@ UITableViewDelegate
 
 }
 
+- (void)adViewWillPresentScreen:(GADBannerView *)adView
+{
+    DLog(@"adViewWillPresentScreen");
+}
+
+// Sent just before dismissing a full screen view.
+- (void)adViewWillDismissScreen:(GADBannerView *)adView
+{
+    DLog(@"adViewWillDismissScreen");
+}
+
+// Sent just after dismissing a full screen view.  Use this opportunity to
+// restart anything you may have stopped as part of adViewWillPresentScreen:.
+- (void)adViewDidDismissScreen:(GADBannerView *)adView
+{
+    DLog(@"adViewDidDismissScreen");
+}
+
+// Sent just before the application will background or terminate because the
+// user clicked on an ad that will launch another application (such as the App
+// Store).  The normal UIApplicationDelegate methods, like
+// applicationDidEnterBackground:, will be called immediately before this.
+- (void)adViewWillLeaveApplication:(GADBannerView *)adView
+{
+    DLog(@"adViewWillLeaveApplication");
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setObject:[NSNumber numberWithBool:YES] forKey:@"isAdvanced"];
+    
+    //实例化一个NSDateFormatter对象
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设定时间格式,这里可以设置成自己需要的格式
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    //用[NSDate date]可以获取系统当前时间
+    NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+    [ud setObject:currentDateStr forKey:@"lastClickAd"];
+    
+    [self.tableView reloadData];
+}
 
 
 @end

@@ -157,13 +157,35 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    DLog(@"applicationWillEnterForeground");
+    
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    DLog(@"applicationDidBecomeActive");
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     application.applicationIconBadgeNumber = 0;//应用程序右上角的数字=0（消失）
     [[UIApplication sharedApplication] cancelAllLocalNotifications];//取消所有的通知
+    
+    
+    //实例化一个NSDateFormatter对象
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设定时间格式,这里可以设置成自己需要的格式
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    //用[NSDate date]可以获取系统当前时间
+    NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSString *lastClickAd  = [ud objectForKey:@"lastClickAd"];
+    
+    if ([currentDateStr intValue] > [lastClickAd intValue]) {
+        [ud setObject:[NSNumber numberWithBool:NO] forKey:@"isAdvanced"];
+    }
+    
+  
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

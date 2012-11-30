@@ -17,7 +17,8 @@
 #define kTagGetOffline   1002
 #define kTagGetOfflineOk    1003
 
-@interface ContentViewController : UIViewController<EGOImageButtonDelegate,GADBannerViewDelegate>
+@interface ContentViewController : UIViewController
+<EGOImageButtonDelegate,GADBannerViewDelegate>
 {
     //http 请求
     ASIHTTPRequest *_asiRequest;

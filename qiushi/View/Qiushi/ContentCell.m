@@ -49,7 +49,7 @@
         txtContent = [[UILabel alloc]init];
         [txtContent setBackgroundColor:[UIColor clearColor]];
         [txtContent setFrame:CGRectMake(20, 10, 280, 220)];
-        [txtContent setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
+        [txtContent setFont:[UIFont fontWithName:kFont size:14]];
         [txtContent setLineBreakMode:UILineBreakModeTailTruncation];
         [self addSubview:txtContent];
     
@@ -65,7 +65,7 @@
     
         txtAnchor = [[UILabel alloc]initWithFrame:CGRectMake(45,5, 240-45, 30)];
         [txtAnchor setText:@"匿名"];
-        [txtAnchor setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
+        [txtAnchor setFont:[UIFont fontWithName:kFont size:14]];
         [txtAnchor setBackgroundColor:[UIColor clearColor]];
         [txtAnchor setTextColor:[UIColor brownColor]];
         [self addSubview:txtAnchor];
@@ -73,7 +73,7 @@
         //发布时间
         txtTime = [[UILabel alloc]initWithFrame:CGRectMake(235, 5, 90, 32)];
 //        [txtTime setText:@"12-08-14 10:06"];
-        [txtTime setFont:[UIFont fontWithName:@"微软雅黑" size:10]];
+        [txtTime setFont:[UIFont fontWithName:kFont size:10]];
         [txtTime setBackgroundColor:[UIColor clearColor]];
         [txtTime setTextColor:[UIColor brownColor]];
         [self addSubview:txtTime];
@@ -82,7 +82,7 @@
         
         txtTag = [[UILabel alloc]initWithFrame:CGRectMake(45,200, 200, 30)];
         [txtTag setText:@""];
-        [txtTag setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
+        [txtTag setFont:[UIFont fontWithName:kFont size:14]];
         [txtTag setBackgroundColor:[UIColor clearColor]];
         [txtTag setTextColor:[UIColor brownColor]];
         [self addSubview:txtTag];
@@ -107,7 +107,7 @@
         [goodbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
         [goodbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
         [goodbtn setTitle:@"0" forState:UIControlStateNormal];
-        [goodbtn.titleLabel setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
+        [goodbtn.titleLabel setFont:[UIFont fontWithName:kFont size:14]];
         [goodbtn.titleLabel setTextAlignment:UITextAlignmentRight];
         [goodbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [goodbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -122,7 +122,7 @@
 //        [badbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
         [badbtn setImage:[UIImage imageNamed:@"icon_for_bad.png"] forState:UIControlStateNormal];
         [badbtn setTitle:@"0" forState:UIControlStateNormal];
-        [badbtn.titleLabel setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
+        [badbtn.titleLabel setFont:[UIFont fontWithName:kFont size:14]];
         [badbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //        [badbtn setUserInteractionEnabled:NO];
         [badbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -137,7 +137,7 @@
 //        [commentsbtn setUserInteractionEnabled:NO];
         [commentsbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
         [commentsbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
-        [commentsbtn.titleLabel setFont:[UIFont fontWithName:@"微软雅黑" size:14]];
+        [commentsbtn.titleLabel setFont:[UIFont fontWithName:kFont size:14]];
         [commentsbtn setTitle:@"0" forState:UIControlStateNormal];
         [commentsbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [commentsbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -165,7 +165,7 @@
     }
 
  
-    UIFont *font = [UIFont fontWithName:@"微软雅黑" size:14];
+    UIFont *font = [UIFont fontWithName:kFont size:14];
     
     CGSize size = CGSizeMake(0, 0);
     if (type == kTypeMain || type == kTypeHistory)
