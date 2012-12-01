@@ -78,7 +78,7 @@ UITableViewDelegate
     
     //ad
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    if ([[ud objectForKey:@"isAdvanced"] boolValue] == false)
+    if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO)
     {
         bannerView_ = [[GADBannerView alloc]
                        initWithFrame:CGRectMake(0.0,

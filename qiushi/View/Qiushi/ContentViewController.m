@@ -22,7 +22,8 @@
 #import "IIViewDeckController.h"
 
 
-@interface ContentViewController () <
+@interface ContentViewController ()
+<
 PullingRefreshTableViewDelegate,
 ASIHTTPRequestDelegate,
 UITableViewDataSource,
@@ -75,7 +76,7 @@ UITableViewDelegate
     
     //ad
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    if ([[ud objectForKey:@"isAdvanced"] boolValue] == false) {
+    if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
     bannerView_ = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0.0,
                                             KDeviceHeight - GAD_SIZE_320x50.height,
@@ -175,7 +176,7 @@ UITableViewDelegate
     }
 
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    if ([[ud objectForKey:@"isAdvanced"] boolValue] == false) {
+    if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
         [bannerView_ loadRequest:[GADRequest request]];
     }
     
