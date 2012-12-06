@@ -222,10 +222,15 @@ UIAlertViewDelegate
     
     UIBarButtonItem* listBarButton = [[UIBarButtonItem alloc] initWithCustomView:listBtn];
     
-    NSArray *btnArray = [NSArray arrayWithObjects:cleanBarButton,listBarButton, nil];
-    [self.navigationItem setRightBarButtonItems:btnArray];
     
+   
     
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
+        NSArray *btnArray = [NSArray arrayWithObjects:cleanBarButton,listBarButton, nil];
+        [self.navigationItem setRightBarButtonItems:btnArray];
+    }else {
+        [self.navigationItem setRightBarButtonItem:listBarButton];
+    }
     
 }
 
