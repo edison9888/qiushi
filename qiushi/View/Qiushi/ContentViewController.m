@@ -175,10 +175,10 @@ UITableViewDelegate
         return;
     }
 
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
-        [bannerView_ loadRequest:[GADRequest request]];
-    }
+//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+//    if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
+//        [bannerView_ loadRequest:[GADRequest request]];
+//    }
     
 
     
@@ -234,12 +234,16 @@ UITableViewDelegate
     [_asiRequest setDidFailSelector:@selector(GetErr:)];
     [_asiRequest setTag:kTagGetNormal];
     [_asiRequest startAsynchronous];
+//    [_asiRequest setTimeOutSeconds:25];
     
     
 }
 
 -(void) GetErr:(ASIHTTPRequest *)request
 {
+    if (self.page > 0) {
+        self.page--;
+    }
     
     
     self.refreshing = NO;

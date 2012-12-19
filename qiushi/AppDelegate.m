@@ -18,6 +18,7 @@
 #import <Parse/Parse.h>
 #import "IIViewDeckController.h"
 #import "Flurry.h"
+#import "DeviceInfo.h"
 
 
 
@@ -34,8 +35,8 @@
     
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
     
-    [Parse setApplicationId:@"vXGdzFpCmfMoSWuUX27sLCGKhOfFAB9NHll59IUp"
-                  clientKey:@"Axa79C9vZRUZBzI90IXbnCUxtPZDMsr64fLjVcLw"];
+    [Parse setApplicationId:kParseApplicationId
+                  clientKey:kParseClientKey];
 
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     [Flurry setAppVersion:version];
@@ -48,10 +49,12 @@
     
 //    [TestFlight takeOff:TestFlightTeamToken];
     
-    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
-     UIRemoteNotificationTypeAlert|
-     UIRemoteNotificationTypeSound];
+    [application registerForRemoteNotificationTypes:
+     UIRemoteNotificationTypeBadge
+     | UIRemoteNotificationTypeAlert
+     | UIRemoteNotificationTypeSound];
     
+    [self readPlist];
     
     
     //    //暂停2s
@@ -199,11 +202,9 @@
     [PFPush storeDeviceToken:deviceToken];
     // Subscribe to the global broadcast channel.
 //    [PFPush subscribeToChannelInBackground:@""];
-#ifdef DEBUG
-    [PFPush subscribeToChannelInBackground:kPushChannelDebug];
-#else
-    [PFPush subscribeToChannelInBackground:kPushChannelProduct];
-#endif
+
+    [PFPush subscribeToChannelInBackground:kPushChannel];
+
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -221,16 +222,149 @@
     }
 }
 
++ (AppDelegate *)sharedAppDelegate
+{
+    return (AppDelegate *) [UIApplication sharedApplication].delegate;
+}
+
+
+//寫入
+- (void)writePlist :(NSMutableDictionary *)dic
+{
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask,YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    //plist命名
+    NSString *filePath = [documentsDirectory stringByAppendingString:@"/excption.plist"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSMutableDictionary *plistDict;
+    
+    //檢查檔案是否存在，return false則創建
+    if ([fileManager fileExistsAtPath: filePath])
+    {
+        plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
+    }else{
+        plistDict = [[NSMutableDictionary alloc] init];
+    }
+    
+    [plistDict addEntriesFromDictionary:dic];
+    
+    //把剛追加之參數寫入file
+    if ([plistDict writeToFile:filePath atomically: YES]) {
+        
+        NSLog(@"writePlist success");
+    } else {
+        NSLog(@"writePlist fail");
+    }
+    
+    
+}
+
+//讀取
+- (void)readPlist
+{
+    
+    
+    //取得檔案路徑
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask,YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingString:@"/excption.plist"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSMutableDictionary *plistDict;
+    //檢查檔案是否存在
+    if ([fileManager fileExistsAtPath: filePath])
+    {
+        NSLog(@"File here.");
+        //存在的話把plist中的資料取出並寫入動態字典plistDict
+        plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
+        
+        
+        BOOL isException = [[plistDict objectForKey:@"Exception"] boolValue];
+        if (isException == YES) {
+            DLog(@"%@",[plistDict description]);
+            
+            NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+            [plistDict setObject:version forKey:@"SoftVersion"];
+            [plistDict setObject:kPushChannel forKey:@"channel"];
+            [plistDict setObject:[DeviceInfo deviceString] forKey:@"deviceInfo"];
+            [plistDict setObject:[DeviceInfo getOSVersion] forKey:@"OSVersion"];
+            
+            
+            PFObject *exception = [PFObject objectWithClassName:@"Exception" dictionary:plistDict];
+            [exception saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded) {
+                    [plistDict setObject:[NSNumber numberWithBool:NO] forKey:@"Exception"];
+                    //把剛追加之參數寫入file
+                    if ([plistDict writeToFile:filePath atomically: YES]) {
+                        
+                        NSLog(@"writePlist success");
+                    } else {
+                        NSLog(@"writePlist fail");
+                    }
+                }
+            }];
+            
+            
+            
+            
+        }
+        
+    }else{
+        NSLog(@"File not here.");
+        //        plistDict = [[NSMutableDictionary alloc] init];
+    }
+    
+    
+    
+    
+}
+
+
+
+
+
 // Via http://stackoverflow.com/questions/7841610/xcode-4-2-debug-doesnt-symbolicate-stack-call
 
 void uncaughtExceptionHandler(NSException *exception) {
     NSLog(@"CRASH: %@", exception);
     NSLog(@"Stack Trace: %@", [exception callStackSymbols]);
     
-    PFObject *testObject = [PFObject objectWithClassName:@"Exception"];
-    [testObject setObject:[NSString stringWithFormat:@"%@",exception] forKey:@"crash"];
-    [testObject setObject:[NSString stringWithFormat:@"%@",[exception callStackSymbols]] forKey:@"Stack Trace"];
-    [testObject saveInBackground];
+    NSMutableDictionary *temDic = [[NSMutableDictionary alloc]init];
+    
+    [temDic setObject:[NSNumber numberWithBool:YES] forKey:@"Exception"];
+    [temDic setObject:[NSString stringWithFormat:@"CRASH: %@",exception] forKey:@"Exception1"];
+    [temDic setObject:[NSString stringWithFormat:@"Stack Trace: %@", [exception callStackSymbols]] forKey:@"Exception2"];
+    
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask,YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    //plist命名
+    NSString *filePath = [documentsDirectory stringByAppendingString:@"/excption.plist"];
+    
+    DLog(@"%@",filePath);
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSMutableDictionary *plistDict;
+    
+    //檢查檔案是否存在，return false則創建
+    if ([fileManager fileExistsAtPath: filePath])
+    {
+        plistDict = [[NSMutableDictionary alloc] initWithContentsOfFile:filePath];
+    }else{
+        plistDict = [[NSMutableDictionary alloc] init];
+    }
+    
+    [plistDict addEntriesFromDictionary:temDic];
+    
+    //把剛追加之參數寫入file
+    if ([plistDict writeToFile:filePath atomically: YES]) {
+        
+        NSLog(@"writePlist success");
+    } else {
+        NSLog(@"writePlist fail");
+    }
     // Internal error reporting
 }
 

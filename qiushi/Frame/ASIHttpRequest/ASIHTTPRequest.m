@@ -5049,6 +5049,8 @@ static NSOperationQueue *sharedQueue = nil;
 @synthesize showAccurateProgress;
 @synthesize uploadBufferSize;
 @synthesize defaultResponseEncoding;
+//http://stackoverflow.com/questions/4317413/incorrect-nsstringencoding-value-0x0000-detected
+//http://stackoverflow.com/q/8251175/918764
 @synthesize responseEncoding;
 @synthesize allowCompressedResponse;
 @synthesize allowResumeForFileDownloads;

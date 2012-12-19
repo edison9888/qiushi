@@ -26,7 +26,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 
 @interface PhotoViewer()
 {
-    ATMHud *hud1;
+//    ATMHud *hud1;
 }
 -(void) BtnClicked:(id)sender;
 -(void)handlePan:(UIPanGestureRecognizer *)recognizer;
@@ -38,6 +38,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 @synthesize imageView = _imageView;
 @synthesize hud = _hud;
 @synthesize placeholderImage = _placeholderImage;
+
 
 
 #pragma mark - View lifecycle
@@ -92,14 +93,28 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
     [self.view addSubview:_imageView];
     
     
-    _hud = [[ATMHud alloc] initWithDelegate:self];
-    [self.view addSubview:_hud.view];
+//    _hud = [[ATMHud alloc] initWithDelegate:self];
+//    [self.view addSubview:_hud.view];
+//    
+//    CGRect mframe = _hud.mFrame;
+//    [_hud setMFrame:CGRectMake((320 - mframe.size.height) * .5, 80.0, mframe.size.width, mframe.size.height)];
+//    [_hud setCaption:@"亲,正在努力加载中..."];
+//    [_hud setProgress:0.08];
+//    [_hud show];
     
-    CGRect mframe = _hud.mFrame;
-    [_hud setMFrame:CGRectMake((320 - mframe.size.height) * .5, 80.0, mframe.size.width, mframe.size.height)];
-    [_hud setCaption:@"亲,正在努力加载中..."];
-    [_hud setProgress:0.08];
-    [_hud show];
+    _hud = [[MBProgressHUD alloc] initWithView:self.view];
+    
+    DLog(@"%@",NSStringFromCGRect(self.view.bounds));
+    
+	[self.view addSubview:_hud];
+	
+	// Set determinate mode
+	_hud.mode = MBProgressHUDModeDeterminate;
+	
+	_hud.delegate = self;
+	_hud.labelText = @"Loading";
+    [_hud show:YES];
+
     
     NSArray *array = [NSArray arrayWithObjects:@"rotate_left",@"rotate_right",@"zoom_in",@"zoom_out",nil];
     for (int i=0; i<[array count]; i++)
@@ -215,6 +230,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
     float progress = [[[notification userInfo] objectForKey:@"progress"] floatValue];
     NSLog(@"%f",progress);
     
+
     [_hud setProgress:progress];
     
     
@@ -378,8 +394,11 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
     [_imageView setFrame:rect];
     _imageView.center = self.view.center;
     
-    [_hud hideAfter:.5];
-    [_hud setProgress:0];
+//    [_hud hideAfter:.5];
+//    [_hud setProgress:0];
+
+    [_hud hide:YES afterDelay:.1];
+//    [_hud setProgress:0];
 }
 
 - (void)imageViewFailedToLoadImage:(EGOImageView*)imageview error:(NSError*)error
@@ -389,17 +408,19 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
     NSLog(@"Failed to load %@", imgUrl);
     
     
-    [_hud hide];
-    [_hud setProgress:0];
-	
-    
-    if (hud1 == nil) {
-        hud1 = [[ATMHud alloc]initWithDelegate:self];
-        [self.view addSubview:hud1.view];
-        [hud1 setCaption:@"网络连接失败"];
-    }
-    [hud1 show];
-    [hud1 hideAfter:1.0];
+//    [_hud hide];
+    [_hud setLabelText:@"网络连接失败"];
+    [_hud hide:YES afterDelay:1.0];
+//    [_hud setProgress:0];
+//
+//    
+//    if (hud1 == nil) {
+//        hud1 = [[ATMHud alloc]initWithDelegate:self];
+//        [self.view addSubview:hud1.view];
+//        [hud1 setCaption:@"网络连接失败"];
+//    }
+//    [hud1 show];
+//    [hud1 hideAfter:1.0];
     
 }
 

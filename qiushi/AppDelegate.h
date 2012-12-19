@@ -30,6 +30,6 @@
 @property (strong, nonatomic) MyNavigationController *navController;
 @property (strong, nonatomic) LeftController *leftController;
 @property (strong, nonatomic) UIView *lightView;
-
++ (AppDelegate *)sharedAppDelegate;
 
 @end

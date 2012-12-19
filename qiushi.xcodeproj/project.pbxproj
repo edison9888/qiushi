@@ -238,6 +238,7 @@
 		13DBBE6C164A39FE00FDC85A /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13DBBE6B164A39FE00FDC85A /* libFlurry.a */; };
 		13F4C73815F1E9E900DD8451 /* iVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F4C73615F1E9E900DD8451 /* iVersion.m */; };
 		13F4C74715F1FFB500DD8451 /* iVersion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 13F4C74615F1FFB500DD8451 /* iVersion.bundle */; };
+		C9A7948716820CEB00A3722E /* DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A7948616820CEB00A3722E /* DeviceInfo.m */; };
 		C9C06C391633A3FC003C0F96 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */; };
 		C9F63A941645213300E17ED2 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63A8F1645213300E17ED2 /* LoginViewController.m */; };
 		C9F63A951645213300E17ED2 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F63A901645213300E17ED2 /* LoginViewController.xib */; };
@@ -628,6 +629,8 @@
 		13F4C73515F1E9E900DD8451 /* iVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iVersion.h; sourceTree = "<group>"; };
 		13F4C73615F1E9E900DD8451 /* iVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iVersion.m; sourceTree = "<group>"; };
 		13F4C74615F1FFB500DD8451 /* iVersion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iVersion.bundle; sourceTree = "<group>"; };
+		C9A7948516820CEB00A3722E /* DeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceInfo.h; sourceTree = "<group>"; };
+		C9A7948616820CEB00A3722E /* DeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceInfo.m; sourceTree = "<group>"; };
 		C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		C9F63A8E1645213300E17ED2 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		C9F63A8F1645213300E17ED2 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -1061,6 +1064,8 @@
 				136A2E6515F5EE7D00E402D8 /* MyProgressHud.m */,
 				13601A8F163F7A4000B7F3B7 /* Utils.h */,
 				13601A90163F7A4000B7F3B7 /* Utils.m */,
+				C9A7948516820CEB00A3722E /* DeviceInfo.h */,
+				C9A7948616820CEB00A3722E /* DeviceInfo.m */,
 			);
 			name = Utils;
 			path = qiushi/Frame/Utils;
@@ -1852,6 +1857,7 @@
 				C9F63ADB1645214A00E17ED2 /* FeedBackViewController.m in Sources */,
 				C9F63ADD1645214A00E17ED2 /* PurchaseInViewController.m in Sources */,
 				C9F63ADF1645214A00E17ED2 /* SetViewController.m in Sources */,
+				C9A7948716820CEB00A3722E /* DeviceInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
