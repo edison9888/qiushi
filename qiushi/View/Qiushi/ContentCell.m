@@ -11,6 +11,8 @@
 #import "CommentsViewController.h"
 #import "PhotoViewer.h"
 #import "MyNavigationController.h"
+#import "EGOPhotoViewController.h"
+
 
 #define FGOOD       101
 #define FBAD        102
@@ -210,13 +212,17 @@
     
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    _photoview = [[PhotoViewer alloc]initWithNibName:@"PhotoViewer" bundle:nil];
-    _photoview.imgUrl = self.imgMidUrl;
-    DLog(@"self.imgMidUrl:%@",self.imgMidUrl);
-    _photoview.placeholderImage = [[self.imgPhoto imageView] image];
-    [[delegate navController] presentModalViewController:_photoview animated:YES];
+//    _photoview = [[PhotoViewer alloc]initWithNibName:@"PhotoViewer" bundle:nil];
+//    _photoview.imgUrl = self.imgMidUrl;
+//    DLog(@"self.imgMidUrl:%@",self.imgMidUrl);
+//    _photoview.placeholderImage = [[self.imgPhoto imageView] image];
+//    [[delegate navController] presentModalViewController:_photoview animated:YES];
 
+    EGOPhotoViewController *view = [[EGOPhotoViewController alloc]initWithImageURL:[NSURL URLWithString:self.imgMidUrl]];
+    [[delegate navController] pushViewController:view animated:YES];
 
+    
+//    [[delegate navController] presentModalViewController:view animated:YES];
     
     
 }

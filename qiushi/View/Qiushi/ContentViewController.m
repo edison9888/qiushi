@@ -14,7 +14,6 @@
 #import "SqliteUtil.h"
 #import "MyNavigationController.h"
 #import "AppDelegate.h"
-#import "PhotoViewer.h"
 #import "iToast.h"
 #import "IsNetWorkUtil.h"
 #import "JSON.h"
@@ -175,18 +174,10 @@ UITableViewDelegate
         return;
     }
 
-//    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-//    if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
-//        [bannerView_ loadRequest:[GADRequest request]];
-//    }
-    
-
     
     self.page++;
     NSURL *url;
-    
-    
-    
+
     if (Qiutype == QiuShiTypeTop) {
         switch (QiuTime) {
             case QiuShiTimeRandom:

@@ -123,10 +123,12 @@
     
     
     //状态栏 样式 黑色
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
     
     
     [self.navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navi_background.png"]];
+    
+
     
     //判断设备的版本
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 50000

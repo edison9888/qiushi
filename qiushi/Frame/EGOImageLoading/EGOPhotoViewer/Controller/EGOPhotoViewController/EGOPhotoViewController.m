@@ -25,6 +25,7 @@
 //
 
 #import "EGOPhotoViewController.h"
+#import "IIViewDeckController.h"
 
 @interface EGOPhotoViewController (Private)
 - (void)loadScrollViewWithPage:(NSInteger)page;
@@ -90,6 +91,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+//    UINavigationBar *navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+//    UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:@"有图有真相"];
+//    [navigationBar pushNavigationItem:navigationItem animated:NO];
+//    [self.view addSubview:navigationBar];
+//    
+//    UIImage* image= [UIImage imageNamed:@"navi_back_btn"];
+//    UIImage* imagef = [UIImage imageNamed:@"navi_back_f_btn"];
+//    CGRect backframe= CGRectMake(0, 0, image.size.width, image.size.height);
+//    UIButton* backButton= [UIButton buttonWithType:UIButtonTypeCustom];
+//    backButton.frame = backframe;
+//    [backButton setBackgroundImage:image forState:UIControlStateNormal];
+//    [backButton setBackgroundImage:imagef forState:UIControlStateHighlighted];
+//    [backButton addTarget:self action:@selector(fadeOut) forControlEvents:UIControlEventTouchUpInside];
+//    //定制自己的风格的  UIBarButtonItem
+//    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:backButton];
+//    navigationItem.leftBarButtonItem = someBarButtonItem;
+    
+    
+    
 	
 	self.view.backgroundColor = [UIColor blackColor];
 	self.wantsFullScreenLayout = YES;
@@ -1028,6 +1049,13 @@
 }
 
 
+-(void) fadeOut
+{
+    
+    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [[delegate navController] dismissModalViewControllerAnimated:YES];
+}
+
 #pragma mark -
 #pragma mark Memory
 
@@ -1041,6 +1069,21 @@
 	self.scrollView=nil;
 	_captionView=nil;
 	
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    if ([self.viewDeckController leftControllerIsOpen]==YES) {
+        [self.viewDeckController closeLeftView];
+    }
+    //解决本view与root 共同的手势 冲突
+    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
+}
+- (void)viewDidDisappear:(BOOL)animated
+{
+    
+    [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
+    
 }
 
 - (void)dealloc {

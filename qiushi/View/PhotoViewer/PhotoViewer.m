@@ -26,7 +26,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 
 @interface PhotoViewer()
 {
-//    ATMHud *hud1;
+
 }
 -(void) BtnClicked:(id)sender;
 -(void)handlePan:(UIPanGestureRecognizer *)recognizer;
@@ -51,7 +51,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
         // Custom initialization
         
         //设置背景颜色
-        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
+        [self.view setBackgroundColor:[UIColor blackColor]];
         
         roation = 0;
         scale = 1;
@@ -89,30 +89,15 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
     
     
     _imageView = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"thumb_pic.png"] delegate:self];
-    [_imageView setFrame:CGRectMake(5,44 + 50,310,310)];
+    [_imageView setFrame:self.view.bounds];
     [self.view addSubview:_imageView];
     
     
-//    _hud = [[ATMHud alloc] initWithDelegate:self];
-//    [self.view addSubview:_hud.view];
-//    
-//    CGRect mframe = _hud.mFrame;
-//    [_hud setMFrame:CGRectMake((320 - mframe.size.height) * .5, 80.0, mframe.size.width, mframe.size.height)];
-//    [_hud setCaption:@"亲,正在努力加载中..."];
-//    [_hud setProgress:0.08];
-//    [_hud show];
-    
+
     _hud = [[MBProgressHUD alloc] initWithView:self.view];
-    
-    DLog(@"%@",NSStringFromCGRect(self.view.bounds));
-    
 	[self.view addSubview:_hud];
-	
-	// Set determinate mode
 	_hud.mode = MBProgressHUDModeDeterminate;
-	
-	_hud.delegate = self;
-	_hud.labelText = @"Loading";
+	_hud.labelText = @"亲,正在努力加载中...";
     [_hud show:YES];
 
     
@@ -382,11 +367,11 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
     
     CGFloat w = 1.0f;
     CGFloat h = 1.0f;
-    if (imageview.image.size.width>300) {
-        w = imageview.image.size.width/300;
+    if (imageview.image.size.width>self.view.bounds.size.width) {
+        w = imageview.image.size.width/self.view.bounds.size.width;
     }
-    if (imageview.image.size.height>(480 - 44 - 20 - 40)) {
-        h = imageview.image.size.height/(480 - 44 - 20 - 40);
+    if (imageview.image.size.height>self.view.bounds.size.height) {
+        h = imageview.image.size.height/self.view.bounds.size.height;
     }
     CGFloat scole = w>h ? w:h;
     
@@ -394,11 +379,9 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
     [_imageView setFrame:rect];
     _imageView.center = self.view.center;
     
-//    [_hud hideAfter:.5];
-//    [_hud setProgress:0];
 
-    [_hud hide:YES afterDelay:.1];
-//    [_hud setProgress:0];
+    [_hud hide:YES afterDelay:0];
+    [_hud setProgress:0];
 }
 
 - (void)imageViewFailedToLoadImage:(EGOImageView*)imageview error:(NSError*)error
@@ -407,20 +390,11 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
     [self.imageView cancelImageLoad];
     NSLog(@"Failed to load %@", imgUrl);
     
-    
-//    [_hud hide];
+
     [_hud setLabelText:@"网络连接失败"];
-    [_hud hide:YES afterDelay:1.0];
-//    [_hud setProgress:0];
-//
-//    
-//    if (hud1 == nil) {
-//        hud1 = [[ATMHud alloc]initWithDelegate:self];
-//        [self.view addSubview:hud1.view];
-//        [hud1 setCaption:@"网络连接失败"];
-//    }
-//    [hud1 show];
-//    [hud1 hideAfter:1.0];
+    [_hud hide:YES];
+    [_hud setProgress:0];
+
     
 }
 
