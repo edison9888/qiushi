@@ -19,6 +19,7 @@
 #import "Utils.h"
 #import "IIViewDeckController.h"
 #import "NetManager.h"
+#import "Reachability.h"
 
 @interface ContentViewController ()
 <
@@ -146,8 +147,6 @@ RefreshDateNetDelegate
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
-
-
 
 
 #pragma mark - Your actions
@@ -491,6 +490,7 @@ RefreshDateNetDelegate
     DLog(@"收到 Ad");
     if (isShowAd == NO) {
         isShowAd = YES;
+        [bannerView_ setHidden:NO];
         CGRect bounds = self.view.bounds;
         bounds.size.height = KDeviceHeight - (44 + 20 + GAD_SIZE_320x50.height);
         bounds.origin.y = bounds.origin.y + GAD_SIZE_320x50.height;
@@ -510,12 +510,11 @@ RefreshDateNetDelegate
 {
     if (isShowAd == YES) {
         isShowAd = NO;
+        [bannerView_ setHidden:YES];
         CGRect bounds = self.view.bounds;
         bounds.size.height = KDeviceHeight - (44 + 20);
         [UIView animateWithDuration:.4 animations:^{
             [self.tableView setFrame:bounds];
-        } completion:^(BOOL finished) {
-            [bannerView removeFromSuperview];
         }];
     }
     
@@ -543,7 +542,15 @@ RefreshDateNetDelegate
     NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
     [ud setObject:currentDateStr forKey:@"lastClickAd"];
     
-    [self.tableView reloadData];
+    
+    CGRect bounds = self.view.bounds;
+    bounds.size.height = KDeviceHeight - (44 + 20);
+    [UIView animateWithDuration:.4 animations:^{
+        [self.tableView setFrame:bounds];
+        isShowAd = YES;
+        [bannerView_ removeFromSuperview];
+        
+    }];
 }
 
 

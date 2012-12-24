@@ -10,7 +10,6 @@
 
 #import "CommentsViewController.h"
 #import "QiuShi.h"
-#import "GADBannerView.h"
 #import "SqliteUtil.h"
 #import "MyNavigationController.h"
 #import "AppDelegate.h"
@@ -76,22 +75,7 @@ UIAlertViewDelegate
     
     
     
-    
-    //ad
-    bannerView_ = [[GADBannerView alloc]
-                   initWithFrame:CGRectMake(0.0,
-                                            KDeviceHeight - GAD_SIZE_320x50.height,
-                                            GAD_SIZE_320x50.width,
-                                            GAD_SIZE_320x50.height)];//设置位置
-    
-    bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
-    bannerView_.rootViewController = self;
-//#ifdef DEBUG
-//#else
-    [bannerView_ loadRequest:[GADRequest request]];
-//#endif
-    
-    
+        
     CGRect bounds = self.view.bounds;
     bounds.size.height = KDeviceHeight - (44 + 20);
     self.tableView = [[UITableView alloc] initWithFrame:bounds];
@@ -361,43 +345,6 @@ UIAlertViewDelegate
 {
     return [self getTheHeight:indexPath.section];
 }
-
-//自定义 头内容
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    
-    //是否显示广告
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    
-    if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
-        return bannerView_;
-    }else{
-        return nil;
-    }
-   	
-}
-
-
-
-//自定义 头高度
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 0) {
-        //是否显示广告
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        
-        if ([[ud objectForKey:@"showAD"] boolValue] == YES) {
-            return GAD_SIZE_320x50.height;;
-        }else{
-            return .0f;
-        }
-    }else{
-        return .0f;
-    }
-    
-    
-}
-
 
 #pragma mark - Table view delegate
 

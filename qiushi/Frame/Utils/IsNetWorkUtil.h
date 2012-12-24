@@ -16,6 +16,8 @@ enum internetType
 
 };
 
+
+
 @interface IsNetWorkUtil : NSObject
 
 + (void)initNetWorkStatus;

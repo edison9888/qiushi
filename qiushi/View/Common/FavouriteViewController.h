@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GADBannerView.h"
+
 
 @interface FavouriteViewController : UIViewController
-<GADBannerViewDelegate>
 {
-    GADBannerView *bannerView_;
+    
     
     NSMutableArray *_cacheArray;//保存到数据库里的缓存
     

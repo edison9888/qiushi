@@ -586,8 +586,6 @@ RefreshDateNetDelegate
         bounds.size.height = KDeviceHeight - (44 + 20);
         [UIView animateWithDuration:.4 animations:^{
             [self.commentView setFrame:bounds];
-        } completion:^(BOOL finished) {
-            [bannerView removeFromSuperview];
         }];
     }
     

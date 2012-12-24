@@ -17,11 +17,12 @@
 static BOOL isNetWork = YES;
 static int typeInternet = kTypeNO;
 
-+ (void)initNetWorkStatus{
++ (void) initNetWorkStatus
+{
     
     //判断是否联网
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityChanged1:)
+                                             selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
@@ -61,26 +62,17 @@ static int typeInternet = kTypeNO;
     
 }
 
-+ (void)reachabilityChanged1:(NSNotification*)note
++ (void)reachabilityChanged:(NSNotification*)note
 {
+    DLog(@"reachabilityChanged");
     Reachability * reach = [note object];
     
-    if([reach isReachable])
-    {
+
         
+    isNetWork = [reach isReachable];
+    
         
-        isNetWork = YES;
-        
-        
-    }
-    else
-    {
-        
-        
-        isNetWork = NO;
-        
-        
-    }
+   
     
     [self setInternetType:reach];
 }

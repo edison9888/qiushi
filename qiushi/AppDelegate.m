@@ -19,6 +19,7 @@
 #import "IIViewDeckController.h"
 #import "Flurry.h"
 #import "DeviceInfo.h"
+#import "IsNetWorkUtil.h"
 
 
 
@@ -53,6 +54,9 @@
      UIRemoteNotificationTypeBadge
      | UIRemoteNotificationTypeAlert
      | UIRemoteNotificationTypeSound];
+    
+    
+    [IsNetWorkUtil initNetWorkStatus];
     
     [self readPlist];
     
@@ -123,7 +127,7 @@
     
     
     //状态栏 样式 黑色
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
     
     
     [self.navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navi_background.png"]];

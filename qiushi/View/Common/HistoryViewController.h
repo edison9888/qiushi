@@ -10,9 +10,8 @@
 #import "GADBannerView.h"
 
 @interface HistoryViewController : UIViewController
-<GADBannerViewDelegate>
 {
-    GADBannerView *bannerView_;
+    
     
     NSMutableArray *_cacheArray;//保存到数据库里的缓存
     NSString *_mDate;//
