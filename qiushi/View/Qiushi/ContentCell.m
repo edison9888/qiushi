@@ -12,21 +12,21 @@
 #import "PhotoViewer.h"
 #import "MyNavigationController.h"
 #import "EGOPhotoViewController.h"
-
+#import "MyPhoto.h"
+#import "MyPhotoSource.h"
 
 #define FGOOD       101
 #define FBAD        102
 #define FCOMMITE    103
 #define FSave       104
-
+#define FImage      105
 
 @interface ContentCell()
 {
     UIImage *tagImage;
     UIImage *saveImage;
 }
--(void) BtnClicked:(id)sender;
--(void) ImageBtnClicked:(id)sender;
+
 @end;
 
 @implementation ContentCell
@@ -57,8 +57,8 @@
     
         imgPhoto = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"thumb_pic.png"] delegate:self];
         [imgPhoto setFrame:CGRectMake(0, 0, 0, 0)];
-       
-        [imgPhoto addTarget:self action:@selector(ImageBtnClicked:) forControlEvents:UIControlEventTouchUpInside];        
+        [imgPhoto setTag:FImage];
+        [imgPhoto addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:imgPhoto];
         
         headPhoto = [[UIImageView alloc]initWithFrame:CGRectMake(15, 5, 24, 24)];
@@ -74,7 +74,6 @@
         
         //发布时间
         txtTime = [[UILabel alloc]initWithFrame:CGRectMake(235, 5, 90, 32)];
-//        [txtTime setText:@"12-08-14 10:06"];
         [txtTime setFont:[UIFont fontWithName:kFont size:10]];
         [txtTime setBackgroundColor:[UIColor clearColor]];
         [txtTime setTextColor:[UIColor brownColor]];
@@ -102,9 +101,6 @@
         //添加Button，顶，踩，评论  
         goodbtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [goodbtn setFrame:CGRectMake(10,txtContent.frame.size.height-30,70,32)];
-//        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
-//        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
-//        [goodbtn setUserInteractionEnabled:NO];
         [goodbtn setImage:[UIImage imageNamed:@"icon_for_good.png"] forState:UIControlStateNormal];
         [goodbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
         [goodbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
@@ -112,7 +108,7 @@
         [goodbtn.titleLabel setFont:[UIFont fontWithName:kFont size:14]];
         [goodbtn.titleLabel setTextAlignment:UITextAlignmentRight];
         [goodbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [goodbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
         [goodbtn setTag:FGOOD];
         [self addSubview:goodbtn];
         
@@ -120,29 +116,25 @@
         [badbtn setFrame:CGRectMake(90,txtContent.frame.size.height-30,70,32)];
         [badbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
         [badbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
-//        [badbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
-//        [badbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
         [badbtn setImage:[UIImage imageNamed:@"icon_for_bad.png"] forState:UIControlStateNormal];
         [badbtn setTitle:@"0" forState:UIControlStateNormal];
         [badbtn.titleLabel setFont:[UIFont fontWithName:kFont size:14]];
         [badbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//        [badbtn setUserInteractionEnabled:NO];
-        [badbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [badbtn setTag:FBAD];
         [self addSubview:badbtn];
         
         commentsbtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [commentsbtn setFrame:CGRectMake(170,txtContent.frame.size.height-30,70,32)];
-//        [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
-//        [commentsbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
+
+
         [commentsbtn setImage:[UIImage imageNamed:@"icon_for_comment.png"] forState:UIControlStateNormal];
-//        [commentsbtn setUserInteractionEnabled:NO];
+
         [commentsbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
         [commentsbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
         [commentsbtn.titleLabel setFont:[UIFont fontWithName:kFont size:14]];
         [commentsbtn setTitle:@"0" forState:UIControlStateNormal];
         [commentsbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [commentsbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+       
         [commentsbtn setTag:FCOMMITE];
         [self addSubview:commentsbtn];
      
@@ -205,54 +197,46 @@
     
 }
 
--(void) ImageBtnClicked:(id)sender
-{
-    
-    
-    
-    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-//    _photoview = [[PhotoViewer alloc]initWithNibName:@"PhotoViewer" bundle:nil];
-//    _photoview.imgUrl = self.imgMidUrl;
-//    DLog(@"self.imgMidUrl:%@",self.imgMidUrl);
-//    _photoview.placeholderImage = [[self.imgPhoto imageView] image];
-//    [[delegate navController] presentModalViewController:_photoview animated:YES];
 
-    EGOPhotoViewController *view = [[EGOPhotoViewController alloc]initWithImageURL:[NSURL URLWithString:self.imgMidUrl]];
-    [[delegate navController] pushViewController:view animated:YES];
-
-    
-//    [[delegate navController] presentModalViewController:view animated:YES];
-    
-    
-}
-
--(void) BtnClicked:(id)sender
+-(void) btnClicked:(id)sender
 {
     UIButton *btn =(UIButton *) sender;
     switch (btn.tag) {
-        case FGOOD:    //顶
+        case FImage:
         {
-//            NSString *str = btn.currentTitle ;
-//            
-//            int i = [str intValue];
-//            i += 1;
-//            [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
-        }break;
-        case FBAD:     //踩 
-        {
-//            NSString *str = btn.currentTitle ;
-//            int i = [str intValue];
-//            i -= 1;
-//            [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
-        }break;
-        case FCOMMITE: //评论 
-        {
+            AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
             
-       
+            //    _photoview = [[PhotoViewer alloc]initWithNibName:@"PhotoViewer" bundle:nil];
+            //    _photoview.imgUrl = self.imgMidUrl;
+            //    DLog(@"self.imgMidUrl:%@",self.imgMidUrl);
+            //    _photoview.placeholderImage = [[self.imgPhoto imageView] image];
+            //    [[delegate navController] presentModalViewController:_photoview animated:YES];
+            
+            
+            MyPhoto *photo = [[MyPhoto alloc] initWithImageURL:[NSURL URLWithString:self.imgMidUrl] name:txtContent.text];
+           
+            MyPhotoSource *source = [[MyPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:photo, photo, photo, photo, photo, photo, photo, photo, nil]];
+            
+            EGOPhotoViewController *photoController = [[EGOPhotoViewController alloc] initWithPhotoSource:source];
+            
+            
+//            UINavigationController *navi = 
+            
+            [[delegate navController] pushViewController:photoController animated:YES];
+            
+            
+            
+//            EGOPhotoViewController *view = [[EGOPhotoViewController alloc]initWithImageURL:[NSURL URLWithString:self.imgMidUrl]];
+//    [[delegate navController] pushViewController:view animated:YES];
+            
+            
+            //    [[delegate navController] presentModalViewController:view animated:YES];
         }break;
+
         default:
-            break;
+        {
+            NSAssert(nil, @"button tag error");
+        }break;
     }
 }
 

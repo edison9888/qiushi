@@ -233,6 +233,9 @@
 		13DBBE6C164A39FE00FDC85A /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13DBBE6B164A39FE00FDC85A /* libFlurry.a */; };
 		13F4C73815F1E9E900DD8451 /* iVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F4C73615F1E9E900DD8451 /* iVersion.m */; };
 		13F4C74715F1FFB500DD8451 /* iVersion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 13F4C74615F1FFB500DD8451 /* iVersion.bundle */; };
+		C9214F5F16889E940063DD59 /* MyPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = C9214F5C16889E940063DD59 /* MyPhoto.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C9214F6016889E940063DD59 /* MyPhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C9214F5E16889E940063DD59 /* MyPhotoSource.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		C9214F681688A6DE0063DD59 /* MyTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9214F671688A6DE0063DD59 /* MyTableController.m */; };
 		C9A7948716820CEB00A3722E /* DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A7948616820CEB00A3722E /* DeviceInfo.m */; };
 		C9C06C391633A3FC003C0F96 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */; };
 		C9F63A941645213300E17ED2 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63A8F1645213300E17ED2 /* LoginViewController.m */; };
@@ -613,6 +616,12 @@
 		13F4C73515F1E9E900DD8451 /* iVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iVersion.h; sourceTree = "<group>"; };
 		13F4C73615F1E9E900DD8451 /* iVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iVersion.m; sourceTree = "<group>"; };
 		13F4C74615F1FFB500DD8451 /* iVersion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iVersion.bundle; sourceTree = "<group>"; };
+		C9214F5B16889E940063DD59 /* MyPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPhoto.h; sourceTree = "<group>"; };
+		C9214F5C16889E940063DD59 /* MyPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPhoto.m; sourceTree = "<group>"; };
+		C9214F5D16889E940063DD59 /* MyPhotoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPhotoSource.h; sourceTree = "<group>"; };
+		C9214F5E16889E940063DD59 /* MyPhotoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPhotoSource.m; sourceTree = "<group>"; };
+		C9214F661688A6DE0063DD59 /* MyTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyTableController.h; path = Test/MyTableController.h; sourceTree = "<group>"; };
+		C9214F671688A6DE0063DD59 /* MyTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyTableController.m; path = Test/MyTableController.m; sourceTree = "<group>"; };
 		C9A7948516820CEB00A3722E /* DeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceInfo.h; sourceTree = "<group>"; };
 		C9A7948616820CEB00A3722E /* DeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceInfo.m; sourceTree = "<group>"; };
 		C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -943,6 +952,7 @@
 		13C8446315E489F5000B8A44 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C9214F651688A6C00063DD59 /* test */,
 				C9F63AB81645214A00E17ED2 /* Qiushi */,
 				C9F63AC51645214A00E17ED2 /* Set */,
 				C9F63A981645213C00E17ED2 /* Common */,
@@ -1128,6 +1138,7 @@
 		13C8477E15E4E154000B8A44 /* EGOPhotoViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C9214F5A16889E940063DD59 /* Model */,
 				13C8477F15E4E154000B8A44 /* EGOPhotoViewController.h */,
 				13C8478015E4E154000B8A44 /* EGOPhotoViewController.m */,
 			);
@@ -1447,6 +1458,26 @@
 				13F4C73615F1E9E900DD8451 /* iVersion.m */,
 			);
 			path = iVersion;
+			sourceTree = "<group>";
+		};
+		C9214F5A16889E940063DD59 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C9214F5B16889E940063DD59 /* MyPhoto.h */,
+				C9214F5C16889E940063DD59 /* MyPhoto.m */,
+				C9214F5D16889E940063DD59 /* MyPhotoSource.h */,
+				C9214F5E16889E940063DD59 /* MyPhotoSource.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C9214F651688A6C00063DD59 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				C9214F661688A6DE0063DD59 /* MyTableController.h */,
+				C9214F671688A6DE0063DD59 /* MyTableController.m */,
+			);
+			name = test;
 			sourceTree = "<group>";
 		};
 		C9F63A8D1645213300E17ED2 /* Account */ = {
@@ -1826,6 +1857,9 @@
 				C9F63ADF1645214A00E17ED2 /* SetViewController.m in Sources */,
 				C9A7948716820CEB00A3722E /* DeviceInfo.m in Sources */,
 				13D1BBBC168825A30065A931 /* NetManager.m in Sources */,
+				C9214F5F16889E940063DD59 /* MyPhoto.m in Sources */,
+				C9214F6016889E940063DD59 /* MyPhotoSource.m in Sources */,
+				C9214F681688A6DE0063DD59 /* MyTableController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

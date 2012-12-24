@@ -18,6 +18,8 @@
 #import "History1ViewController.h"
 #import "IIViewDeckController.h"
 #import "LoginViewController.h"
+#import "MyTableController.h"
+
 
 @interface LeftController ()
 {
@@ -136,7 +138,7 @@
     QuadCurveMenu *menu = [[QuadCurveMenu alloc] initWithFrame:self.view.bounds menus:menus];
     menu.delegate = self;
 #ifdef DEBUG
-//    [self.view addSubview:menu];
+    [self.view addSubview:menu];
 #endif
     
 }
@@ -290,6 +292,13 @@
         LoginViewController *login = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
         [self.navController pushViewController:login animated:NO];
     }
+    else if (idx == 2)
+    {
+        MyTableController *my = [[MyTableController alloc]init];
+        [self.navController pushViewController:my animated:YES];
+    }
+    
+    
     [self.viewDeckController closeLeftViewAnimated:YES];
 }
 

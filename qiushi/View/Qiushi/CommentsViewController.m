@@ -248,6 +248,8 @@ RefreshDateNetDelegate
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
+    
     if ([self.viewDeckController leftControllerIsOpen]==YES) {
         [self.viewDeckController closeLeftView];
     }
@@ -256,7 +258,7 @@ RefreshDateNetDelegate
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
-    
+    [super viewDidDisappear:animated];
     [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
     
 }
