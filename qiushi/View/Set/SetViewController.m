@@ -245,9 +245,8 @@
             //          其中，第一个参数是标识队列的，第二个参数是用来定义队列的参数（目前不支持，因此传入NULL）。
             //            执行一个队列如下会异步执行传入的代码：dispatch_async(myQueue, ^{ [self doSomething]; });
             //            其中，首先传入之前创建的队列，然后提供由队列运行的代码块。
-            dispatch_queue_t m_queue = dispatch_get_current_queue();
-            
-            dispatch_async(m_queue, ^{
+            dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+            dispatch_async(newThread, ^{
                 [SqliteUtil delNoSave];
                 [SqliteUtil delAllComments];
                 EGOCache *cache = [[EGOCache alloc]init];

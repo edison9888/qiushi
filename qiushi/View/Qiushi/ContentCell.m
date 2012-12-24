@@ -144,7 +144,7 @@
         [commentsbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [commentsbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [commentsbtn setTag:FCOMMITE];
-//        [self addSubview:commentsbtn];
+        [self addSubview:commentsbtn];
      
         saveImage = [UIImage imageNamed:@"button_save.png"];
         _saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];

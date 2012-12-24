@@ -79,7 +79,8 @@
     
     //获取缓存
     [self.view addSubview:[MyProgressHud getInstance]];
-    dispatch_async(dispatch_get_current_queue(), ^{
+    dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0); 
+    dispatch_async(newThread, ^{
         
         _mArray = [SqliteUtil queryDbGroupByData];
         

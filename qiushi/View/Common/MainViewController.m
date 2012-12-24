@@ -282,7 +282,7 @@ static CGFloat progress = 0;
 //
 //    [self startOffline];
 
-    [m_contentView LoadDataForCache];
+//    [m_contentView LoadDataForCache];
 
 }
 

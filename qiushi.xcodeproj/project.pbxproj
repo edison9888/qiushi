@@ -210,6 +210,7 @@
 		13C8485215E4F96B000B8A44 /* SHSMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C8481E15E4F96B000B8A44 /* SHSMoreViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		13C8485315E4F96B000B8A44 /* SHSShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C8482015E4F96B000B8A44 /* SHSShareViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		13C8485F15E50778000B8A44 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13C8485E15E50778000B8A44 /* Icon@2x.png */; };
+		13D1BBBC168825A30065A931 /* NetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1BBBB168825A30065A931 /* NetManager.m */; };
 		13D4BBDD15F9BC9000AD8B8B /* imageviewer_return.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D4BBD315F9BC9000AD8B8B /* imageviewer_return.png */; };
 		13D4BBDE15F9BC9000AD8B8B /* imageviewer_save.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D4BBD415F9BC9000AD8B8B /* imageviewer_save.png */; };
 		13D4BBDF15F9BC9000AD8B8B /* imageviewer_toolbar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D4BBD515F9BC9000AD8B8B /* imageviewer_toolbar_background.png */; };
@@ -579,6 +580,8 @@
 		13C8481F15E4F96B000B8A44 /* SHSShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSShareViewController.h; sourceTree = "<group>"; };
 		13C8482015E4F96B000B8A44 /* SHSShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSShareViewController.m; sourceTree = "<group>"; };
 		13C8485E15E50778000B8A44 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		13D1BBBA168825A30065A931 /* NetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetManager.h; path = qiushi/Net/NetManager.h; sourceTree = "<group>"; };
+		13D1BBBB168825A30065A931 /* NetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetManager.m; path = qiushi/Net/NetManager.m; sourceTree = "<group>"; };
 		13D4BBD315F9BC9000AD8B8B /* imageviewer_return.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imageviewer_return.png; sourceTree = "<group>"; };
 		13D4BBD415F9BC9000AD8B8B /* imageviewer_save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imageviewer_save.png; sourceTree = "<group>"; };
 		13D4BBD515F9BC9000AD8B8B /* imageviewer_toolbar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imageviewer_toolbar_background.png; sourceTree = "<group>"; };
@@ -854,6 +857,7 @@
 		13C8433A15E47EEC000B8A44 = {
 			isa = PBXGroup;
 			children = (
+				13D1BBB4168824B30065A931 /* Net */,
 				C9C06C381633A3FC003C0F96 /* Default-568h@2x.png */,
 				1313DAB615F054B5002ACBB2 /* README.md */,
 				13C8436915E47F39000B8A44 /* Default.png */,
@@ -1371,6 +1375,15 @@
 			path = LoadingView;
 			sourceTree = "<group>";
 		};
+		13D1BBB4168824B30065A931 /* Net */ = {
+			isa = PBXGroup;
+			children = (
+				13D1BBBA168825A30065A931 /* NetManager.h */,
+				13D1BBBB168825A30065A931 /* NetManager.m */,
+			);
+			name = Net;
+			sourceTree = "<group>";
+		};
 		13D4BBD215F9BC9000AD8B8B /* PhotoViewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1812,6 +1825,7 @@
 				C9F63ADD1645214A00E17ED2 /* PurchaseInViewController.m in Sources */,
 				C9F63ADF1645214A00E17ED2 /* SetViewController.m in Sources */,
 				C9A7948716820CEB00A3722E /* DeviceInfo.m in Sources */,
+				13D1BBBC168825A30065A931 /* NetManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

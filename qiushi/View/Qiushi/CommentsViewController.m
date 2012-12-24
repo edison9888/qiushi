@@ -8,41 +8,49 @@
 
 #import "CommentsViewController.h"
 
-#import "JSON.h"
-#import "QiuShi.h"
 
+#import "QiuShi.h"
+#import "PullingRefreshTableView.h"
 #import "SHSShareViewController.h"
 #import "SqliteUtil.h"
 #import "iToast.h"
 #import "IIViewDeckController.h"
 #import "SqliteUtil.h"
-
+#import "IsNetWorkUtil.h"
+#import "NetManager.h"
 
 #define FShareBtn       101
 #define FBackBtn        102
 #define FAddComments    103
 
-@interface CommentsViewController () <ASIHTTPRequestDelegate,
+@interface CommentsViewController ()
+<PullingRefreshTableViewDelegate,
 UITableViewDataSource,
-UITableViewDelegate
+UITableViewDelegate,
+RefreshDateNetDelegate
 >
--(void) GetErr:(ASIHTTPRequest *)request;
--(void) GetResult:(ASIHTTPRequest *)request;
+{
+    BOOL isShowAd;//是否展示Ad
+}
+
 -(void) btnClicked:(id)sender;
 - (void)loadData;
 @property (nonatomic) BOOL refreshing;
+@property (assign,nonatomic) NSInteger page;
 @end
 
 @implementation CommentsViewController
 @synthesize refreshing = _refreshing;
-@synthesize asiRequest = _asiRequest;
 @synthesize list;
 @synthesize qs;
-@synthesize tableView,commentView;
+@synthesize tableView;
+@synthesize commentView = _commentView;
 @synthesize shareView = _shareView;
 @synthesize qsList = _qsList;
 @synthesize index = _index;
 @synthesize isHidden = _isHidden;
+@synthesize page = _page;
+@synthesize net = _net;
 
 
 
@@ -58,11 +66,7 @@ UITableViewDelegate
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib
-    
-    
-    
-    
-    //    NSLog(@"viewDidLoad comments");
+
     
     //是否显示广告
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -70,17 +74,15 @@ UITableViewDelegate
     if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
         bannerView_ = [[GADBannerView alloc]
                        initWithFrame:CGRectMake(0.0,
-                                                KDeviceHeight -GAD_SIZE_320x50.height - 44 -20,
+                                                KDeviceHeight - GAD_SIZE_320x50.height - 44 -20,
                                                 GAD_SIZE_320x50.width,
                                                 GAD_SIZE_320x50.height)];//设置位置
         
         
         bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
         bannerView_.rootViewController = self;
-        
-        
-        [self.view addSubview:bannerView_];//添加bannerview到你的试图
-        [bannerView_ loadRequest:[GADRequest request]];
+        bannerView_.delegate = self;
+        [self.view addSubview:bannerView_];
         
     }
     
@@ -118,25 +120,19 @@ UITableViewDelegate
     tableView.dataSource = self;
     tableView.delegate = self;
     tableView.scrollEnabled = NO;
-    [commentView addSubview:tableView];
+    [_commentView addSubview:tableView];
     
-    //是否显示广告
-    if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
-        //评论列表
-        commentView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight-60-5-GAD_SIZE_320x50.height)];
-    }else{
-        //评论列表
-        commentView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight-60-5)];
-    }
     
-    commentView.backgroundColor = [UIColor clearColor];
-    commentView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    commentView.dataSource = self;
-    commentView.delegate = self;
-    commentView.scrollEnabled = YES;
-    [self.view addSubview:commentView];
-    commentView.tableHeaderView = tableView;
-    _asiRequest = nil;
+
+    _commentView = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight-44-20) pullingDelegate:self];
+    _commentView.backgroundColor = [UIColor clearColor];
+    _commentView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _commentView.dataSource = self;
+    _commentView.delegate = self;
+    _commentView.scrollEnabled = YES;
+    [self.view addSubview:_commentView];
+    _commentView.tableHeaderView = tableView;
+
     
     //添加footimage
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
@@ -162,14 +158,26 @@ UITableViewDelegate
     //    [addcomments setTag:FAddComments];
     //    [footView addSubview:addcomments];
     
-    commentView.tableFooterView = footView;
-    [commentView addSubview:footView];
+    _commentView.tableFooterView = footView;
+    [_commentView addSubview:footView];
     
     
-    [self loadData];
+     list = [[NSMutableArray alloc]init];
+    
+    _net = [[NetManager alloc]init];
+    _net.delegate = self;
+    
+    
+    if (self.page == 0) {
+        
+        [self.commentView launchRefreshing];
+    }
     
     [self registerGesture];
 }
+
+
+
 
 
 -(void)registerGesture{
@@ -253,69 +261,32 @@ UITableViewDelegate
     
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
 
 #pragma mark - Your actions
 
 - (void)loadData{
-    //    [list removeAllObjects];
-    NSURL *url = [NSURL URLWithString:CommentsURLString(qs.qiushiID)];
-    _asiRequest = [ASIHTTPRequest requestWithURL:url];
-    [_asiRequest setDelegate:self];
-    [_asiRequest setDidFinishSelector:@selector(GetResult:)];
-    [_asiRequest setDidFailSelector:@selector(GetErr:)];
-    [_asiRequest startAsynchronous];
-    
-    
-}
 
--(void) GetErr:(ASIHTTPRequest *)request
-{
-    
-}
-
--(void) GetResult:(ASIHTTPRequest *)request
-{
-    //    [list removeAllObjects];
-    list = [[NSMutableArray alloc]init];
-    NSString *responseString = [request responseString];
-    
-    
-    NSMutableDictionary *dictionary;
-    
-    
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
-        dictionary = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUnicodeStringEncoding] options:NSJSONReadingMutableLeaves error:nil];
-    }else {
-        dictionary = [responseString JSONValue];
+    if ([IsNetWorkUtil isNetWork] == NO) {
+        [[iToast makeText:@"亲，网络不给力，请稍后再试呀..."] show];
+        self.refreshing = NO;
+        [self.commentView tableViewDidFinishedLoading];
+        [self.commentView reloadData];
+        return;
     }
     
-    if ([dictionary objectForKey:@"items"]) {
-		NSArray *array = [NSArray arrayWithArray:[dictionary objectForKey:@"items"]];
-        for (NSDictionary *comments in array) {
-            Comments *cm = [[Comments alloc]initWithDictionary:comments];
-            cm.qsId = qs.qiushiID;
-            cm.createTime = qs.fbTime;
-            [list addObject:cm];
-        }
-    }
     
-    [commentView reloadData];
+    self.page++;
+    NSString *url = CommentsURLString(qs.qiushiID,10,self.page);
+          
+
+    NSLog(@"%@",url);
+ 
     
-    //保存到数据库
-    dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(newThread, ^{
-        [SqliteUtil saveCommentWithArray:self.list];
-    });
-    
-    
-    
-    
-    
+    [_net requestWithURL:url withType:kRequestTypeGetComment withDictionary:nil];
 }
+
+
+
 #pragma mark - TableView*
 
 - (NSInteger)tableView:(UITableView *)tableview numberOfRowsInSection:(NSInteger)section{
@@ -561,12 +532,69 @@ UITableViewDelegate
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)dealloc
-{
-    //    NSLog(@"dealloc comments");
-    self.asiRequest.delegate = nil;
+
+
+#pragma mark - PullingRefreshTableViewDelegate
+- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
+    self.refreshing = YES;
+    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
 }
 
+
+- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
+    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
+}
+
+#pragma mark - Scroll
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.commentView tableViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    [self.commentView tableViewDidEndDragging:scrollView];
+}
+
+
+
+#pragma mark - delegate ad
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView
+{
+    DLog(@"收到 Ad");
+    if (isShowAd == NO) {
+        isShowAd = YES;
+        CGRect bounds = self.view.bounds;
+        bounds.size.height = KDeviceHeight - (44 + 20 + GAD_SIZE_320x50.height);
+        [UIView animateWithDuration:.4 animations:^{
+            [self.commentView setFrame:bounds];
+            
+        }];
+        
+        
+    }
+    
+    
+    
+}
+
+- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error
+{
+    if (isShowAd == YES) {
+        isShowAd = NO;
+        CGRect bounds = self.view.bounds;
+        bounds.size.height = KDeviceHeight - (44 + 20);
+        [UIView animateWithDuration:.4 animations:^{
+            [self.commentView setFrame:bounds];
+        } completion:^(BOOL finished) {
+            [bannerView removeFromSuperview];
+        }];
+    }
+    
+    
+    DLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
+    
+}
 
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView
 {
@@ -583,8 +611,89 @@ UITableViewDelegate
     NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
     [ud setObject:currentDateStr forKey:@"lastClickAd"];
     
-   commentView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight-60-5)];
+    CGRect bounds = self.view.bounds;
+    bounds.size.height = KDeviceHeight - (44 + 20);
+    [UIView animateWithDuration:.4 animations:^{
+        [self.commentView setFrame:bounds];
+    } completion:^(BOOL finished) {
+        [bannerView_ removeFromSuperview];
+    }];
+
 }
 
+
+
+#pragma mark - delegate net
+-(void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type
+{
+    if (type == kRequestTypeGetComment)
+    {
+        
+        if (dic != nil) {
+            
+            if (self.refreshing)
+            {
+                self.page = 1;
+                self.refreshing = NO;
+                
+            }
+            
+                  
+            if ([dic objectForKey:@"items"]) {
+                NSArray *array = [NSArray arrayWithArray:[dic objectForKey:@"items"]];
+                for (NSDictionary *comments in array) {
+                    Comments *cm = [[Comments alloc]initWithDictionary:comments];
+                    cm.qsId = qs.qiushiID;
+                    cm.createTime = qs.fbTime;
+                    [list addObject:cm];
+                }
+            }
+            
+            
+            if (list.count == [[dic objectForKey:@"total"] intValue]) {
+                [self.commentView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
+                self.commentView.reachedTheEnd  = YES;
+            } else {
+                [self.commentView tableViewDidFinishedLoading];
+                self.commentView.reachedTheEnd  = NO;
+                [self.commentView reloadData];
+            }
+            
+            
+            if (isShowAd == NO) {
+                [bannerView_ loadRequest:[GADRequest request]];
+            }
+            
+            
+            
+        //保存到数据库
+        dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(newThread, ^{
+            [SqliteUtil saveCommentWithArray:self.list];
+        });
+
+            
+            
+        }else{
+            
+            if (self.page > 0) {
+                self.page--;
+            }
+            
+            
+            self.refreshing = NO;
+            [self.commentView tableViewDidFinishedLoading];
+            
+
+                        
+        }
+        
+        
+        
+        
+        
+        
+    }
+}
 
 @end

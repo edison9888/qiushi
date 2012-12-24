@@ -21,7 +21,7 @@
 
 #define MY_BANNER_UNIT_ID @"a14feae0ee078ea" //Admob id
 
-#define MyAppleID @"567647956"
+#define MyAppleID @"567647956"  //567647959
 #define TestFlightTeamToken @"b127f94be4c8dc66d8fc69b45dcb3cb7_MTQ1MjM5MjAxMi0xMC0yNSAyMTo1MTo0OC43OTUxNTc"
 #define kPushChannel    @"Debug"
 
@@ -48,7 +48,7 @@
 #define DayURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/day?count=%d&page=%d",count,page]
 #define WeakURlString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/week?count=%d&page=%d",count,page]
 #define MonthURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/month?count=%d&page=%d",count,page]
-#define CommentsURLString(ID) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/%@/comments?count=500&page=1",ID]
+#define CommentsURLString(ID,count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/%@/comments?count=%d&page=%d",ID,count,page]
 
 #define ClearRequest(request) if(request!=nil){[request clearDelegatesAndCancel];[request release];request=nil;}
 

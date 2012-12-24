@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "ContentCell.h"
-#import "ASIHttpHeaders.h"
 #import "GADBannerView.h"
 @class PhotoViewer;
 @class PullingRefreshTableView;
+@class NetManager;
 
 #define kTagGetNormal    1001
 #define kTagGetOffline   1002
@@ -20,8 +20,7 @@
 @interface ContentViewController : UIViewController
 <EGOImageButtonDelegate,GADBannerViewDelegate>
 {
-    //http 请求
-    ASIHTTPRequest *_asiRequest;
+   
     //糗事的类型:最新，最糗，真相
     QiuShiType Qiutype;
     // 随便逛逛，6小时最糗，24小时最糗，一周最糗
@@ -36,16 +35,18 @@
     NSMutableArray *_list;
     PullingRefreshTableView *_tableView;
     
+    NetManager *_net;
+    
 }
 @property (retain,nonatomic) PullingRefreshTableView *tableView;
-@property (nonatomic,retain) ASIHTTPRequest *asiRequest;
 @property (nonatomic,assign) QiuShiType Qiutype;
 @property (nonatomic,assign) QiuShiTime QiuTime;
 @property (nonatomic,retain) NSMutableArray *cacheArray;
 @property (nonatomic,retain) NSMutableArray *imageUrlArray;
 @property (retain,nonatomic) NSMutableArray *list;
+@property (retain,nonatomic) NetManager *net;
 
 -(void) LoadPageOfQiushiType:(QiuShiType) type Time:(QiuShiTime) time;
 -(CGFloat) getTheHeight:(NSInteger)row;
--(void) LoadDataForCache;
+
 @end

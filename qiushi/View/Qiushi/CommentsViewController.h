@@ -9,22 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "ContentCell.h"
 #import "CommentsCell.h"
-#import "ASIHttpHeaders.h"
 #import "QiuShi.h"
 #import "Comments.h"
-
 #import "GADBannerView.h"
-
+@class PullingRefreshTableView;
 @class SHSShareViewController;
+@class NetManager;
+
 @interface CommentsViewController : UIViewController
 <UIGestureRecognizerDelegate,GADBannerViewDelegate>
 {
     //糗事内容的TableView
     UITableView *tableView;
     //评论的TableView
-    UITableView *commentView;
-    //http请求
-    ASIHTTPRequest *_asiRequest;
+    PullingRefreshTableView *_commentView;
+    
     //糗事的对象
     QiuShi *qs;
     //记录评论的数组
@@ -41,15 +40,17 @@
     NSMutableArray *_qsList;
     int _index;
     BOOL _isHidden;//是否隐藏 cell三个按钮;正常时显示;收藏/缓存 时,不显示
+    
+    NetManager *_net;
 }
-@property (nonatomic,retain) UITableView *commentView;
+@property (nonatomic,retain) PullingRefreshTableView *commentView;
 @property (nonatomic,retain) UITableView *tableView;
 @property (nonatomic,retain) NSMutableArray *list;
-@property (nonatomic,retain) ASIHTTPRequest *asiRequest;
 @property (nonatomic,retain) QiuShi *qs;
 @property (nonatomic,retain) SHSShareViewController *shareView;
 @property (retain,nonatomic) NSMutableArray *qsList;
 @property (nonatomic, assign) int index;
+@property (retain,nonatomic) NetManager *net;
 @property (nonatomic, assign) BOOL isHidden;
 -(CGFloat) getTheHeight;
 -(CGFloat) getTheCellHeight:(int) row;

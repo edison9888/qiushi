@@ -16,35 +16,28 @@
 #import "AppDelegate.h"
 #import "iToast.h"
 #import "IsNetWorkUtil.h"
-#import "JSON.h"
 #import "Utils.h"
 #import "IIViewDeckController.h"
-
+#import "NetManager.h"
 
 @interface ContentViewController ()
 <
 PullingRefreshTableViewDelegate,
-ASIHTTPRequestDelegate,
 UITableViewDataSource,
-UITableViewDelegate
+UITableViewDelegate,
+RefreshDateNetDelegate
 >
 {
     
     EGOImageButton *tem;//读取图片缓存的
-    int _iLixian;//离线用到的
-    NSMutableArray *_lxArray;
-    NSMutableArray *_lxImgArray;
+    
     BOOL isShowAd;//是否展示Ad
     
 }
--(void) GetErr:(ASIHTTPRequest *)request;
--(void) GetResult:(ASIHTTPRequest *)request;
 
 @property (nonatomic) BOOL refreshing;
 @property (assign,nonatomic) NSInteger page;
-@property (nonatomic, assign) int iLixian;
-@property (retain, nonatomic) NSMutableArray *lxArray;
-@property (retain, nonatomic) NSMutableArray *lxImgArray;
+
 @end
 
 @implementation ContentViewController
@@ -52,13 +45,11 @@ UITableViewDelegate
 @synthesize list = _list;
 @synthesize refreshing = _refreshing;
 @synthesize page = _page;
-@synthesize asiRequest = _asiRequest;
-@synthesize Qiutype,QiuTime;
+@synthesize Qiutype;
+@synthesize QiuTime;
 @synthesize cacheArray = _cacheArray;
 @synthesize imageUrlArray = _imageUrlArray;
-@synthesize iLixian = _iLixian;
-@synthesize lxArray = _lxArray;
-@synthesize lxImgArray = _lxImgArray;
+@synthesize net = _net;
 
 - (void)viewDidLoad
 {
@@ -67,7 +58,9 @@ UITableViewDelegate
     
     
 	// Do any additional setup after loading the view, typically from a nib.
+    
     [self.view setBackgroundColor:[UIColor clearColor]];
+    
     _list = [[NSMutableArray alloc] init ];
     _imageUrlArray = [[NSMutableArray alloc]init];
     
@@ -75,38 +68,39 @@ UITableViewDelegate
     
     //ad
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
     if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
-    bannerView_ = [[GADBannerView alloc]
-                   initWithFrame:CGRectMake(0.0,
-                                            KDeviceHeight - GAD_SIZE_320x50.height,
-                                            GAD_SIZE_320x50.width,
-                                            GAD_SIZE_320x50.height)];//设置位置
-    
-    bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
-    bannerView_.rootViewController = self;
-    bannerView_.delegate = self;
-    
-    
-        [bannerView_ loadRequest:[GADRequest request]];
+        bannerView_ = [[GADBannerView alloc]
+                       initWithFrame:CGRectMake(0.0,
+                                                0.0,
+                                                GAD_SIZE_320x50.width,
+                                                GAD_SIZE_320x50.height)];//设置位置
+        
+        DLog(@"%@",NSStringFromCGRect(bannerView_.frame));
+        
+        bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
+        bannerView_.rootViewController = self;
+        bannerView_.delegate = self;
+        [self.view addSubview:bannerView_];
+        
     }
     
-
     
-
+    isShowAd = NO;
     
     
     
     CGRect bounds = self.view.bounds;
     bounds.size.height = KDeviceHeight - (44 + 20);
-    self.tableView = [[PullingRefreshTableView alloc] initWithFrame:bounds pullingDelegate:self];
+    _tableView = [[PullingRefreshTableView alloc] initWithFrame:bounds pullingDelegate:self];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     DLog(@"==:%f",_tableView.frame.size.height);
     [self.view addSubview:self.tableView];
-//    _tableView.tableHeaderView = bannerView_;
-    isShowAd = NO;
+    
+    
     
     //读取缓存100条(实际上99条)
     _cacheArray = [SqliteUtil queryDbTop];
@@ -133,6 +127,11 @@ UITableViewDelegate
         
     }
     
+    _net = [[NetManager alloc]init];
+    _net.delegate = self;
+    
+    
+    
     if (self.page == 0) {
         
         [self.tableView launchRefreshing];
@@ -141,74 +140,63 @@ UITableViewDelegate
 
 - (void)viewDidUnload
 {
+    DLog(@"~viewDidUnload ContentViewController");
     bannerView_.delegate = nil;
+    self.net = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
 
-- (void)dealloc
-{
-    //    NSLog(@"dealloc content");
-    self.asiRequest.delegate = nil;
-}
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self.tableView reloadData];
-}
 
 #pragma mark - Your actions
 
 - (void)loadData{
     
     if ([IsNetWorkUtil isNetWork] == NO) {
-        [[iToast makeText:@"亲，网络不给力，请稍后再试呀..."] show];
+        [[iToast makeText:@"亲,网络不给力,请稍后再试呀..."] show];
         self.refreshing = NO;
         [self.tableView tableViewDidFinishedLoading];
         [self.tableView reloadData];
         return;
     }
-
+    
     
     self.page++;
-    NSURL *url;
-
+    NSString *url;
+    
     if (Qiutype == QiuShiTypeTop) {
         switch (QiuTime) {
             case QiuShiTimeRandom:
-                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                url = SuggestURLString(10,self.page);
                 break;
             case QiuShiTimeDay:
-                url = [NSURL URLWithString:DayURLString(10,self.page)];
+                url = DayURLString(10,self.page);
                 break;
             case QiuShiTimeWeek:
-                url = [NSURL URLWithString:WeakURlString(10,self.page)];
+                url = WeakURlString(10,self.page);
                 break;
             case QiuShiTimeMonth:
-                url = [NSURL URLWithString:MonthURLString(10,self.page)];
+                url = MonthURLString(10,self.page);
                 break;
             default:
-                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                url = SuggestURLString(10,self.page);
                 break;
         }
     }else{
         switch (Qiutype) {
             case QiuShiTypeTop:
-                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                url = SuggestURLString(10,self.page);
                 break;
             case QiuShiTypeNew:
-                url = [NSURL URLWithString:LastestURLString(10,self.page)];
+                url = LastestURLString(10,self.page);
                 break;
             case QiuShiTypePhoto:
-                url = [NSURL URLWithString:ImageURLString(10,self.page)];
+                url = ImageURLString(10,self.page);
                 break;
             default:
-                url = [NSURL URLWithString:SuggestURLString(10,self.page)];
+                url = SuggestURLString(10,self.page);
                 break;
         }
     }
@@ -219,165 +207,11 @@ UITableViewDelegate
     NSLog(@"%@",url);
     
     
-    _asiRequest = [ASIHTTPRequest requestWithURL:url];
-    [_asiRequest setDelegate:self];
-    [_asiRequest setDidFinishSelector:@selector(GetResult:)];
-    [_asiRequest setDidFailSelector:@selector(GetErr:)];
-    [_asiRequest setTag:kTagGetNormal];
-    [_asiRequest startAsynchronous];
-//    [_asiRequest setTimeOutSeconds:25];
+    
+    [_net requestWithURL:url withType:kRequestTypeGetQiushi withDictionary:nil];
     
     
 }
-
--(void) GetErr:(ASIHTTPRequest *)request
-{
-    if (self.page > 0) {
-        self.page--;
-    }
-    
-    
-    self.refreshing = NO;
-    [self.tableView tableViewDidFinishedLoading];
-    
-    
-#ifdef DEBUG
-    NSString *responseString = [request responseString];
-    NSLog(@"%@\n",responseString);
-    NSError *error = [request error];
-    NSLog(@"-------------------------------\n");
-    NSLog(@"error:%@",error);
-#endif
-    
-    
-    [[iToast makeText:@"网络连接失败"] show];
-    
-    
-    
-}
-
--(void) GetResult:(ASIHTTPRequest *)request
-{
-    
-    if (self.refreshing && [request tag] == kTagGetNormal) {
-        self.page = 1;
-        self.refreshing = NO;
-        
-        [self.list removeAllObjects];
-        [self.imageUrlArray removeAllObjects];
-        
-        [SqliteUtil initDb];
-    }
-    
-    NSString *responseString = [request responseString];
-    //    NSLog(@"%@\n",responseString);
-    
-    NSMutableDictionary *dictionary;
-    
-    
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
-        dictionary = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUnicodeStringEncoding] options:NSJSONReadingMutableLeaves error:nil];
-    }else {
-        dictionary = [responseString JSONValue];
-    }
-    
-    
-    if ([dictionary objectForKey:@"items"])
-    {
-		NSArray *array = [NSArray arrayWithArray:[dictionary objectForKey:@"items"]];
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        //设定时间格式,这里可以设置成自己需要的格式
-        [dateFormatter setDateFormat:@"yy年MM月dd日"];//[dateFormatter setDateFormat:@"yy-MM-dd HH:mm"];
-        
-        for (NSDictionary *qiushi in array)
-        {
-            QiuShi *qs = [[QiuShi alloc]initWithDictionary:qiushi];
-            
-            //            qs.fbTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:qs.published_at]];
-            qs.fbTime =  [dateFormatter stringFromDate:[NSDate date]];
-            
-            //            //ttttttttttt
-            //            qs.content = @"test...";
-            //            qs.imageURL = @"http://img.qiushibaike.com/system/pictures/6317243/small/app6317243.jpg";
-            //            qs.imageMidURL = @"http://img.qiushibaike.com/system/pictures/6317243/medium/app6317243.jpg";
-            //            qs.fbTime = @"12-10-28";
-            //            //tttttttttttt
-            
-                if ([request tag] == kTagGetNormal) {
-                    
-                    [self.list addObject:qs];
-                    
-                    if (qs.imageURL != nil && qs.imageURL != @"") {
-                        [self.imageUrlArray addObject:qs.imageURL];
-                        [self.imageUrlArray addObject:qs.imageMidURL];
-                    }
-                }else if ([request tag] == kTagGetOffline){
-                    [self.lxArray addObject:qs];
-                    if (qs.imageURL != nil && qs.imageURL != @"") {
-                        [self.lxImgArray addObject:qs.imageURL];
-                        [self.lxImgArray addObject:qs.imageMidURL];
-                        
-                        
-                    }
-                }
-            
-            
-        }
-        
-        
-    }
-    
-    if ([request tag] == kTagGetNormal) {
-        //数据源去重复
-        self.list = [Utils removeRepeatArray:self.list];
-        //保存到数据库
-        dispatch_async(dispatch_get_current_queue(), ^{
-            [SqliteUtil saveDbWithArray:self.list];
-        });
-        
-        
-        //预先加载 图片
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        int loadType = [[ud objectForKey:@"loadImage"] intValue];
-        if (loadType == 0) {//全部加载
-            [self getImageCache:kTagGetNormal];
-        }else if (loadType == 1){//仅wifi加载
-            if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
-                [self getImageCache:kTagGetNormal];
-            }
-        }else if (loadType == 2){//不加载
-            
-        }
-        
-        if (self.page >= 20) {
-            [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
-            self.tableView.reachedTheEnd  = YES;
-        } else {
-            [self.tableView tableViewDidFinishedLoading];
-            self.tableView.reachedTheEnd  = NO;
-            [self.tableView reloadData];
-        }
-        
-        
-    }else if ([request tag] == kTagGetOfflineOk){
-        //保存到数据库
-        
-        DLog(@"%d",_lxArray.count);
-        dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        dispatch_async(newThread, ^{
-            [SqliteUtil saveDbWithArray:_lxArray];
-            //预先加载 图片
-            [self getImageCache:kTagGetOfflineOk];
-            
-        });
-        
-        
-        
-    }
-    
-}
-
 
 
 
@@ -437,11 +271,11 @@ UITableViewDelegate
     {
         
         cell.txtTag.text = qs.tag;
-       
+        
     }else
     {
         cell.txtTag.text = @"";
-       
+        
     }
     //设置up ，down and commits
     [cell.goodbtn setTitle:[NSString stringWithFormat:@"%d",qs.upCount] forState:UIControlStateNormal];
@@ -454,18 +288,17 @@ UITableViewDelegate
     [cell.saveBtn setTag:indexPath.row ];
     [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
     
-
-        [cell.commentsbtn setTag:indexPath.row];
-        
-        [cell.commentsbtn addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [cell.goodbtn setTag:indexPath.row];
-        [cell.goodbtn addTarget:self action:@selector(goodClick:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [cell.badbtn setTag:indexPath.row];
-        [cell.badbtn addTarget:self action:@selector(badClick:) forControlEvents:UIControlEventTouchUpInside];
-
-    //        [cell.badbtn addTarget:self action:@selector(updateSumAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [cell.commentsbtn setTag:indexPath.row];
+    
+    [cell.commentsbtn addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [cell.goodbtn setTag:indexPath.row];
+    [cell.goodbtn addTarget:self action:@selector(goodClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [cell.badbtn setTag:indexPath.row];
+    [cell.badbtn addTarget:self action:@selector(badClick:) forControlEvents:UIControlEventTouchUpInside];
+    
     
     //自适应函数
     [cell resizeTheHeight:kTypeMain];
@@ -477,43 +310,6 @@ UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self getTheHeight:indexPath.row];
-}
-
-//自定义 头内容
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (isShowAd == YES) {
-        //是否显示广告
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        
-        if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
-            return bannerView_;
-        }else{
-            return nil;
-        }
-    }else{
-        return nil;
-    }
-    
-   	
-}
-
-//自定义 头高度
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (isShowAd == YES) {
-        //是否显示广告
-        NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-        
-        if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
-            return GAD_SIZE_320x50.height;;
-        }else{
-            return .0f;
-        }
-    }else
-        return .0f;
-    
-    
 }
 
 
@@ -566,43 +362,6 @@ UITableViewDelegate
     
 }
 
--(void) LoadDataForCache
-{
-    
-    _lxArray = [[NSMutableArray alloc]init];
-    _lxImgArray = [[NSMutableArray alloc]init];
-    NSURL *url;
-    NSMutableArray *urlArray = [[NSMutableArray alloc]init];
-    for (int i = 1; i<2; i++) {
-        
-        [urlArray addObject:[NSURL URLWithString:SuggestURLString(10,i)]];
-        [urlArray addObject:[NSURL URLWithString:WeakURlString(10,i)]];
-        [urlArray addObject:[NSURL URLWithString:MonthURLString(10,i)]];
-        [urlArray addObject:[NSURL URLWithString:LastestURLString(10,i)]];
-        [urlArray addObject:[NSURL URLWithString:ImageURLString(10,i)]];
-    }
-    
-    
-    for (int j=0; j<urlArray.count; j++) {
-        url = [urlArray objectAtIndex:j];
-        
-        NSLog(@"%d,%d,%@",j,urlArray.count,url);
-        
-        
-        _asiRequest = [ASIHTTPRequest requestWithURL:url];
-        [_asiRequest setDelegate:self];
-        if (j == (urlArray.count - 1)) {
-            [_asiRequest setTag:kTagGetOfflineOk];
-        }else{
-            [_asiRequest setTag:kTagGetOffline];
-        }
-        [_asiRequest setDidFinishSelector:@selector(GetResult:)];
-        [_asiRequest setDidFailSelector:@selector(GetErr:)];
-        [_asiRequest startAsynchronous];
-    }
-    
-    
-}
 
 //cell 动态 高度
 -(CGFloat) getTheHeight:(NSInteger)row
@@ -695,11 +454,11 @@ UITableViewDelegate
 - (void)getImageCache:(int)type
 {
     
-    NSLog(@"图片数：%d",type==kTagGetNormal?self.imageUrlArray.count:self.lxImgArray.count);
+    NSLog(@"图片数：%d",self.imageUrlArray.count);
     
     
     tem = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"main_background.png"] delegate:self];
-    for (NSString* strUrl in (type==kTagGetNormal?self.imageUrlArray:self.lxImgArray))
+    for (NSString* strUrl in self.imageUrlArray)
     {
         
         [tem setImageURL:[NSURL URLWithString:strUrl]];
@@ -725,39 +484,44 @@ UITableViewDelegate
 }
 
 
-#pragma mark - delegate ad 
+#pragma mark - delegate ad
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView
 {
     DLog(@"收到 Ad");
-    isShowAd = YES;
-    [self.tableView reloadData];
+    if (isShowAd == NO) {
+        isShowAd = YES;
+        CGRect bounds = self.view.bounds;
+        bounds.size.height = KDeviceHeight - (44 + 20 + GAD_SIZE_320x50.height);
+        bounds.origin.y = bounds.origin.y + GAD_SIZE_320x50.height;
+        [UIView animateWithDuration:.4 animations:^{
+            [self.tableView setFrame:bounds];
+            
+        }];
+        
+        
+    }
+    
+    
+    
 }
 
 - (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error
 {
-    isShowAd = NO;
-    [self.tableView reloadData];
+    if (isShowAd == YES) {
+        isShowAd = NO;
+        CGRect bounds = self.view.bounds;
+        bounds.size.height = KDeviceHeight - (44 + 20);
+        [UIView animateWithDuration:.4 animations:^{
+            [self.tableView setFrame:bounds];
+        } completion:^(BOOL finished) {
+            [bannerView removeFromSuperview];
+        }];
+    }
+    
+    
     DLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
-
-}
-
-- (void)adViewWillPresentScreen:(GADBannerView *)adView
-{
-    DLog(@"adViewWillPresentScreen");
-}
-
-// Sent just before dismissing a full screen view.
-- (void)adViewWillDismissScreen:(GADBannerView *)adView
-{
-    DLog(@"adViewWillDismissScreen");
-}
-
-// Sent just after dismissing a full screen view.  Use this opportunity to
-// restart anything you may have stopped as part of adViewWillPresentScreen:.
-- (void)adViewDidDismissScreen:(GADBannerView *)adView
-{
-    DLog(@"adViewDidDismissScreen");
+    
 }
 
 // Sent just before the application will background or terminate because the
@@ -781,6 +545,128 @@ UITableViewDelegate
     
     [self.tableView reloadData];
 }
+
+
+
+
+
+#pragma mark - delegate net
+-(void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type
+{
+    if (type == kRequestTypeGetQiushi)
+    {
+        
+        if (dic != nil) {
+            if (self.refreshing)
+            {
+                self.page = 1;
+                self.refreshing = NO;
+                
+                [self.list removeAllObjects];
+                [self.imageUrlArray removeAllObjects];
+                
+                [SqliteUtil initDb];
+            }
+            
+            
+            
+            if ([dic objectForKey:@"items"])
+            {
+                NSArray *array = [NSArray arrayWithArray:[dic objectForKey:@"items"]];
+                
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                //设定时间格式,这里可以设置成自己需要的格式
+                [dateFormatter setDateFormat:@"yy年MM月dd日"];
+                
+                for (NSDictionary *qiushi in array)
+                {
+                    
+                    
+                    QiuShi *qs = [[QiuShi alloc]initWithDictionary:qiushi];
+                    
+                    //            qs.fbTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:qs.published_at]];
+                    qs.fbTime =  [dateFormatter stringFromDate:[NSDate date]];
+                    
+                    //            //ttttttttttt
+                    //            qs.content = @"test...";
+                    //            qs.imageURL = @"http://img.qiushibaike.com/system/pictures/6317243/small/app6317243.jpg";
+                    //            qs.imageMidURL = @"http://img.qiushibaike.com/system/pictures/6317243/medium/app6317243.jpg";
+                    //            qs.fbTime = @"12-10-28";
+                    //            //tttttttttttt
+                    
+                    
+                    
+                    [self.list addObject:qs];
+                    
+                    if (qs.imageURL != nil && qs.imageURL != @"") {
+                        [self.imageUrlArray addObject:qs.imageURL];
+                        [self.imageUrlArray addObject:qs.imageMidURL];
+                    }
+                    
+                    
+                }
+                
+                
+            }
+            
+            
+            //数据源去重复
+            self.list = [Utils removeRepeatArray:self.list];
+            //保存到数据库
+            dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0); 
+            dispatch_async(newThread, ^{
+                [SqliteUtil saveDbWithArray:self.list];
+            });
+            
+            
+            //预先加载 图片
+            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+            int loadType = [[ud objectForKey:@"loadImage"] intValue];
+            if (loadType == 0) {//全部加载
+                [self getImageCache:kTagGetNormal];
+            }else if (loadType == 1){//仅wifi加载
+                if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
+                    [self getImageCache:kTagGetNormal];
+                }
+            }else if (loadType == 2){//不加载
+                
+            }
+            
+            if (self.page >= 20) {
+                [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
+                self.tableView.reachedTheEnd  = YES;
+            } else {
+                [self.tableView tableViewDidFinishedLoading];
+                self.tableView.reachedTheEnd  = NO;
+                [self.tableView reloadData];
+            }
+            
+            if (isShowAd == NO) {
+                //请求 ad
+                [bannerView_ loadRequest:[GADRequest request]];
+            }
+        
+            
+        }else{
+            
+            if (self.page > 0) {
+                self.page--;
+            }
+            
+            
+            self.refreshing = NO;
+            [self.tableView tableViewDidFinishedLoading];
+            
+        }
+        
+        
+        
+        
+        
+        
+    }
+}
+
 
 
 @end
