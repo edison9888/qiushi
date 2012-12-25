@@ -27,6 +27,8 @@
 #import "EGOPhotoViewController.h"
 #import "IIViewDeckController.h"
 
+#import "TestNavigationBar.h"
+
 @interface EGOPhotoViewController (Private)
 - (void)loadScrollViewWithPage:(NSInteger)page;
 - (void)layoutScrollViewSubviews;
@@ -160,6 +162,16 @@
     //解决本view与root 共同的手势 冲突
     [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
     
+    
+    navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
+    navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:@"有图有真相"];
+    [navigationBar pushNavigationItem:navigationItem animated:NO];
+    [self.view addSubview:navigationBar];
+    navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonSystemItemCancel target:self action:@selector(fadeOut)];
+
+    
+
     
     
 	
@@ -413,7 +425,10 @@
 #pragma mark Bar/Caption Methods
 
 - (void)setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated{
-	if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad) return; 
+	if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad) return;
+    
+    [navigationBar setHidden:hidden];
+    
 	
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 3.2) {
 		

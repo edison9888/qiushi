@@ -4,133 +4,133 @@
    version = "1.0">
    <FileBreakpoints>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Set/PurchaseInViewController.m"
-         timestampString = "373707534.993019"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "378137350.899255"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "384"
-         endingLineNumber = "384"
-         landmarkName = "-connection:didFailWithError:"
+         startingLineNumber = "238"
+         endingLineNumber = "238"
+         landmarkName = "-viewWillAppear:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Set/PurchaseInViewController.m"
-         timestampString = "373707537.255028"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "378138809.521848"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "508"
+         endingLineNumber = "508"
+         landmarkName = "-setupViewForPopover"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "378138809.521848"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "506"
+         endingLineNumber = "506"
+         landmarkName = "-setupViewForPopover"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "378137350.899255"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "346"
+         endingLineNumber = "346"
+         landmarkName = "-setupToolbar"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "378137350.899255"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "361"
          endingLineNumber = "361"
-         landmarkName = "-connection:didReceiveResponse:"
+         landmarkName = "-setupToolbar"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "378137350.899255"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "367"
+         endingLineNumber = "367"
+         landmarkName = "-setupToolbar"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/View/CustomView/CustomNavigationBar.m"
+         timestampString = "378135502.682255"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "18"
+         endingLineNumber = "18"
+         landmarkName = "-setBackgroundImage:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/View/CustomView/CustomNavigationBar.m"
+         timestampString = "378136373.305357"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "37"
+         endingLineNumber = "37"
+         landmarkName = "-insertSubview:atIndex:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Set/PurchaseInViewController.m"
-         timestampString = "373707538.825449"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "378138809.521848"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "362"
-         endingLineNumber = "362"
-         landmarkName = "-connection:didReceiveResponse:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Set/PurchaseInViewController.m"
-         timestampString = "373707541.890586"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "354"
-         endingLineNumber = "354"
-         landmarkName = "-connection:didReceiveData:"
+         startingLineNumber = "755"
+         endingLineNumber = "755"
+         landmarkName = "-moveToPhotoAtIndex:animated:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Set/PurchaseInViewController.m"
-         timestampString = "373707709.663004"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "378138809.521848"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "255"
-         endingLineNumber = "255"
-         landmarkName = "-paymentQueue:updatedTransactions:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Qiushi/ContentViewController.m"
-         timestampString = "378050161.380965"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "663"
-         endingLineNumber = "663"
-         landmarkName = "-refreshDate1:data2:withType:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Qiushi/ContentViewController.m"
-         timestampString = "378049066.919571"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
-         landmarkName = "-loadData"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "qiushi/Frame/MBProgressHUD/MBProgressHUD.m"
-         timestampString = "377623452.558013"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "195"
-         endingLineNumber = "195"
-         landmarkName = "-initWithView:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "qiushi/View/PhotoViewer/PhotoViewer.m"
-         timestampString = "377624592.986078"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "107"
-         endingLineNumber = "107"
-         landmarkName = "-viewDidLoad"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "qiushi/View/PhotoViewer/PhotoViewer.m"
-         timestampString = "377624592.986078"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "105"
-         endingLineNumber = "105"
-         landmarkName = "-viewDidLoad"
+         startingLineNumber = "446"
+         endingLineNumber = "446"
+         landmarkName = "-setBarsHidden:animated:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

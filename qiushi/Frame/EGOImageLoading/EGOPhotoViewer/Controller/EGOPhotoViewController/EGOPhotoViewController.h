@@ -62,6 +62,7 @@
 	UIView *_popoverOverlay;
 	UIView *_transferView;
 	
+    UINavigationBar *navigationBar;//xyxd
 }
 
 - (id)initWithPhoto:(id<EGOPhoto>)aPhoto;

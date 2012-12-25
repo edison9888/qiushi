@@ -222,15 +222,15 @@
             
 //            UINavigationController *navi = 
             
-            [[delegate navController] pushViewController:photoController animated:YES];
-            
+//            [[delegate navController] pushViewController:photoController animated:YES];
+            [[delegate navController] presentModalViewController:photoController animated:YES];
             
             
 //            EGOPhotoViewController *view = [[EGOPhotoViewController alloc]initWithImageURL:[NSURL URLWithString:self.imgMidUrl]];
 //    [[delegate navController] pushViewController:view animated:YES];
             
             
-            //    [[delegate navController] presentModalViewController:view animated:YES];
+            //    
         }break;
 
         default:

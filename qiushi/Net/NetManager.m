@@ -84,6 +84,15 @@
 
     [MyProgressHud remove];
     
+    if (request.tag == kRequestTypeGetQiushi
+        || request.tag == kRequestTypeGetComment)
+    {
+        [self.delegate refreshDate1:nil data2:nil withType:[request tag]];
+    }
+    
+    
+    
+    
        
     NSError *error = [request error];
     
@@ -106,11 +115,7 @@
 #endif
     
     
-    if (request.tag == kRequestTypeGetQiushi
-        || request.tag == kRequestTypeGetComment)
-    {
-        [self.delegate refreshDate1:nil data2:nil withType:[request tag]];
-    }
+   
     
 }
 
