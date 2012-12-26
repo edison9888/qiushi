@@ -168,9 +168,9 @@
     UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:@"有图有真相"];
     [navigationBar pushNavigationItem:navigationItem animated:NO];
     [self.view addSubview:navigationBar];
-    navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonSystemItemCancel target:self action:@selector(fadeOut)];
+    navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(fadeOut)];
 
-    
+
 
     
     

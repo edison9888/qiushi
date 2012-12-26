@@ -215,22 +215,14 @@
             
             MyPhoto *photo = [[MyPhoto alloc] initWithImageURL:[NSURL URLWithString:self.imgMidUrl] name:txtContent.text];
            
-            MyPhotoSource *source = [[MyPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:photo, photo, photo, photo, photo, photo, photo, photo, nil]];
+            MyPhotoSource *source = [[MyPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:photo, nil]];
             
             EGOPhotoViewController *photoController = [[EGOPhotoViewController alloc] initWithPhotoSource:source];
             
-            
-//            UINavigationController *navi = 
-            
-//            [[delegate navController] pushViewController:photoController animated:YES];
+
             [[delegate navController] presentModalViewController:photoController animated:YES];
             
             
-//            EGOPhotoViewController *view = [[EGOPhotoViewController alloc]initWithImageURL:[NSURL URLWithString:self.imgMidUrl]];
-//    [[delegate navController] pushViewController:view animated:YES];
-            
-            
-            //    
         }break;
 
         default:

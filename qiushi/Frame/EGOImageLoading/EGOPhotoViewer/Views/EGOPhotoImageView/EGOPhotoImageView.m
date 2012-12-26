@@ -282,6 +282,7 @@
 	CGFloat vfactor = self.imageView.image.size.height / self.frame.size.height;
 	
 	CGFloat factor = MAX(hfactor, vfactor);
+    factor = hfactor;
 	
 	CGFloat newWidth = self.imageView.image.size.width / factor;
 	CGFloat newHeight = self.imageView.image.size.height / factor;

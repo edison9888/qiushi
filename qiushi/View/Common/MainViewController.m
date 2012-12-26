@@ -247,7 +247,7 @@ static CGFloat progress = 0;
 - (void)viewWillAppear:(BOOL)animated
 {
     DLog("viewWillAppear");
-    [self.m_contentView.tableView reloadData];
+   
     [super viewWillAppear:animated];
     
 }
