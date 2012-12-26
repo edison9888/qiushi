@@ -28,6 +28,20 @@
 
 #define ZOOM_VIEW_TAG 0x101
 
+
+
+inline static NSString* keyForURL(NSURL* url, NSString* style) {
+	if(style) {
+		return [NSString stringWithFormat:@"EGOImageLoader-%u-%u", [[url description] hash], [style hash]];
+	} else {
+		return [NSString stringWithFormat:@"EGOImageLoader-%u", [[url description] hash]];
+	}
+}
+
+#define kImageNotificationUpdateProgress(s) [@"kEGOImageLoaderNotificationLoadUpdate-" stringByAppendingString:keyForURL(s, nil)]
+
+
+
 @interface RotateGesture : UIRotationGestureRecognizer {}
 @end
 
@@ -55,6 +69,7 @@
 @synthesize imageView=_imageView;
 @synthesize scrollView=_scrollView;
 @synthesize loading=_loading;
+@synthesize hud=_hud;
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -86,6 +101,16 @@
 		[self addSubview:activityView];
 		_activityView = [activityView retain];
 		[activityView release];
+        
+        
+        //xy
+        _hud = [[MBProgressHUD alloc] initWithView:self];
+        [self addSubview:_hud];
+        _hud.mode = MBProgressHUDModeDeterminate;
+        _hud.labelText = @"亲,正在努力加载中...";
+        [_hud show:YES];
+        //xd
+        
 		
 		RotateGesture *gesture = [[RotateGesture alloc] initWithTarget:self action:@selector(rotate:)];
 		[self addGestureRecognizer:gesture];
@@ -94,6 +119,8 @@
 	}
     return self;
 }
+
+
 
 - (void)layoutSubviews{
 	[super layoutSubviews];
@@ -173,6 +200,7 @@
 	if (self.imageView.image) {
 		
 		[_activityView stopAnimating];
+        [_hud hide:YES afterDelay:0];
 		self.userInteractionEnabled = YES;
 		
 		_loading=NO;
@@ -190,11 +218,12 @@
 	[self layoutScrollViewAnimated:NO];
 }
 
-- (void)setupImageViewWithImage:(UIImage*)aImage {	
+- (void)setupImageViewWithImage:(UIImage*)aImage {
 	if (!aImage) return; 
 
 	_loading = NO;
 	[_activityView stopAnimating];
+    [_hud hide:YES afterDelay:0];
 	self.imageView.image = aImage; 
 	[self layoutScrollViewAnimated:NO];
 	
@@ -218,6 +247,7 @@
 	[self layoutScrollViewAnimated:NO];
 	self.userInteractionEnabled = NO;
 	[_activityView stopAnimating];
+    [_hud hide:YES afterDelay:0];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"EGOPhotoDidFinishLoading" object:[NSDictionary dictionaryWithObjectsAndKeys:self.photo, @"photo", [NSNumber numberWithBool:YES], @"failed", nil]];
 	
 }
@@ -370,6 +400,9 @@
 	if ([notification userInfo] == nil) return;
 	if(![[[notification userInfo] objectForKey:@"imageURL"] isEqual:self.photo.URL]) return;
 	
+    [_hud hide:YES afterDelay:0];
+    [_hud setProgress:0];
+    
 	[self setupImageViewWithImage:[[notification userInfo] objectForKey:@"image"]];
 	
 }
@@ -379,6 +412,12 @@
 	if ([notification userInfo] == nil) return;
 	if(![[[notification userInfo] objectForKey:@"imageURL"] isEqual:self.photo.URL]) return;
 	
+    
+    [_hud setLabelText:@"网络连接失败"];
+    [_hud hide:YES];
+    [_hud setProgress:0];
+    
+    
 	[self handleFailedImage];
 	
 }
@@ -577,6 +616,7 @@
 	[_imageView release]; _imageView=nil;
 	[_scrollView release]; _scrollView=nil;
 	[_photo release]; _photo=nil;
+    [_hud release]; _hud=nil;
     [super dealloc];
 	
 }

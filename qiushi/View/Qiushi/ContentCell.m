@@ -215,7 +215,7 @@
             
             MyPhoto *photo = [[MyPhoto alloc] initWithImageURL:[NSURL URLWithString:self.imgMidUrl] name:txtContent.text];
            
-            MyPhotoSource *source = [[MyPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:photo, nil]];
+            MyPhotoSource *source = [[MyPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:photo,photo, nil]];
             
             EGOPhotoViewController *photoController = [[EGOPhotoViewController alloc] initWithPhotoSource:source];
             

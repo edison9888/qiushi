@@ -28,6 +28,7 @@
 #import "EGOPhotoGlobal.h"
 #import "EGOPhotoSource.h"
 #import "EGOImageLoader.h"
+#import "MBProgressHUD.h"
 
 @class EGOPhotoScrollView, EGOPhotoCaptionView;
 
@@ -42,6 +43,8 @@
 	CGRect _currentRect;
 	CGFloat _beginRadians;
 	CGPoint _midPos;
+    
+    MBProgressHUD *_hud;//读取 图片进度条
 	
 }
 
@@ -49,6 +52,7 @@
 @property(nonatomic,readonly) UIImageView *imageView;
 @property(nonatomic,readonly) EGOPhotoScrollView *scrollView;
 @property(nonatomic,assign,getter=isLoading) BOOL loading;
+@property (nonatomic, retain) MBProgressHUD *hud;
 
 - (void)setPhoto:(id <EGOPhoto>)aPhoto;
 - (void)killScrollViewZoom;

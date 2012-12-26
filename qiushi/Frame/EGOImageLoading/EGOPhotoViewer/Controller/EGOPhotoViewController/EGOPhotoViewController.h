@@ -28,8 +28,11 @@
 #import "EGOPhotoSource.h"
 #import "EGOPhotoGlobal.h"
 
+
 @class EGOPhotoImageView, EGOPhotoCaptionView;
-@interface EGOPhotoViewController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+@interface EGOPhotoViewController : UIViewController
+<UIScrollViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
+{
 @private
 	id <EGOPhotoSource> _photoSource;
 	EGOPhotoCaptionView *_captionView;
@@ -63,6 +66,7 @@
 	UIView *_transferView;
 	
     UINavigationBar *navigationBar;//xyxd
+    
 }
 
 - (id)initWithPhoto:(id<EGOPhoto>)aPhoto;
@@ -77,6 +81,7 @@
 @property(nonatomic,retain) NSMutableArray *photoViews;
 @property(nonatomic,retain) UIScrollView *scrollView;
 @property(nonatomic,assign) BOOL _fromPopover;
+
 
 - (NSInteger)currentPhotoIndex;
 - (void)moveToPhotoAtIndex:(NSInteger)index animated:(BOOL)animated;

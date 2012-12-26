@@ -29,6 +29,7 @@
 
 #import "TestNavigationBar.h"
 
+
 @interface EGOPhotoViewController (Private)
 - (void)loadScrollViewWithPage:(NSInteger)page;
 - (void)layoutScrollViewSubviews;
@@ -50,6 +51,7 @@
 @synthesize photoSource=_photoSource; 
 @synthesize photoViews=_photoViews;
 @synthesize _fromPopover;
+
 
 - (id)initWithPhoto:(id<EGOPhoto>)aPhoto {
 	return [self initWithPhotoSource:[[[EGOQuickPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:aPhoto,nil]] autorelease]];
@@ -163,6 +165,7 @@
     [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
     
     
+    
     navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
     navigationBar.barStyle = UIBarStyleBlackTranslucent;
     UINavigationItem *navigationItem = [[UINavigationItem alloc] initWithTitle:@"有图有真相"];
@@ -172,8 +175,7 @@
 
 
 
-    
-    
+
 	
 	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 3.2) {
 		
@@ -677,7 +679,7 @@
 - (NSInteger)centerPhotoIndex{
 	
 	CGFloat pageWidth = self.scrollView.frame.size.width;
-	return floor((self.scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+	return floor((self.scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;//floor返回小于等于最大整数
 	
 }
 
@@ -711,9 +713,11 @@
 		}
 	}
 	
+    //数据源 大于1个,显示 1 of 12,等
 	if ([self.photoSource numberOfPhotos] > 1) {
 		self.title = [NSString stringWithFormat:@"%i of %i", _pageIndex+1, [self.photoSource numberOfPhotos]];
 	} else {
+        
 		self.title = @"";
 	}
 	
@@ -1063,35 +1067,28 @@
     [[delegate navController] dismissModalViewControllerAnimated:YES];
 }
 
+
+
+
 #pragma mark -
 #pragma mark Memory
 
-- (void)didReceiveMemoryWarning{
+- (void)didReceiveMemoryWarning
+{
 	[super didReceiveMemoryWarning];
 }
 
-- (void)viewDidUnload{
-	
+- (void)viewDidUnload
+{
+
+	[super viewDidUnload];
+    
 	self.photoViews=nil;
 	self.scrollView=nil;
 	_captionView=nil;
 	
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    if ([self.viewDeckController leftControllerIsOpen]==YES) {
-        [self.viewDeckController closeLeftView];
-    }
-    //解决本view与root 共同的手势 冲突
-    [self.viewDeckController setPanningMode:IIViewDeckNoPanning];
-}
-- (void)viewDidDisappear:(BOOL)animated
-{
-    
-    [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
-    
-}
 
 - (void)dealloc {
 	
