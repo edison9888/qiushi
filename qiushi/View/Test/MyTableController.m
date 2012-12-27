@@ -149,7 +149,7 @@
     
     //设置图片
     NSString *imageUrl = [NSString stringWithFormat:@"%@", [object objectForKey:@"imageurl"]];
-    if (imageUrl!=nil && imageUrl!= @"") {
+    if (imageUrl!=nil && ![imageUrl isEqual: @""]) {
         cell.imgUrl = imageUrl;
         cell.imgMidUrl = [NSString stringWithFormat:@"%@", [object objectForKey:@"imagemidurl"]];
         // cell.imgPhoto.hidden = NO;
@@ -161,7 +161,7 @@
     }
     //设置用户名
     NSString *anchor = [NSString stringWithFormat:@"%@", [object objectForKey:@"anchor"]];
-    if (anchor!=nil && anchor!= @"")
+    if (anchor!=nil && ![anchor isEqual: @""])
     {
         cell.txtAnchor.text = anchor;
     }else

@@ -241,7 +241,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	if (!aImage) return; 
 
 	_loading = NO;
-	[_activityView stopAnimating];
+//	[_activityView stopAnimating];
     [_hud hide:YES afterDelay:0];
 	self.imageView.image = aImage; 
 	[self layoutScrollViewAnimated:NO];
@@ -265,7 +265,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	self.photo.failed = YES;
 	[self layoutScrollViewAnimated:NO];
 	self.userInteractionEnabled = NO;
-	[_activityView stopAnimating];
+//	[_activityView stopAnimating];
     [_hud hide:YES afterDelay:0];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"EGOPhotoDidFinishLoading" object:[NSDictionary dictionaryWithObjectsAndKeys:self.photo, @"photo", [NSNumber numberWithBool:YES], @"failed", nil]];
 	
@@ -631,7 +631,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-	[_activityView release], _activityView=nil;
+//	[_activityView release], _activityView=nil;
 	[_imageView release]; _imageView=nil;
 	[_scrollView release]; _scrollView=nil;
 	[_photo release]; _photo=nil;

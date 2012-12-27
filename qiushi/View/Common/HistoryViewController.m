@@ -294,7 +294,7 @@ UIAlertViewDelegate
     [cell.txtContent setNumberOfLines: 12];
     
     //设置图片
-    if (qs.imageURL!=nil && qs.imageURL!= @"") {
+    if (qs.imageURL!=nil && ![qs.imageURL isEqual: @""]) {
         cell.imgUrl = qs.imageURL;
         cell.imgMidUrl = qs.imageMidURL;
         // cell.imgPhoto.hidden = NO;
@@ -305,7 +305,7 @@ UIAlertViewDelegate
         // cell.imgPhoto.hidden = YES;
     }
     //设置用户名
-    if (qs.anchor!=nil && qs.anchor!= @"")
+    if (qs.anchor!=nil && ![qs.anchor isEqual: @""])
     {
         cell.txtAnchor.text = qs.anchor;
     }else
@@ -313,7 +313,7 @@ UIAlertViewDelegate
         cell.txtAnchor.text = @"匿名";
     }
     //设置标签
-    if (qs.tag!=nil && qs.tag!= @"")
+    if (qs.tag!=nil && ![qs.tag isEqual: @""])
     {
         cell.txtTag.text = qs.tag;
     }else
