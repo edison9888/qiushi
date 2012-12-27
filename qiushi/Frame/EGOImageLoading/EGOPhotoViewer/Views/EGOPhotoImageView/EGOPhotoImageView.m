@@ -95,12 +95,12 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 		_imageView = [imageView retain];
 		[imageView release];
 		
-		UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-		activityView.frame = CGRectMake((CGRectGetWidth(self.frame) / 2) - 11.0f, CGRectGetHeight(self.frame) - 100.0f , 22.0f, 22.0f);
-		activityView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-		[self addSubview:activityView];
-		_activityView = [activityView retain];
-		[activityView release];
+//		UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+//		activityView.frame = CGRectMake((CGRectGetWidth(self.frame) / 2) - 11.0f, CGRectGetHeight(self.frame) - 100.0f , 22.0f, 22.0f);
+//		activityView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+//		[self addSubview:activityView];
+//		_activityView = [activityView retain];
+//		[activityView release];
         
         
         //xy
@@ -132,8 +132,13 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 }
 
 - (void)setPhoto:(id <EGOPhoto>)aPhoto{
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(update:)
+                                                 name:kImageNotificationUpdateProgress(self.photo.URL)
+                                               object:nil];
 	
-	if (!aPhoto) return; 
+	if (!aPhoto) return;
 	if ([aPhoto isEqual:self.photo]) return;
 	
 	if (self.photo != nil) {
@@ -152,7 +157,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 		if ([self.photo.URL isFileURL]) {
 			
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
-			
+            
 			NSError *error = nil;
 			NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[self.photo.URL path] error:&error];
 			NSInteger fileSize = [[attributes objectForKey:NSFileSize] integerValue];
@@ -199,7 +204,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	
 	if (self.imageView.image) {
 		
-		[_activityView stopAnimating];
+//		[_activityView stopAnimating];
         [_hud hide:YES afterDelay:0];
 		self.userInteractionEnabled = YES;
 		
@@ -210,12 +215,26 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	} else {
 		
 		_loading = YES;
-		[_activityView startAnimating];
+//		[_activityView startAnimating];
 		self.userInteractionEnabled= NO;
 		self.imageView.image = kEGOPhotoLoadingPlaceholder;
 	}
 	
 	[self layoutScrollViewAnimated:NO];
+}
+
+- (void)update:(NSNotification *)notification
+{
+    //    NSLog(@"Received notification: %@", notification);
+    
+    float progress = [[[notification userInfo] objectForKey:@"progress"] floatValue];
+    NSLog(@"%f",progress);
+    
+    
+    [_hud setProgress:progress];
+    
+    
+    
 }
 
 - (void)setupImageViewWithImage:(UIImage*)aImage {

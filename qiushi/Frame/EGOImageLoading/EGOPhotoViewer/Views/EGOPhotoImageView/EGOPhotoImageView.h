@@ -37,7 +37,7 @@
 	EGOPhotoScrollView *_scrollView;
 	id <EGOPhoto> _photo;
 	UIImageView *_imageView;
-	UIActivityIndicatorView *_activityView;
+//	UIActivityIndicatorView *_activityView;
 	
 	BOOL _loading;
 	CGRect _currentRect;

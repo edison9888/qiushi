@@ -69,7 +69,7 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/View/Qiushi/ContentViewController.m"
@@ -112,12 +112,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Views/EGOPhotoImageView/EGOPhotoImageView.m"
-         timestampString = "378211456.184852"
+         timestampString = "378280216.105482"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "411"
-         endingLineNumber = "411"
-         landmarkName = "-killScrollViewZoom"
+         startingLineNumber = "430"
+         endingLineNumber = "430"
+         landmarkName = "-imageLoaderDidFailToLoad:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
