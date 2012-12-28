@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AudioToolbox/AudioToolbox.h>
 #import "DIYMenu.h"
 #import "ProgressStatusBar.h"
 @class ContentViewController;
@@ -21,7 +20,6 @@
     
     UIBarButtonItem* _timeItem;
     
-    SystemSoundID soundID;
     
     ProgressStatusBar *statusBar;
     NSTimer *timer;

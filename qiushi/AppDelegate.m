@@ -77,11 +77,7 @@
     //    return YES;
     
     
-    //想摇就写在这～～～
-    application.applicationSupportsShakeToEdit=YES;
-    
 
-    
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

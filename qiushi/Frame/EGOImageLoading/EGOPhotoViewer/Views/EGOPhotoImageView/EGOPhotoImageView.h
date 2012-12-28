@@ -52,7 +52,7 @@
 @property(nonatomic,readonly) UIImageView *imageView;
 @property(nonatomic,readonly) EGOPhotoScrollView *scrollView;
 @property(nonatomic,assign,getter=isLoading) BOOL loading;
-@property (nonatomic, retain) MBProgressHUD *hud;
+@property(nonatomic, retain) MBProgressHUD *hud;
 
 - (void)setPhoto:(id <EGOPhoto>)aPhoto;
 - (void)killScrollViewZoom;

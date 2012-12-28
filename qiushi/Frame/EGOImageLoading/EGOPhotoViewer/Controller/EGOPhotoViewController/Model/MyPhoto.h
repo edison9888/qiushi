@@ -16,13 +16,15 @@
 	NSString *_caption;
 	CGSize _size;
 	UIImage *_image;
-	
+	UIImage *_placeholderImage;
 	BOOL _failed;
 	
 }
 
+- (id)initWithImageURL:(NSURL*)aURL name:(NSString*)aName image:(UIImage*)aImage pImage:(UIImage*)pImage;
 - (id)initWithImageURL:(NSURL*)aURL name:(NSString*)aName image:(UIImage*)aImage;
 - (id)initWithImageURL:(NSURL*)aURL name:(NSString*)aName;
 - (id)initWithImageURL:(NSURL*)aURL;
 - (id)initWithImage:(UIImage*)aImage;
+
 @end

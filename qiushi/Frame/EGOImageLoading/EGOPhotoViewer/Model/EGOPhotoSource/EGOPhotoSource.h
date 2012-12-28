@@ -70,6 +70,10 @@
  * The image after being loaded, or local.
  */
 @property(nonatomic,retain) UIImage *image;
+/*
+ * The image after being loaded, or local.
+ */
+@property(nonatomic,retain) UIImage *placeholderImage;
 
 /*
  * Returns true if the image failed to load.

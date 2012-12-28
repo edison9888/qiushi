@@ -63,7 +63,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 @end
 
 
-@implementation EGOPhotoImageView 
+@implementation EGOPhotoImageView
 
 @synthesize photo=_photo;
 @synthesize imageView=_imageView;
@@ -86,7 +86,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 		[self addSubview:scrollView];
 		_scrollView = [scrollView retain];
 		[scrollView release];
-
+        
 		UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
 		imageView.opaque = YES;
 		imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -95,12 +95,12 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 		_imageView = [imageView retain];
 		[imageView release];
 		
-//		UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-//		activityView.frame = CGRectMake((CGRectGetWidth(self.frame) / 2) - 11.0f, CGRectGetHeight(self.frame) - 100.0f , 22.0f, 22.0f);
-//		activityView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-//		[self addSubview:activityView];
-//		_activityView = [activityView retain];
-//		[activityView release];
+        //		UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        //		activityView.frame = CGRectMake((CGRectGetWidth(self.frame) / 2) - 11.0f, CGRectGetHeight(self.frame) - 100.0f , 22.0f, 22.0f);
+        //		activityView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+        //		[self addSubview:activityView];
+        //		_activityView = [activityView retain];
+        //		[activityView release];
         
         
         //xy
@@ -108,6 +108,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
         [self addSubview:_hud];
         _hud.mode = MBProgressHUDModeDeterminate;
         _hud.labelText = @"亲,正在努力加载中...";
+        _hud.progress = .08f;
         [_hud show:YES];
         //xd
         
@@ -124,7 +125,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 
 - (void)layoutSubviews{
 	[super layoutSubviews];
-		
+    
 	if (_scrollView.zoomScale == 1.0f) {
 		[self layoutScrollViewAnimated:YES];
 	}
@@ -133,13 +134,13 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 
 - (void)setPhoto:(id <EGOPhoto>)aPhoto{
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(update:)
-                                                 name:kImageNotificationUpdateProgress(self.photo.URL)
-                                               object:nil];
-	
+    
 	if (!aPhoto) return;
+    
+    DLog(@"%@:%@",aPhoto,self.photo);
+    
 	if ([aPhoto isEqual:self.photo]) return;
+    
 	
 	if (self.photo != nil) {
 		[[EGOImageLoader sharedImageLoader] cancelLoadForURL:self.photo.URL];
@@ -154,16 +155,19 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 		
 	} else {
 		
+        //是否是 文件URL
 		if ([self.photo.URL isFileURL]) {
 			
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
             
+            
+            
 			NSError *error = nil;
 			NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[self.photo.URL path] error:&error];
 			NSInteger fileSize = [[attributes objectForKey:NSFileSize] integerValue];
-
+            
 			if (fileSize >= 1048576 && [[[UIDevice currentDevice] systemVersion] floatValue] >= 4.0) {
-								
+                
 				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 					
 					UIImage *_image = nil;
@@ -182,21 +186,28 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 						
 						
 					});
-								   
+                    
 				});
-		
+                
 			} else {
 				
 				self.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.photo.URL]];
 				
 			}
-
+            
 #else
 			self.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.photo.URL]];
 #endif
 			
 			
 		} else {
+            DLog(@"url:%@",self.photo.URL);
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(update:)
+                                                         name:kImageNotificationUpdateProgress(self.photo.URL)
+                                                       object:nil];
+            
 			self.imageView.image = [[EGOImageLoader sharedImageLoader] imageForURL:self.photo.URL shouldLoadWithObserver:self];
 		}
 		
@@ -204,7 +215,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	
 	if (self.imageView.image) {
 		
-//		[_activityView stopAnimating];
+        //		[_activityView stopAnimating];
         [_hud hide:YES afterDelay:0];
 		self.userInteractionEnabled = YES;
 		
@@ -215,9 +226,9 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	} else {
 		
 		_loading = YES;
-//		[_activityView startAnimating];
+        //		[_activityView startAnimating];
 		self.userInteractionEnabled= NO;
-		self.imageView.image = kEGOPhotoLoadingPlaceholder;
+		self.imageView.image = self.photo.placeholderImage;//kEGOPhotoLoadingPlaceholder;
 	}
 	
 	[self layoutScrollViewAnimated:NO];
@@ -233,17 +244,21 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
     
     [_hud setProgress:progress];
     
+    if (progress == 1) {
+        [_hud setHidden:YES];
+    }
+    
     
     
 }
 
 - (void)setupImageViewWithImage:(UIImage*)aImage {
-	if (!aImage) return; 
-
+	if (!aImage) return;
+    
 	_loading = NO;
-//	[_activityView stopAnimating];
+    //	[_activityView stopAnimating];
     [_hud hide:YES afterDelay:0];
-	self.imageView.image = aImage; 
+	self.imageView.image = aImage;
 	[self layoutScrollViewAnimated:NO];
 	
 	[[self layer] addAnimation:[self fadeAnimation] forKey:@"opacity"];
@@ -265,7 +280,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	self.photo.failed = YES;
 	[self layoutScrollViewAnimated:NO];
 	self.userInteractionEnabled = NO;
-//	[_activityView stopAnimating];
+    //	[_activityView stopAnimating];
     [_hud hide:YES afterDelay:0];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"EGOPhotoDidFinishLoading" object:[NSDictionary dictionaryWithObjectsAndKeys:self.photo, @"photo", [NSNumber numberWithBool:YES], @"failed", nil]];
 	
@@ -297,7 +312,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	self.backgroundColor = [UIColor blackColor];
 	self.superview.backgroundColor = self.backgroundColor;
 	self.superview.superview.backgroundColor = self.backgroundColor;
-
+    
 }
 
 
@@ -305,7 +320,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 #pragma mark Layout
 
 - (void)rotateToOrientation:(UIInterfaceOrientation)orientation{
-
+    
 	if (self.scrollView.zoomScale > 1.0f) {
 		
 		CGFloat height, width;
@@ -321,12 +336,12 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 }
 
 - (void)layoutScrollViewAnimated:(BOOL)animated{
-
+    
 	if (animated) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.0001];
 	}
-		
+    
 	CGFloat hfactor = self.imageView.image.size.width / self.frame.size.width;
 	CGFloat vfactor = self.imageView.image.size.height / self.frame.size.height;
 	
@@ -344,8 +359,8 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	self.scrollView.contentSize = CGSizeMake(self.scrollView.bounds.size.width, self.scrollView.bounds.size.height);
 	self.scrollView.contentOffset = CGPointMake(0.0f, 0.0f);
 	self.imageView.frame = self.scrollView.bounds;
-
-
+    
+    
 	if (animated) {
 		[UIView commitAnimations];
 	}
@@ -388,7 +403,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 		popoverSize.width = newWidth;
 		popoverSize.height = newHeight;
 		
-	} 
+	}
 	
 	
 	return popoverSize;
@@ -414,13 +429,15 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 #pragma mark -
 #pragma mark EGOImageLoader Callbacks
 
-- (void)imageLoaderDidLoad:(NSNotification*)notification {	
+- (void)imageLoaderDidLoad:(NSNotification*)notification {
 	
 	if ([notification userInfo] == nil) return;
 	if(![[[notification userInfo] objectForKey:@"imageURL"] isEqual:self.photo.URL]) return;
 	
-    [_hud hide:YES afterDelay:0];
-    [_hud setProgress:0];
+    
+    [_hud hide:YES];
+    DLog(@"%@",[[notification userInfo] description]);
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kImageNotificationUpdateProgress(self.photo.URL) object:self];
     
 	[self setupImageViewWithImage:[[notification userInfo] objectForKey:@"image"]];
 	
@@ -431,10 +448,12 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	if ([notification userInfo] == nil) return;
 	if(![[[notification userInfo] objectForKey:@"imageURL"] isEqual:self.photo.URL]) return;
 	
+    DLog(@"%@",[[notification userInfo] description]);
     
-    [_hud setLabelText:@"网络连接失败"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kImageNotificationUpdateProgress(self.photo.URL) object:self];
+    
     [_hud hide:YES];
-    [_hud setProgress:0];
+    
     
     
 	[self handleFailedImage];
@@ -460,27 +479,27 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 - (void)killScrollViewZoom{
 	
 	if (!self.scrollView.zoomScale > 1.0f) return;
-
+    
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.3];
 	[UIView setAnimationDidStopSelector:@selector(killZoomAnimationDidStop:finished:context:)];
 	[UIView setAnimationDelegate:self];
-
+    
 	CGFloat hfactor = self.imageView.image.size.width / self.frame.size.width;
 	CGFloat vfactor = self.imageView.image.size.height / self.frame.size.height;
 	
 	CGFloat factor = MAX(hfactor, vfactor);
-		
+    
 	CGFloat newWidth = self.imageView.image.size.width / factor;
 	CGFloat newHeight = self.imageView.image.size.height / factor;
-		
+    
 	CGFloat leftOffset = (self.frame.size.width - newWidth) / 2;
 	CGFloat topOffset = (self.frame.size.height - newHeight) / 2;
-
+    
 	self.scrollView.frame = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
 	self.imageView.frame = self.scrollView.bounds;
 	[UIView commitAnimations];
-
+    
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
@@ -505,14 +524,14 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale{
-			
-	if (scrollView.zoomScale > 1.0f) {		
+    
+	if (scrollView.zoomScale > 1.0f) {
 		
 		
 		CGFloat height, width, originX, originY;
 		height = MIN(CGRectGetHeight(self.imageView.frame) + self.imageView.frame.origin.x, CGRectGetHeight(self.bounds));
 		width = MIN(CGRectGetWidth(self.imageView.frame) + self.imageView.frame.origin.y, CGRectGetWidth(self.bounds));
-
+        
 		
 		if (CGRectGetMaxX(self.imageView.frame) > self.bounds.size.width) {
 			width = CGRectGetWidth(self.bounds);
@@ -524,7 +543,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 				originX = 0.0f;
 			} else {
 				originX = self.imageView.frame.origin.x;
-			}	
+			}
 		}
 		
 		if (CGRectGetMaxY(self.imageView.frame) > self.bounds.size.height) {
@@ -539,43 +558,43 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 				originY = self.imageView.frame.origin.y;
 			}
 		}
-
+        
 		CGRect frame = self.scrollView.frame;
 		self.scrollView.frame = CGRectMake((self.bounds.size.width / 2) - (width / 2), (self.bounds.size.height / 2) - (height / 2), width, height);
 		self.scrollView.layer.position = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-		if (!CGRectEqualToRect(frame, self.scrollView.frame)) {		
+		if (!CGRectEqualToRect(frame, self.scrollView.frame)) {
 			
 			CGFloat offsetY, offsetX;
-
+            
 			if (frame.origin.y < self.scrollView.frame.origin.y) {
 				offsetY = self.scrollView.contentOffset.y - (self.scrollView.frame.origin.y - frame.origin.y);
-			} else {				
+			} else {
 				offsetY = self.scrollView.contentOffset.y - (frame.origin.y - self.scrollView.frame.origin.y);
 			}
 			
 			if (frame.origin.x < self.scrollView.frame.origin.x) {
 				offsetX = self.scrollView.contentOffset.x - (self.scrollView.frame.origin.x - frame.origin.x);
-			} else {				
+			} else {
 				offsetX = self.scrollView.contentOffset.x - (frame.origin.x - self.scrollView.frame.origin.x);
 			}
-
+            
 			if (offsetY < 0) offsetY = 0;
 			if (offsetX < 0) offsetX = 0;
 			
 			self.scrollView.contentOffset = CGPointMake(offsetX, offsetY);
 		}
-
+        
 	} else {
 		[self layoutScrollViewAnimated:YES];
 	}
-}	
+}
 
 
 #pragma mark -
 #pragma mark RotateGesture
 
 - (void)rotate:(UIRotationGestureRecognizer*)gesture{
-
+    
 	if (gesture.state == UIGestureRecognizerStateBegan) {
 		
 		[self.layer removeAllAnimations];
@@ -585,7 +604,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	} else if (gesture.state == UIGestureRecognizerStateChanged) {
 		
 		self.layer.transform = CATransform3DMakeRotation((_beginRadians + gesture.rotation), 0.0f, 0.0f, 1.0f);
-
+        
 	} else {
 		
 		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
@@ -597,8 +616,8 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 		[animation setValue:[NSNumber numberWithInt:202] forKey:@"AnimationType"];
 		[self.layer addAnimation:animation forKey:@"RotateAnimation"];
 		
-	} 
-
+	}
+    
 	
 }
 
@@ -631,7 +650,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-//	[_activityView release], _activityView=nil;
+    //	[_activityView release], _activityView=nil;
 	[_imageView release]; _imageView=nil;
 	[_scrollView release]; _scrollView=nil;
 	[_photo release]; _photo=nil;

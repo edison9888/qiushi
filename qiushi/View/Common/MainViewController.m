@@ -126,11 +126,7 @@ static CGFloat progress = 0;
                 withFont:font];
     
     
-    //初始化 摇一摇刷新
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"shake" ofType:@"wav"];
-	AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath:path], &soundID);
-    
-    
+       
     
     //设置糗事类型
     if (!_typeQiuShi) {
@@ -225,32 +221,16 @@ static CGFloat progress = 0;
     timer = nil;
 }
 
-//摇一摇 的准备
--(BOOL)canBecomeFirstResponder{
-    return YES;
-}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     DLog("viewDidAppear");
-    [self becomeFirstResponder];
+
     [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
     [super viewDidAppear:animated];
     
 }
--(void)viewWillDisappear:(BOOL)animated
-{
-    DLog("viewWillDisappear");
-    [self resignFirstResponder];
-    [super viewWillDisappear:animated];
-}
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    DLog("viewWillAppear");
-   
-    [super viewWillAppear:animated];
-    
-}
 
 
 #pragma mark - action
@@ -364,23 +344,6 @@ static CGFloat progress = 0;
 }
 
 
-
-//摇动后
--(void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event{
-    
-    DLog(@"UIEventSubType : %d",motion);
-    if(motion==UIEventSubtypeMotionShake)
-    {
-        
-        AudioServicesPlaySystemSound (soundID);
-
-        [[iToast makeText:@"亲,摇动刷新哦"] show];
-        //刷新 数据
-        [self refreshDate];
-        
-    }
-    
-}
 
 #pragma mark - 刷新数据
 - (void)refreshDate

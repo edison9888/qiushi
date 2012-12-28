@@ -213,7 +213,7 @@
             //    [[delegate navController] presentModalViewController:_photoview animated:YES];
             
             
-            MyPhoto *photo = [[MyPhoto alloc] initWithImageURL:[NSURL URLWithString:self.imgMidUrl] name:txtContent.text];
+            MyPhoto *photo = [[MyPhoto alloc] initWithImageURL:[NSURL URLWithString:self.imgMidUrl] name:txtContent.text image:nil pImage:[[self.imgPhoto imageView] image]];
            
             MyPhotoSource *source = [[MyPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:photo,photo, nil]];
             

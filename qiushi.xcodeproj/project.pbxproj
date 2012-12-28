@@ -64,10 +64,8 @@
 		1312AD3D1642199500857AD0 /* block_foot_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1312AD3C1642199500857AD0 /* block_foot_background@2x.png */; };
 		1312AD3F1642209D00857AD0 /* icon_tag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1312AD3E1642209D00857AD0 /* icon_tag@2x.png */; };
 		1312AD4916422EEB00857AD0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1312AD4B16422EEB00857AD0 /* Localizable.strings */; };
-		1312AD4D164232B600857AD0 /* wryh.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1312AD4C164232B600857AD0 /* wryh.ttf */; };
 		1312AD5516425A5C00857AD0 /* icon_list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1312AD5416425A5B00857AD0 /* icon_list@2x.png */; };
 		1312AD5716425B5A00857AD0 /* icon_bin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1312AD5616425B5900857AD0 /* icon_bin@2x.png */; };
-		1313DA8E15EF0188002ACBB2 /* shake.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1313DA8D15EF0188002ACBB2 /* shake.wav */; };
 		1313DAB715F054B5002ACBB2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 1313DAB615F054B5002ACBB2 /* README.md */; };
 		1313DABF15F08A09002ACBB2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1313DABE15F08A09002ACBB2 /* StoreKit.framework */; };
 		13292531162CFDB900B8B99A /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13292530162CFDB900B8B99A /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -332,10 +330,8 @@
 		1312AD4716422ED200857AD0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/ViewController_iPad.xib"; sourceTree = "<group>"; };
 		1312AD4816422ED200857AD0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		1312AD4A16422EEB00857AD0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		1312AD4C164232B600857AD0 /* wryh.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = wryh.ttf; sourceTree = "<group>"; };
 		1312AD5416425A5B00857AD0 /* icon_list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_list@2x.png"; sourceTree = "<group>"; };
 		1312AD5616425B5900857AD0 /* icon_bin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_bin@2x.png"; sourceTree = "<group>"; };
-		1313DA8D15EF0188002ACBB2 /* shake.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = shake.wav; sourceTree = "<group>"; };
 		1313DAB615F054B5002ACBB2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		1313DABE15F08A09002ACBB2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		13292530162CFDB900B8B99A /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -940,9 +936,7 @@
 		13C843E715E489E8000B8A44 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				1312AD4C164232B600857AD0 /* wryh.ttf */,
 				1312ACC81642149200857AD0 /* images */,
-				1313DA8D15EF0188002ACBB2 /* shake.wav */,
 				1312AD4B16422EEB00857AD0 /* Localizable.strings */,
 			);
 			name = Resource;
@@ -1645,7 +1639,6 @@
 				13C8484B15E4F96B000B8A44 /* forward_tencent.png in Resources */,
 				13C8484C15E4F96B000B8A44 /* forward_tencent_active.png in Resources */,
 				13C8485F15E50778000B8A44 /* Icon@2x.png in Resources */,
-				1313DA8E15EF0188002ACBB2 /* shake.wav in Resources */,
 				1313DAB715F054B5002ACBB2 /* README.md in Resources */,
 				13F4C74715F1FFB500DD8451 /* iVersion.bundle in Resources */,
 				13D4BBDD15F9BC9000AD8B8B /* imageviewer_return.png in Resources */,
@@ -1725,7 +1718,6 @@
 				1312AD3D1642199500857AD0 /* block_foot_background@2x.png in Resources */,
 				1312AD3F1642209D00857AD0 /* icon_tag@2x.png in Resources */,
 				1312AD4916422EEB00857AD0 /* Localizable.strings in Resources */,
-				1312AD4D164232B600857AD0 /* wryh.ttf in Resources */,
 				1312AD5516425A5C00857AD0 /* icon_list@2x.png in Resources */,
 				1312AD5716425B5A00857AD0 /* icon_bin@2x.png in Resources */,
 				C9F63A951645213300E17ED2 /* LoginViewController.xib in Resources */,
@@ -1981,7 +1973,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				RUN_CLANG_STATIC_ANALYZER = NO;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
@@ -2014,7 +2006,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				RUN_CLANG_STATIC_ANALYZER = NO;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
