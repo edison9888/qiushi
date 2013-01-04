@@ -66,7 +66,9 @@
         [self.httpRequest setDelegate:self];
         [self.httpRequest setDidFailSelector:@selector(requestFail:)];
         [self.httpRequest setDidFinishSelector:@selector(requestSuccess:)];
+        [self.httpRequest setNumberOfTimesToRetryOnTimeout:2];
         [self.httpRequest startAsynchronous];
+         
         //        [self.interviews.view addSubview:[MyProgressHud getInstance]];
         
         
@@ -79,51 +81,14 @@
     
 }
 
-- (void) requestFail:(ASIHTTPRequest *)request
-{
 
-    [MyProgressHud remove];
-    
-    if (request.tag == kRequestTypeGetQiushi
-        || request.tag == kRequestTypeGetComment)
-    {
-        [self.delegate refreshDate1:nil data2:nil withType:[request tag]];
-    }
-    
-    
-    
-    
-       
-    NSError *error = [request error];
-    
-    
-    DLog(@"-------------------------------\n");
-    DLog(@"error:%@",error);
-    
-    NSString *temp = [NSString stringWithFormat:@"%@",error];
-    NSString *jap = @"timed out";
-    NSRange foundObj=[temp rangeOfString:jap options:NSCaseInsensitiveSearch];
-    if(foundObj.length>0)
-    {
-        [[iToast makeText:NSLocalizedString(@"网络连接超时,请稍后再试","网络连接超时,请稍后再试")] show];
-        return;
-    }
-    
-#ifdef DEBUG
-    NSString *responseString = [request responseString];
-    DLog(@"%@\n",responseString);
-#endif
-    
-    
-   
-    
-}
 
 
 
 - (void) requestSuccess:(ASIHTTPRequest *)request
 {
     
+    DLog(@"RequestSuccess");
     
     [MyProgressHud remove];
     NSString *responseString = [request responseString];
@@ -145,6 +110,48 @@
         [self.delegate refreshDate1:resultDic data2:nil withType:[request tag]];
     }
     
+}
+
+
+- (void) requestFail:(ASIHTTPRequest *)request
+{
+    DLog(@"RequestFail");
+
+    [MyProgressHud remove];
+
+    if (request.tag == kRequestTypeGetQiushi
+        || request.tag == kRequestTypeGetComment)
+    {
+        [self.delegate refreshDate1:nil data2:nil withType:[request tag]];
+    }
+
+
+
+
+
+    NSError *error = [request error];
+
+
+    DLog(@"-------------------------------\n");
+    DLog(@"error:%@",error);
+
+    NSString *temp = [NSString stringWithFormat:@"%@",error];
+    NSString *jap = @"timed out";
+    NSRange foundObj=[temp rangeOfString:jap options:NSCaseInsensitiveSearch];
+    if(foundObj.length>0)
+    {
+        [[iToast makeText:NSLocalizedString(@"网络连接超时,请稍后再试","网络连接超时,请稍后再试")] show];
+        return;
+    }
+
+#ifdef DEBUG
+    NSString *responseString = [request responseString];
+    DLog(@"%@\n",responseString);
+#endif
+
+
+
+
 }
 
 @end
