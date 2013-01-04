@@ -137,6 +137,49 @@ RefreshDateNetDelegate
         
         [self.tableView launchRefreshing];
     }
+
+    NSMutableArray *urls = [[NSMutableArray alloc]init];
+    NSString *url;
+    for (int i = 0; i<5; i++) {
+        url = SuggestURLString(10,i);
+        [urls addObject:url];
+
+        url = DayURLString(10,i);
+        [urls addObject:url];
+
+        url = WeakURlString(10,i);
+        [urls addObject:url];
+
+        url = MonthURLString(10,i);
+        [urls addObject:url];
+
+        url = LastestURLString(10,i);
+        [urls addObject:url];
+
+        url = ImageURLString(10,i);
+        [urls addObject:url];
+
+    }
+
+
+
+
+
+#ifdef DEBUG
+    //每隔15分钟,取数据，保持到parse
+//    for (NSString *url in urls) {
+    NSTimer *addEnemyTimer;
+    addEnemyTimer=[NSTimer scheduledTimerWithTimeInterval:(60*20) target:self selector:@selector(addEnemy) userInfo:nil repeats:YES];
+        
+//    }
+#endif
+
+    
+}
+
+- (void) addEnemy
+{
+    [_net requestWithURL:SuggestURLString(10,1) withType:kRequestTypeGetQiushi withDictionary:nil];
 }
 
 - (void)viewDidUnload
