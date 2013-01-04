@@ -72,7 +72,21 @@
         //        [self.interviews.view addSubview:[MyProgressHud getInstance]];
         
         
-    }    
+    }else if (type == kRequestTypeGetQsParse)
+    {
+        urlString = @"https://api.parse.com/1/classes/QIUSHI";
+        _httpRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [_httpRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+        [_httpRequest addRequestHeader:@"Accept" value:@"application/json"];
+        [_httpRequest addRequestHeader:@"X-Parse-Application-Id" value:kParseApplicationId];
+        [_httpRequest addRequestHeader:@"X-Parse-REST-API-Key" value:kParseREST];
+        [self.httpRequest setTag:type];
+        [self.httpRequest setDelegate:self];
+        [self.httpRequest setDidFailSelector:@selector(requestFail:)];
+        [self.httpRequest setDidFinishSelector:@selector(requestSuccess:)];
+        [self.httpRequest setNumberOfTimesToRetryOnTimeout:2];
+        [self.httpRequest startAsynchronous];
+    }
     
 
     

@@ -19,6 +19,7 @@
 #import "IIViewDeckController.h"
 #import "LoginViewController.h"
 #import "MyTableController.h"
+#import "TestViewController.h"
 
 
 @interface LeftController ()
@@ -296,6 +297,11 @@
     {
         MyTableController *my = [[MyTableController alloc]init];
         [self.navController pushViewController:my animated:YES];
+    }
+    else if (idx == 3)
+    {
+        TestViewController *test = [[TestViewController alloc]initWithNibName:@"TestViewController" bundle:nil];
+        [self.navController pushViewController:test animated:YES];
     }
     
     

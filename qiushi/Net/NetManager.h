@@ -16,6 +16,7 @@ typedef enum _RequestTypeTag
 {
     kRequestTypeGetQiushi = 1001,
     kRequestTypeGetComment,
+    kRequestTypeGetQsParse,
     
 }RequestTypeTag;
 
