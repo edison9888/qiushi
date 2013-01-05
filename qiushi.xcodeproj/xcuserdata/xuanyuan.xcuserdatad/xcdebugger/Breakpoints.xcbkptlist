@@ -2,19 +2,4 @@
 <Bucket
    type = "1"
    version = "1.0">
-   <FileBreakpoints>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "qiushi/Frame/Parse.framework/Headers/PFQueryTableViewController.h"
-         timestampString = "379004741.639084"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "113"
-         endingLineNumber = "113"
-         landmarkName = "@interface PFQueryTableViewController"
-         landmarkType = "2">
-      </FileBreakpoint>
-   </FileBreakpoints>
 </Bucket>
