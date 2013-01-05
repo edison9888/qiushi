@@ -173,29 +173,29 @@ static NSArray *dirPaths;
                 
                 
                 
-#ifdef DEBUG
-                PFObject *qsObject = [PFObject objectWithClassName:@"QIUSHI"];
-                [qsObject setObject:qs.qiushiID forKey:@"qiushiid"];
-                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.imageURL] forKey:@"imageurl"];
-                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.imageMidURL] forKey:@"imagemidurl"];
-                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.tag] forKey:@"tag"];
-                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.content] forKey:@"content"];
-                [qsObject setObject:[NSString stringWithFormat:@"%d",qs.commentsCount] forKey:@"commentscount"];
-                [qsObject setObject:[NSString stringWithFormat:@"%d",qs.upCount] forKey:@"upcount"];
-                [qsObject setObject:[NSString stringWithFormat:@"%d",qs.downCount] forKey:@"downcount"];
-                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.anchor] forKey:@"anchor"];
-                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.fbTime] forKey:@"fbtime"];
-
-                [qsObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    if (succeeded) {
-                        
-                        NSLog(@"QIUSHI save success");
-                    } else {
-                        NSLog(@"QIUSHI save  fail");
-                    }
-                    
-                }];
-#endif
+//#ifdef DEBUG
+//                PFObject *qsObject = [PFObject objectWithClassName:@"QIUSHI"];
+//                [qsObject setObject:qs.qiushiID forKey:@"qiushiid"];
+//                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.imageURL] forKey:@"imageurl"];
+//                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.imageMidURL] forKey:@"imagemidurl"];
+//                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.tag] forKey:@"tag"];
+//                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.content] forKey:@"content"];
+//                [qsObject setObject:[NSString stringWithFormat:@"%d",qs.commentsCount] forKey:@"commentscount"];
+//                [qsObject setObject:[NSString stringWithFormat:@"%d",qs.upCount] forKey:@"upcount"];
+//                [qsObject setObject:[NSString stringWithFormat:@"%d",qs.downCount] forKey:@"downcount"];
+//                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.anchor] forKey:@"anchor"];
+//                [qsObject setObject:[NSString stringWithFormat:@"%@",qs.fbTime] forKey:@"fbtime"];
+//
+//                [qsObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//                    if (succeeded) {
+//                        
+//                        NSLog(@"QIUSHI save success");
+//                    } else {
+//                        NSLog(@"QIUSHI save  fail");
+//                    }
+//                    
+//                }];
+//#endif
 
                 
                 

@@ -106,7 +106,7 @@
     
     [MyProgressHud remove];
     NSString *responseString = [request responseString];
-    DLog(@"%@",responseString);
+//    DLog(@"%@",responseString);
     
     
     NSMutableDictionary *resultDic;

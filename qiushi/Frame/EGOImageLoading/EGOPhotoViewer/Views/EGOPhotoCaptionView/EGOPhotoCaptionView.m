@@ -46,7 +46,7 @@
 //		[self addSubview:_textLabel];
 //		[_textLabel release];
         
-        _textView = [[UITextView alloc]initWithFrame:CGRectMake(20.0f, 0.0f, self.frame.size.width - 40.0f, 40.0f)];
+        _textView = [[UITextView alloc]initWithFrame:CGRectMake(20.0f, 0.0f, self.frame.size.width - 44.0f, 44.0f)];
         _textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         _textView.backgroundColor = [UIColor clearColor];
 		_textView.textAlignment = UITextAlignmentLeft;
@@ -66,7 +66,7 @@
 	
 	[self setNeedsDisplay];
 //	_textLabel.frame = CGRectMake(20.0f, 0.0f, self.frame.size.width - 40.0f, 40.0f);
-    _textView.frame = CGRectMake(20.0f, 0.0f, self.frame.size.width - 40.0f, 40.0f);
+    _textView.frame = CGRectMake(20.0f, 0.0f, self.frame.size.width - 44.0f, 44.0f);
 	
 }
 

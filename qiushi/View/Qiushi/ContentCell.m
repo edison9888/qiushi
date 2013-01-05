@@ -215,12 +215,16 @@
             
             MyPhoto *photo = [[MyPhoto alloc] initWithImageURL:[NSURL URLWithString:self.imgMidUrl] name:txtContent.text image:nil pImage:[[self.imgPhoto imageView] image]];
            
-            MyPhotoSource *source = [[MyPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:photo,photo, nil]];
+            MyPhotoSource *source = [[MyPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:photo, nil]];
             
             EGOPhotoViewController *photoController = [[EGOPhotoViewController alloc] initWithPhotoSource:source];
             
 
-            [[delegate navController] presentModalViewController:photoController animated:YES];
+//            [[delegate navController] presentModalViewController:photoController animated:YES];
+            UINavigationController *aboutNavController = [[UINavigationController alloc] initWithRootViewController:photoController];
+            aboutNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+
+            [[delegate navController] presentModalViewController:aboutNavController animated:YES];
             
             
         }break;

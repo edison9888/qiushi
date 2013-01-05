@@ -16,17 +16,17 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom the table
-
+        
         // The className to query on
         self.className = @"QIUSHI";
-
-
+        
+        
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
-
+        
         // Whether the built-in pagination is enabled
         self.paginationEnabled = YES;
-
+        
         // The number of objects to show per page
         self.objectsPerPage = 25;
     }
@@ -38,10 +38,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -83,7 +83,7 @@
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-
+    
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -91,13 +91,13 @@
 
 - (void)objectsDidLoad:(NSError *)error {
     [super objectsDidLoad:error];
-
+    
     // This method is called every time objects are loaded from Parse via the PFQuery
 }
 
 - (void)objectsWillLoad {
     [super objectsWillLoad];
-
+    
     // This method is called before a PFQuery is fired to get more objects
 }
 
@@ -123,10 +123,10 @@
 // Override to customize the look of a cell representing an object. The default is to display
 // a UITableViewCellStyleDefault style cell with the label being the first key in the object.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
-
-
-
-
+    
+    
+    
+    
     static NSString *Contentidentifier = @"_ContentCELL";
     ContentCell *cell = [tableView dequeueReusableCellWithIdentifier:Contentidentifier];
     if (cell == nil){
@@ -134,17 +134,17 @@
         cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Contentidentifier] ;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.opaque = YES;
-
+        
     }
-
-
-
+    
+    
+    
     //设置内容
     cell.txtContent.text = [NSString stringWithFormat:@"%@", [object objectForKey:@"content"]];
-
-
+    
+    
     [cell.txtContent setNumberOfLines: 12];
-
+    
     //设置图片
     NSString *imageUrl = [NSString stringWithFormat:@"%@", [object objectForKey:@"imageurl"]];
     if (imageUrl!=nil && ![imageUrl isEqual: @""] && ![imageUrl isEqual: @"(null)"]) {
@@ -170,27 +170,27 @@
     NSString *tag = [NSString stringWithFormat:@"%@", [object objectForKey:@"tag"]];
     if (tag==nil || [tag isEqualToString:@""] || tag.length == 0)
     {
-
+        
         cell.txtTag.text = tag;
-
+        
     }else
     {
         cell.txtTag.text = @"";
-
+        
     }
     //设置up ，down and commits
     NSString *upCount = [NSString stringWithFormat:@"%@", [object objectForKey:@"upcount"]];
     [cell.goodbtn setTitle:upCount forState:UIControlStateNormal];
-
+    
     NSString *downCount = [NSString stringWithFormat:@"%@", [object objectForKey:@"downcount"]];
     [cell.badbtn setTitle:downCount forState:UIControlStateNormal];
-
+    
     NSString *commentCount = [NSString stringWithFormat:@"%@", [object objectForKey:@"commentscount"]];
     [cell.commentsbtn setTitle:commentCount forState:UIControlStateNormal];
-
+    
     //发布时间
     //    cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.row+1,[self.list count]];//qs.fbTime;
-
+    
     //    [cell.saveBtn setTag:indexPath.row ];
     //    [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
     //
@@ -204,12 +204,12 @@
     //
     //    [cell.badbtn setTag:indexPath.row];
     //    [cell.badbtn addTarget:self action:@selector(badClick:) forControlEvents:UIControlEventTouchUpInside];
-
-
+    
+    
     //自适应函数
     [cell resizeTheHeight:kTypeMain];
-
-
+    
+    
     return cell;
 }
 
@@ -220,16 +220,16 @@
     //    DLog(@"row:%d",indexPath.row);
     //    DLog(@"%@",[self.objects description]);
     if (indexPath.row <= self.objects.count-1) {
-
+        
         NSString *imageUrl = [NSString stringWithFormat:@"%@",[[self.objects objectAtIndex:indexPath.row] objectForKey:@"imageurl"]];
-
+        
         if (imageUrl!=nil && ![imageUrl isEqual: @""] && ![imageUrl isEqual: @"(null)"]) {
             return [self getTheHeight:[NSString stringWithFormat:@"%@",[[self.objects objectAtIndex:indexPath.row] objectForKey:@"content"]] withImage:YES];
         }
         return [self getTheHeight:[NSString stringWithFormat:@"%@",[[self.objects objectAtIndex:indexPath.row] objectForKey:@"content"]] withImage:NO];
-
+        
     }
-
+    
     return 44;
 }
 
@@ -240,8 +240,8 @@
     CGFloat contentWidth = 280;
     // 设置字体
     UIFont *font = [UIFont fontWithName:kFont size:14];
-
-
+    
+    
     // 计算出长宽
     CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, (content.length * 14 * 0.05 + 1 ) * 14) lineBreakMode:UILineBreakModeTailTruncation];
     CGFloat height;
@@ -253,77 +253,33 @@
     }
     // 返回需要的高度
     return height;
-
-
+    
+    
 }
 
 
-/*
- // Override if you need to change the ordering of objects in the table.
- - (PFObject *)objectAtIndex:(NSIndexPath *)indexPath {
- return [objects objectAtIndex:indexPath.row];
- }
- */
 
-/*
+
+
  // Override to customize the look of the cell that allows the user to load the next page of objects.
  // The default implementation is a UITableViewCellStyleDefault cell with simple labels.
  - (UITableViewCell *)tableView:(UITableView *)tableView cellForNextPageAtIndexPath:(NSIndexPath *)indexPath {
  static NSString *CellIdentifier = @"NextPage";
-
+ 
  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
+ 
  if (cell == nil) {
  cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
  }
-
+ 
  cell.selectionStyle = UITableViewCellSelectionStyleNone;
- cell.textLabel.text = @"Load more...";
-
+ cell.textLabel.text = @"Load more...test";
+ 
  return cell;
  }
- */
 
-#pragma mark - Table view data source
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
 #pragma mark - Table view delegate
 
