@@ -222,9 +222,9 @@
 
 //            [[delegate navController] presentModalViewController:photoController animated:YES];
             UINavigationController *aboutNavController = [[UINavigationController alloc] initWithRootViewController:photoController];
-            aboutNavController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+            aboutNavController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 
-            [[delegate navController] presentModalViewController:aboutNavController animated:YES];
+            [[delegate navController] presentModalViewController:aboutNavController animated:NO];
             
             
         }break;

@@ -346,20 +346,36 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	CGFloat vfactor = self.imageView.image.size.height / self.frame.size.height;
 	
 	CGFloat factor = MAX(hfactor, vfactor);
-    factor = hfactor;//xyxd
 	
 	CGFloat newWidth = self.imageView.image.size.width / factor;
 	CGFloat newHeight = self.imageView.image.size.height / factor;
-	
-	CGFloat leftOffset = (self.frame.size.width - newWidth) / 2;
-	CGFloat topOffset = (self.frame.size.height - newHeight) / 2;
-	
-	self.scrollView.frame = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
-	self.scrollView.layer.position = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
-	self.scrollView.contentSize = CGSizeMake(self.scrollView.bounds.size.width, self.scrollView.bounds.size.height);
-	self.scrollView.contentOffset = CGPointMake(0.0f, 0.0f);
-	self.imageView.frame = self.scrollView.bounds;
     
+    if (hfactor < vfactor) {
+        
+        newHeight = newHeight * self.frame.size.width / newWidth;
+        newWidth = self.frame.size.width;
+        NSLog(@"%f,%f",newWidth,newHeight);
+        
+    }
+	
+	CGFloat leftOffset = MAX((self.frame.size.width - newWidth) / 2, 0);
+	CGFloat topOffset = MAX((self.frame.size.height - newHeight) / 2, 0);
+    
+    
+	
+	self.scrollView.frame = CGRectMake(leftOffset, topOffset, MIN(newWidth, self.frame.size.width), MIN(newHeight, self.frame.size.height));
+    NSLog(@"scrollview.frame:%@",NSStringFromCGRect(self.scrollView.frame));
+	self.scrollView.layer.position = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+	self.scrollView.contentSize = CGSizeMake(newWidth, newHeight);
+	self.scrollView.contentOffset = CGPointMake(0.0f, 0.0f);
+    if (hfactor < vfactor) {
+        self.imageView.frame = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
+    }else {
+        self.imageView.frame = self.scrollView.bounds;
+    }
+
+    NSLog(@"self.imageView.frame:%@",NSStringFromCGRect(self.imageView.frame));
+    NSLog(@"size:%@",NSStringFromCGSize(self.scrollView.contentSize));
     
 	if (animated) {
 		[UIView commitAnimations];
@@ -493,11 +509,20 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	CGFloat newWidth = self.imageView.image.size.width / factor;
 	CGFloat newHeight = self.imageView.image.size.height / factor;
     
-	CGFloat leftOffset = (self.frame.size.width - newWidth) / 2;
-	CGFloat topOffset = (self.frame.size.height - newHeight) / 2;
     
-	self.scrollView.frame = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
-	self.imageView.frame = self.scrollView.bounds;
+    if (hfactor < vfactor)
+    {
+        newHeight = newHeight * self.frame.size.width / newWidth;
+        newWidth = self.frame.size.width;
+        
+    }
+	
+	CGFloat leftOffset = MAX((self.frame.size.width - newWidth) / 2, 0);
+	CGFloat topOffset = MAX((self.frame.size.height - newHeight) / 2, 0);
+    
+	self.scrollView.frame = CGRectMake(leftOffset, topOffset, MIN(newWidth, self.frame.size.width), MIN(newHeight, self.frame.size.height));
+	self.imageView.frame = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
+    
 	[UIView commitAnimations];
     
 }
@@ -523,6 +548,7 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	
 }
 
+//把这个方法不小心删了,也没有影响
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale{
     
 	if (scrollView.zoomScale > 1.0f) {

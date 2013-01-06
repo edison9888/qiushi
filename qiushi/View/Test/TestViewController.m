@@ -8,7 +8,7 @@
 
 #import "TestViewController.h"
 #import "NetManager.h"
-
+#import <Parse/Parse.h>
 @interface TestViewController ()
 
 @end
@@ -29,9 +29,31 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    _net = [[NetManager alloc]init];
-    _net.delegate = self;
-    [_net requestWithURL:nil withType:kRequestTypeGetQsParse withDictionary:nil];
+//    _net = [[NetManager alloc]init];
+//    _net.delegate = self;
+//    [_net requestWithURL:nil withType:kRequestTypeGetQsParse withDictionary:nil];
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"QIUSHI"];
+    query.limit = 10;
+    query.skip = 0;
+    // Sorts the results in descending order by the score field
+    [query orderByDescending:@"createdAt"];
+    // Sorts the results in descending order by the score field if the previous sort keys are equal.
+    [query addDescendingOrder:@"createdAt"];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *comments, NSError *error) {
+        // comments now contains the comments for myPost
+        if (!comments) {
+            NSLog(@"The getFirstObject request failed.");
+        } else {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved the object.");
+            for (PFObject *object in comments) {
+//                DLog(@"%@",[object objectForKey:@"content"]);
+            }
+           
+        }
+    }];
     
 }
 
