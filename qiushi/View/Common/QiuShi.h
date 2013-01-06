@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#define kTypeQsYuan     101
+#define kTypeQsParse    102
+
 @interface QiuShi : NSObject
 {
     //小图片链接地址
@@ -47,7 +50,7 @@
 @property (nonatomic,assign) int upCount;
 @property (nonatomic,copy) NSString *anchor;
 @property (nonatomic,copy) NSString *fbTime;
-- (id)initWithDictionary:(NSDictionary *)dictionary;
+- (id)initWithDictionary:(NSDictionary *)dictionary withType:(int)type;
 - (id)initWithQiushi:(QiuShi *)qiushi;
 
 

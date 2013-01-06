@@ -49,7 +49,7 @@
             // The find succeeded.
             NSLog(@"Successfully retrieved the object.");
             for (PFObject *object in comments) {
-//                DLog(@"%@",[object objectForKey:@"content"]);
+                DLog(@"%@",[object objectForKey:@"content"]);
             }
            
         }

@@ -46,12 +46,15 @@
 //		[self addSubview:_textLabel];
 //		[_textLabel release];
         
-        _textView = [[UITextView alloc]initWithFrame:CGRectMake(20.0f, 0.0f, self.frame.size.width - 44.0f, 44.0f)];
+        _textView = [[UITextView alloc]initWithFrame:CGRectMake(10.0f, 0.0f, self.frame.size.width - 20.0f, 44.0f)];
         _textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         _textView.backgroundColor = [UIColor clearColor];
 		_textView.textAlignment = UITextAlignmentLeft;
 		_textView.textColor = [UIColor whiteColor];
         _textView.editable = NO;
+
+
+        DLog(@"%@",NSStringFromCGRect(_textView.frame));
         
 		[self addSubview:_textView];
 		[_textView release];

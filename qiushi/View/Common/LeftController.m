@@ -19,7 +19,7 @@
 #import "IIViewDeckController.h"
 #import "LoginViewController.h"
 #import "MyTableController.h"
-#import "TestViewController.h"
+#import "ContentFromParseViewController.h"
 
 
 @interface LeftController ()
@@ -54,20 +54,28 @@
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     
-    
-    
-    _items = [[NSMutableArray alloc]initWithObjects:@"随便逛逛",@"新鲜出炉",@"有图有真相",@"个人收藏",@"缓存也精彩",@"",@"设置",@"关于", nil];
+    _items = [[NSMutableArray alloc]initWithObjects:
+              @"随便逛逛",
+              @"新鲜出炉",
+              @"有图有真相",
+              @"个人收藏",
+              @"缓存也精彩",
+              @"",
+              @"设置",
+              @"关于",
+              @"实验室",
+              nil];
     
     
     
     [self.view setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
-    
-    
-    
+
+
     
     //调节亮度的 滑动条
     _mSlider = [[UISlider alloc]initWithFrame:CGRectMake(15.0, 12 , 220, 20)];
@@ -270,6 +278,8 @@
         [self.navController pushViewController:about animated:NO];
         
         
+    }else if (indexPath.row == 8){
+        
     }
     
     [self.viewDeckController closeLeftViewAnimated:YES];
@@ -300,8 +310,8 @@
     }
     else if (idx == 3)
     {
-        TestViewController *test = [[TestViewController alloc]initWithNibName:@"TestViewController" bundle:nil];
-        [self.navController pushViewController:test animated:YES];
+        ContentFromParseViewController *parse = [[ContentFromParseViewController alloc]initWithNibName:@"ContentFromParseViewController" bundle:nil];
+        [self.navController pushViewController:parse animated:YES];
     }
     
     

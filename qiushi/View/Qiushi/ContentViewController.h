@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ContentCell.h"
 #import "GADBannerView.h"
-@class PhotoViewer;
+@class EGOImageButton;
 @class PullingRefreshTableView;
 @class NetManager;
 

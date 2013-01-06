@@ -632,7 +632,7 @@ RefreshDateNetDelegate
                 {
                     
                     
-                    QiuShi *qs = [[QiuShi alloc]initWithDictionary:qiushi];
+                    QiuShi *qs = [[QiuShi alloc]initWithDictionary:qiushi withType:kTypeQsYuan];
                     
                     //            qs.fbTime = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:qs.published_at]];
                     qs.fbTime =  [dateFormatter stringFromDate:[NSDate date]];
