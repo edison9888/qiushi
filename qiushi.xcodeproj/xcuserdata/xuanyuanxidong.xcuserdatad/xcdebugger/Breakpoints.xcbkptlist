@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/View/Qiushi/ContentViewController.m"
-         timestampString = "378038836.269458"
+         timestampString = "379249574.187207"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "491"
-         endingLineNumber = "491"
+         startingLineNumber = "509"
+         endingLineNumber = "509"
          landmarkName = "-badClick:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -73,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/View/Qiushi/ContentViewController.m"
-         timestampString = "378038836.269458"
+         timestampString = "379249574.187207"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "511"
-         endingLineNumber = "511"
+         startingLineNumber = "529"
+         endingLineNumber = "529"
          landmarkName = "-getImageCache:"
          landmarkType = "5">
       </FileBreakpoint>
