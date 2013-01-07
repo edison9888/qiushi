@@ -179,7 +179,7 @@ RefreshDateNetDelegate
 
 - (void) addEnemy
 {
-    [_net requestWithURL:SuggestURLString(10,1) withType:kRequestTypeGetQiushi withDictionary:nil];
+    [_net requestWithURL:SuggestURLString(100,1) withType:kRequestTypeGetQiushi withDictionary:nil];
 }
 
 - (void)viewDidUnload
@@ -693,7 +693,7 @@ RefreshDateNetDelegate
             
             if (isShowAd == NO) {
                 //请求 ad
-                [bannerView_ loadRequest:[GADRequest request]];
+//                [bannerView_ loadRequest:[GADRequest request]];
             }
         
             

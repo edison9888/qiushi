@@ -65,7 +65,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "491"
          endingLineNumber = "491"
-         landmarkName = "-adViewDidReceiveAd:"
+         landmarkName = "-badClick:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -78,7 +78,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "511"
          endingLineNumber = "511"
-         landmarkName = "-adView:didFailToReceiveAdWithError:"
+         landmarkName = "-getImageCache:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
