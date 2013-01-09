@@ -169,9 +169,9 @@ RefreshDateNetDelegate
     //每隔15分钟,取数据，保持到parse
 //    for (NSString *url in urls) {
     NSTimer *addEnemyTimer=[NSTimer scheduledTimerWithTimeInterval:(60*20) target:self selector:@selector(addEnemy) userInfo:nil repeats:YES];
-    NSTimer *addEnemyTimer1=[NSTimer scheduledTimerWithTimeInterval:(60*23) target:self selector:@selector(addEnemy1) userInfo:nil repeats:YES];
-    NSTimer *addEnemyTimer2=[NSTimer scheduledTimerWithTimeInterval:(60*25) target:self selector:@selector(addEnemy2) userInfo:nil repeats:YES];
-    NSTimer *addEnemyTimer3=[NSTimer scheduledTimerWithTimeInterval:(60*27) target:self selector:@selector(addEnemy3) userInfo:nil repeats:YES];
+//    NSTimer *addEnemyTimer1=[NSTimer scheduledTimerWithTimeInterval:(60*23) target:self selector:@selector(addEnemy1) userInfo:nil repeats:YES];
+//    NSTimer *addEnemyTimer2=[NSTimer scheduledTimerWithTimeInterval:(60*25) target:self selector:@selector(addEnemy2) userInfo:nil repeats:YES];
+//    NSTimer *addEnemyTimer3=[NSTimer scheduledTimerWithTimeInterval:(60*27) target:self selector:@selector(addEnemy3) userInfo:nil repeats:YES];
    
         
 //    }
