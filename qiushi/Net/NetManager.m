@@ -34,18 +34,25 @@
 }
 
 // 是否适合用 单例??? 如何使用? 在init方法 初始化 AsiHttpRequest?
-//static NetManager *_sharedContext = nil;
-//+(NetManager *) SharedNetManager
-//{
-//
-//    if(!_sharedContext)
-//    {
-//
-//        _sharedContext =[[NetManager alloc] init];
-//        
-//    }
-//    return  _sharedContext;
-//}
+static NetManager *_sharedContext = nil;
++ (NetManager *) SharedNetManager
+{
+    if(!_sharedContext)
+    {
+        _sharedContext =[[NetManager alloc] init];
+
+    }
+    return  _sharedContext;
+}
+
+- (id) init
+{
+    if (self = [super init])
+    {
+        _sharedContext = self;
+    }
+    return self;
+}
 
 
 - (void) requestWithURL:(NSString*)urlString withType:(RequestTypeTag)type withDictionary:(NSDictionary*)dic

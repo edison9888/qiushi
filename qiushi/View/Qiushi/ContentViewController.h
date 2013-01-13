@@ -11,7 +11,7 @@
 #import "GADBannerView.h"
 @class EGOImageButton;
 @class PullingRefreshTableView;
-@class NetManager;
+
 
 #define kTagGetNormal    1001
 #define kTagGetOffline   1002
@@ -23,8 +23,6 @@
    
     //糗事的类型:最新，最糗，真相
     QiuShiType Qiutype;
-    // 随便逛逛，6小时最糗，24小时最糗，一周最糗
-    QiuShiTime QiuTime;
 
 
     GADBannerView *bannerView_;
@@ -35,18 +33,17 @@
     NSMutableArray *_list;
     PullingRefreshTableView *_tableView;
     
-    NetManager *_net;
+   
     
 }
 @property (retain,nonatomic) PullingRefreshTableView *tableView;
 @property (nonatomic,assign) QiuShiType Qiutype;
-@property (nonatomic,assign) QiuShiTime QiuTime;
 @property (nonatomic,retain) NSMutableArray *cacheArray;
 @property (nonatomic,retain) NSMutableArray *imageUrlArray;
 @property (retain,nonatomic) NSMutableArray *list;
-@property (retain,nonatomic) NetManager *net;
 
--(void) LoadPageOfQiushiType:(QiuShiType) type Time:(QiuShiTime) time;
+
+-(void) LoadPageOfQiushiType:(QiuShiType) type;
 -(CGFloat) getTheHeight:(NSInteger)row;
 
 @end

@@ -94,22 +94,22 @@ RefreshDateNetDelegate
     
     
 #ifdef DEBUG
-    //    UIImage* image= [UIImage imageNamed:@"comm_btn_top_n.png"];
-    //    UIImage* imagef= [UIImage imageNamed:@"comm_btn_top_s.png"];
-    //    CGRect frame_1= CGRectMake(0, 0, image.size.width, image.size.height);
-    //    UIButton* backButton= [[UIButton alloc] initWithFrame:frame_1];
-    //    [backButton setBackgroundImage:image forState:UIControlStateNormal];
-    //    [backButton setBackgroundImage:imagef forState:UIControlStateHighlighted];
-    //    [backButton setTitle:@"分享" forState:UIControlStateNormal];
-    //    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    //    backButton.titleLabel.font=[UIFont boldSystemFontOfSize:14];
-    //    [backButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    //
-    //    //定制自己的风格的  UIBarButtonItem
-    //    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    //
-    //
-    //    [self.navigationItem setRightBarButtonItem:someBarButtonItem];
+    UIImage* image= [UIImage imageNamed:@"comm_btn_top_n.png"];
+    UIImage* imagef= [UIImage imageNamed:@"comm_btn_top_s.png"];
+    CGRect frame_1= CGRectMake(0, 0, image.size.width, image.size.height);
+    UIButton* backButton= [[UIButton alloc] initWithFrame:frame_1];
+    [backButton setBackgroundImage:image forState:UIControlStateNormal];
+    [backButton setBackgroundImage:imagef forState:UIControlStateHighlighted];
+    [backButton setTitle:@"分享" forState:UIControlStateNormal];
+    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    backButton.titleLabel.font=[UIFont boldSystemFontOfSize:14];
+    [backButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+    //定制自己的风格的  UIBarButtonItem
+    UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:backButton];
+
+
+    [self.navigationItem setRightBarButtonItem:someBarButtonItem];
 #endif
     
     

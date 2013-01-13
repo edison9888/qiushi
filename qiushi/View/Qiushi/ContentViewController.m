@@ -19,7 +19,7 @@
 #import "Utils.h"
 #import "IIViewDeckController.h"
 #import "NetManager.h"
-#import "Reachability.h"
+
 
 @interface ContentViewController ()
 <
@@ -47,10 +47,9 @@ RefreshDateNetDelegate
 @synthesize refreshing = _refreshing;
 @synthesize page = _page;
 @synthesize Qiutype;
-@synthesize QiuTime;
 @synthesize cacheArray = _cacheArray;
 @synthesize imageUrlArray = _imageUrlArray;
-@synthesize net = _net;
+
 
 - (void)viewDidLoad
 {
@@ -62,8 +61,8 @@ RefreshDateNetDelegate
     
     [self.view setBackgroundColor:[UIColor clearColor]];
     
-    _list = [[NSMutableArray alloc] init ];
-    _imageUrlArray = [[NSMutableArray alloc]init];
+    _list = [NSMutableArray new];
+    _imageUrlArray = [NSMutableArray new];
     
     
     
@@ -98,12 +97,11 @@ RefreshDateNetDelegate
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.dataSource = self;
     _tableView.delegate = self;
-    DLog(@"==:%f",_tableView.frame.size.height);
     [self.view addSubview:self.tableView];
     
     
     
-    //读取缓存100条(实际上99条)
+    //读取缓存100条
     _cacheArray = [SqliteUtil queryDbTop];
     if (_cacheArray != nil) {
         [self.list removeAllObjects];
@@ -128,83 +126,40 @@ RefreshDateNetDelegate
         
     }
     
-    _net = [[NetManager alloc]init];
-    _net.delegate = self;
     
-    
+    [NetManager SharedNetManager].delegate = self;
+
     
     if (self.page == 0) {
         
         [self.tableView launchRefreshing];
     }
 
-    NSMutableArray *urls = [[NSMutableArray alloc]init];
-    NSString *url;
-    for (int i = 0; i<5; i++) {
-        url = SuggestURLString(10,i);
-        [urls addObject:url];
-
-        url = DayURLString(10,i);
-        [urls addObject:url];
-
-        url = WeakURlString(10,i);
-        [urls addObject:url];
-
-        url = MonthURLString(10,i);
-        [urls addObject:url];
-
-        url = LastestURLString(10,i);
-        [urls addObject:url];
-
-        url = ImageURLString(10,i);
-        [urls addObject:url];
-
-    }
+ 
 
 
 
-
-
-#ifdef DEBUG
-    //每隔15分钟,取数据，保持到parse
-//    for (NSString *url in urls) {
-    NSTimer *addEnemyTimer=[NSTimer scheduledTimerWithTimeInterval:(60*20) target:self selector:@selector(addEnemy) userInfo:nil repeats:YES];
-//    NSTimer *addEnemyTimer1=[NSTimer scheduledTimerWithTimeInterval:(60*23) target:self selector:@selector(addEnemy1) userInfo:nil repeats:YES];
-//    NSTimer *addEnemyTimer2=[NSTimer scheduledTimerWithTimeInterval:(60*25) target:self selector:@selector(addEnemy2) userInfo:nil repeats:YES];
-//    NSTimer *addEnemyTimer3=[NSTimer scheduledTimerWithTimeInterval:(60*27) target:self selector:@selector(addEnemy3) userInfo:nil repeats:YES];
-   
-        
-//    }
-#endif
+//#ifdef DEBUG
+//    //每隔15分钟,取数据，保持到parse
+//
+//    NSTimer *addEnemyTimer=[NSTimer scheduledTimerWithTimeInterval:(60*20) target:self selector:@selector(addEnemy) userInfo:nil repeats:YES];
+//
+//#endif
 
     
 }
-
-- (void) addEnemy
-{
-    [_net requestWithURL:SuggestURLString(10,1) withType:kRequestTypeGetQiushi withDictionary:nil];
-}
-
-- (void) addEnemy1
-{
-    [_net requestWithURL:DayURLString(10,1) withType:kRequestTypeGetQiushi withDictionary:nil];
-}
-- (void) addEnemy2
-{
-    [_net requestWithURL:WeakURlString(10,1) withType:kRequestTypeGetQiushi withDictionary:nil];
-}
-- (void) addEnemy3
-{
-    [_net requestWithURL:MonthURLString(10,1) withType:kRequestTypeGetQiushi withDictionary:nil];
-}
-
+//
+//- (void) addEnemy
+//{
+//    [_net requestWithURL:SuggestURLString(10,1) withType:kRequestTypeGetQiushi withDictionary:nil];
+//}
 
 
 - (void)viewDidUnload
 {
     DLog(@"~viewDidUnload ContentViewController");
     bannerView_.delegate = nil;
-    self.net = nil;
+   
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -212,7 +167,8 @@ RefreshDateNetDelegate
 
 #pragma mark - Your actions
 
-- (void)loadData{
+- (void)loadData
+{
     
     if ([IsNetWorkUtil isNetWork] == NO) {
         [[iToast makeText:@"亲,网络不给力,请稍后再试呀..."] show];
@@ -225,50 +181,60 @@ RefreshDateNetDelegate
     
     self.page++;
     NSString *url;
-    
-    if (Qiutype == QiuShiTypeTop) {
-        switch (QiuTime) {
-            case QiuShiTimeRandom:
-                url = SuggestURLString(10,self.page);
-                break;
-            case QiuShiTimeDay:
-                url = DayURLString(10,self.page);
-                break;
-            case QiuShiTimeWeek:
-                url = WeakURlString(10,self.page);
-                break;
-            case QiuShiTimeMonth:
-                url = MonthURLString(10,self.page);
-                break;
-            default:
-                url = SuggestURLString(10,self.page);
-                break;
-        }
-    }else{
-        switch (Qiutype) {
-            case QiuShiTypeTop:
-                url = SuggestURLString(10,self.page);
-                break;
-            case QiuShiTypeNew:
-                url = LastestURLString(10,self.page);
-                break;
-            case QiuShiTypePhoto:
-                url = ImageURLString(10,self.page);
-                break;
-            default:
-                url = SuggestURLString(10,self.page);
-                break;
-        }
+
+
+    switch (Qiutype)
+    {
+        case QiuShiTypeTop://干货
+        {
+            url = SuggestURLString(self.page);
+
+        }break;
+        case QiuShiTypeNew://嫩草
+        {
+            url = LastestURLString(self.page);
+        }break;
+        case QiuShiTimeDay://
+        {
+            url = DayURLString(self.page);
+        }break;
+        case QiuShiTimeWeek:
+        {
+            url = WeakURLString(self.page);
+        }break;
+        case QiuShiTimeMonth:
+        {
+            url = MonthURLString(self.page);
+        }break;
+        case QiuShiTypePhotoYC://硬菜
+        {
+            url = ImageYCURLString(self.page);
+        }break;
+        case QiuShiTypePhotoSL://时令
+        {
+            url = ImageSLURLString(self.page);
+        }break;
+        case QiuShiTypeCy://穿越
+        {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyy-MM-dd";
+            NSString *timestamp = [formatter stringFromDate:[NSDate date]];
+            url = CYURLString(timestamp,self.page);
+
+        }break;
+        default:
+        {
+            NSAssert(nil, @"Qiutype is error");
+        }break;
     }
-    
-    
-    
-    
+
+
+
     NSLog(@"%@",url);
-    
-    
-    
-    [_net requestWithURL:url withType:kRequestTypeGetQiushi withDictionary:nil];
+
+
+
+    [[NetManager SharedNetManager] requestWithURL:url withType:kRequestTypeGetQiushi withDictionary:nil];
     
     
 }
@@ -413,11 +379,10 @@ RefreshDateNetDelegate
 }
 
 #pragma mark - LoadPage
--(void) LoadPageOfQiushiType:(QiuShiType) type Time:(QiuShiTime) time
+-(void) LoadPageOfQiushiType:(QiuShiType) type
 {
     self.Qiutype = type;
-    self.QiuTime = time;
-    self.page =0;
+    self.page = 0;
     [self.tableView launchRefreshing];
     
 }

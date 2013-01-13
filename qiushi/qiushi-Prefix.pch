@@ -16,6 +16,28 @@
 //#import "TestFlight.h"
 
 
+typedef enum _QiuShiType
+{
+    //*****************//随便逛逛
+    //干货
+    QiuShiTypeTop = 1001,
+    //嫩草
+    QiuShiTypeNew,
+    //*****************//精华
+    QiuShiTimeDay,
+    QiuShiTimeWeek,
+    QiuShiTimeMonth,
+    //*****************//有图有真相
+    //硬菜
+    QiuShiTypePhotoYC,
+    //时令
+    QiuShiTypePhotoSL,
+    //*****************//穿越
+    QiuShiTypeCy,
+
+
+}QiuShiType;
+
 
 #endif
 
@@ -42,34 +64,48 @@
 #define KDeviceHeight [UIScreen mainScreen].bounds.size.height
 #define fLocalStringNotFormat(key) NSLocalizedString(key, nil)
 
-#define LastestURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/latest?count=%d&page=%d",count,page]
-#define ImageURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/images?count=%d&page=%d",count,page]
-#define SuggestURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/suggest?count=%d&page=%d",count,page]
-#define DayURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/day?count=%d&page=%d",count,page]
-#define WeakURlString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/week?count=%d&page=%d",count,page]
-#define MonthURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/month?count=%d&page=%d",count,page]
-#define CommentsURLString(ID,count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/%@/comments?count=%d&page=%d",ID,count,page]
+/**
+ 干货http://m2.qiushibaike.com/article/list/suggest?count=30&page=1
+ 嫩草http://m2.qiushibaike.com/article/list/latest?count=30&page=1
+
+ http://m2.qiushibaike.com/article/list/day?count=30&page=1
+ http://m2.qiushibaike.com/article/list/week?count=30&page=1
+ http://m2.qiushibaike.com/article/list/month?count=30&page=1
+
+ http://m2.qiushibaike.com/article/list/images?count=30&page=1
+ http://m2.qiushibaike.com/article/list/imgrank?count=30&page=1
+
+ http://m2.qiushibaike.com/article/history/2012-1-9?count=30&page=1
+ */
+
+#define LastestURLString(page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/latest?count=30&page=%d",page]
+#define ImageYCURLString(page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/images?count=30&page=%d",page]
+#define ImageSLURLString(page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/imgrank?count=30&page=%d",page]
+#define SuggestURLString(page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/suggest?count=30&page=%d",page]
+#define DayURLString(page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/day?count=30&page=%d",page]
+#define WeakURLString(page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/week?count=30&page=%d",page]
+#define MonthURLString(page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/month?count=30&page=%d",page]
+#define CYURLString(date,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/history/%@?count=30&page=%d",date,page]
+
+#define CommentsURLString(ID,count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/%@/comments?count=50&page=%d",ID,page]
+
+
+
+
+//#define LastestURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/latest?count=%d&page=%d",count,page]
+//#define ImageURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/images?count=%d&page=%d",count,page]
+//#define SuggestURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/suggest?count=%d&page=%d",count,page]
+//#define DayURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/day?count=%d&page=%d",count,page]
+//#define WeakURlString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/week?count=%d&page=%d",count,page]
+//#define MonthURLString(count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/month?count=%d&page=%d",count,page]
+//#define CommentsURLString(ID,count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/%@/comments?count=%d&page=%d",ID,count,page]
+
+
+
 
 #define ClearRequest(request) if(request!=nil){[request clearDelegatesAndCancel];[request release];request=nil;}
 
 #define LoginURLString(userName,passWord) [NSString stringWithFormat:@"m2.qiushibaike.com/user/signin?loginName=%@&password=%@",userName,passWord]
-
-typedef enum
-{
-    QiuShiTypeTop = 1001,
-    QiuShiTypeNew = 1002,
-    QiuShiTypePhoto = 1003,
-    
-}QiuShiType;
-
-typedef enum
-{
-    QiuShiTimeDay,
-    QiuShiTimeWeek,
-    QiuShiTimeMonth,
-    QiuShiTimeRandom,
-    
-}QiuShiTime;
 
 
 //目的是 屏蔽 release 版本的 nslog
@@ -100,16 +136,4 @@ typedef enum
 
 
 
-/** 
- 干货http://m2.qiushibaike.com/article/list/suggest?count=30&page=1
- 嫩草http://m2.qiushibaike.com/article/list/latest?count=30&page=1
- 
- http://m2.qiushibaike.com/article/list/day?count=30&page=1
- http://m2.qiushibaike.com/article/list/week?count=30&page=1
- http://m2.qiushibaike.com/article/list/month?count=30&page=1
- 
- http://m2.qiushibaike.com/article/list/images?count=30&page=1
- http://m2.qiushibaike.com/article/list/imgrank?count=30&page=1
- 
- http://m2.qiushibaike.com/article/history/2012-1-9?count=30&page=1
- */
+

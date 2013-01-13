@@ -7,26 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DIYMenu.h"
-#import "ProgressStatusBar.h"
+
 @class ContentViewController;
 
-@interface MainViewController : UIViewController<UIAlertViewDelegate,DIYMenuDelegate,ProgressStatusBarDelegate>
+@interface MainViewController : UIViewController
+<UIAlertViewDelegate>
 {
     ContentViewController *m_contentView;  //内容页面
 
     int _typeQiuShi;
-    int _timeType;
-    
+    int _index;
+
     UIBarButtonItem* _timeItem;
-    
-    
-    ProgressStatusBar *statusBar;
+
+
+
     NSTimer *timer;
 }
 
-@property (nonatomic,retain) ContentViewController *m_contentView;
-@property (nonatomic,assign) int typeQiuShi;
+@property (nonatomic, retain) ContentViewController *m_contentView;
+@property (nonatomic, assign) int typeQiuShi;
+@property (nonatomic, assign) int index;
 
 
 @property (nonatomic, retain) UISegmentedControl *timeSegment;

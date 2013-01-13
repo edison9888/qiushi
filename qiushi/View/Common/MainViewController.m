@@ -11,7 +11,6 @@
 
 #import "SqliteUtil.h"
 #import "ContentViewController.h"
-#import "DIYMenuOptions.h"
 #import "IIViewDeckController.h"
 #import "iToast.h"
 #import "ContentViewController.h"
@@ -21,17 +20,27 @@
 #define kTagMenu        101
 #define kTagRefresh     102
 
+#define kTagYingCai     103
+#define kTagNenCao      104
+#define kTagDay         105
+#define kTagWeek        106
+#define kTagMonth       107
+#define kTagImgYc       108
+#define kTagImgSl       109
+#define kTagCy          100
 
-//启动一定次数，引导用户去评分
-#define kQDCS @"qdcs"  //启动次数
-#define kTime 1000
+#define kTagSeg0        101
+#define kTagSeg1        102
+#define kTagSeg2        103
+
+
 
 
 @interface MainViewController ()
 {
     UIButton *_segmentButton;//
     UIImageView *_arrowImage;
-    UIButton *_refreshBtn;//刷新btn 
+    UIButton *_refreshBtn;//刷新btn
 }
 @property (retain, nonatomic) UIButton *refreshBtn;//刷新按钮
 @end
@@ -42,8 +51,9 @@
 @synthesize timeSegment = _timeSegment;
 @synthesize timeItem = _timeItem;
 @synthesize refreshBtn = _refreshBtn;
+@synthesize index = _index;
 
-static CGFloat progress = 0;
+
 
 #pragma mark - view life cycle
 
@@ -51,8 +61,8 @@ static CGFloat progress = 0;
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
-        
+
+
     }
     return self;
 }
@@ -61,8 +71,11 @@ static CGFloat progress = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
+
+    //设置背景颜色
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
+
+
     UIImage *image = [UIImage imageNamed:@"nav_menu_icon.png"];
     UIImage *imagef = [UIImage imageNamed:@"nav_menu_icon_f.png"];
     CGRect backframe= CGRectMake(0, 0, image.size.width, image.size.height);
@@ -73,15 +86,10 @@ static CGFloat progress = 0;
     [btn addTarget:self.viewDeckController action:@selector(toggleLeftView) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:btn];
     self.navigationItem.leftBarButtonItem = someBarButtonItem;
-    
-   
-#ifdef DEBUG
-//    UIButton *lxBtn = [UIButton buttonWithType:UIButtonTypeInfoLight];
-//    [lxBtn addTarget:self action:@selector(lixian:) forControlEvents:UIControlEventTouchUpInside];
-//    UIBarButtonItem* lxItem = [[UIBarButtonItem alloc]initWithCustomView:lxBtn];
-//    self.navigationItem.rightBarButtonItem = lxItem;
-#endif
-    
+
+
+
+
     UIImage* image1= [UIImage imageNamed:@"comm_btn_top_n.png"];
     UIImage* imagef1 = [UIImage imageNamed:@"comm_btn_top_s.png"];
     CGRect backframe1= CGRectMake(0, 0, image1.size.width, image1.size.height);
@@ -89,7 +97,6 @@ static CGFloat progress = 0;
     btn1.frame = backframe1;
     [btn1 setBackgroundImage:image1 forState:UIControlStateNormal];
     [btn1 setBackgroundImage:imagef1 forState:UIControlStateHighlighted];
-//    [btn1 setImage:[UIImage imageNamed:@"refresh.png"] forState:UIControlStateNormal];
     [btn1 setTitle:@"刷新" forState:UIControlStateNormal];
     [btn1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     btn1.titleLabel.font=[UIFont systemFontOfSize:12];
@@ -98,118 +105,82 @@ static CGFloat progress = 0;
     [btn1 setTag:kTagRefresh];
     UIBarButtonItem* someBarButtonItem1 = [[UIBarButtonItem alloc] initWithCustomView:btn1];
     self.navigationItem.rightBarButtonItem = someBarButtonItem1;
-    
-    
-    statusBar = [[ProgressStatusBar alloc] init];
-    statusBar.delegate = self;
-    
-    
-    UIFont *font = [UIFont fontWithName:MENUFONT_FAMILY size:MENUFONT_SIZE];
-    [DIYMenu setDelegate:self];
-    
-    // Add menu items
-    [DIYMenu addMenuItem:@"随便逛逛"
-                withIcon:[UIImage imageNamed:@"portfolioIcon.png"]
-               withColor:[UIColor colorWithRed:0.18f green:0.76f blue:0.93f alpha:1.0f]
-                withFont:font];
-    [DIYMenu addMenuItem:@"日精选"
-                withIcon:[UIImage imageNamed:@"skillsIcon.png"]
-               withColor:[UIColor colorWithRed:0.28f green:0.55f blue:0.95f alpha:1.0f]
-                withFont:font];
-    [DIYMenu addMenuItem:@"周精选"
-                withIcon:[UIImage imageNamed:@"exploreIcon.png"]
-               withColor:[UIColor colorWithRed:0.47f green:0.24f blue:0.93f alpha:1.0f]
-                withFont:font];
-    [DIYMenu addMenuItem:@"月精选"
-                withIcon:[UIImage imageNamed:@"settingsIcon.png"]
-               withColor:[UIColor colorWithRed:0.57f green:0.0f blue:0.85f alpha:1.0f]
-                withFont:font];
-    
-    
-       
-    
+
+
+
+
+
+
+
     //设置糗事类型
     if (!_typeQiuShi) {
         _typeQiuShi = QiuShiTypeTop;
     }
-    
-    //时间类型
-    if (!_timeType) {
-        _timeType = QiuShiTimeRandom;
-    }
-    
-    
-    
+
+
+
+
     _segmentButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_segmentButton setFrame:CGRectMake(0, 0, 200, 35)];
     [_segmentButton setTag:kTagMenu];
     [_segmentButton setTintColor:[UIColor whiteColor]];
     _segmentButton.titleLabel.font = [UIFont boldSystemFontOfSize:20];
     [_segmentButton setTitle:@"随便逛逛" forState:UIControlStateNormal];
-    
+
     [_segmentButton addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    _arrowImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ic_att_input_pressed.png"]];
-    [_arrowImage setCenter:CGPointMake(155, 16)];
-    [_segmentButton addSubview:_arrowImage];
-    
-    if (_typeQiuShi == QiuShiTypeTop) {
-        self.navigationItem.titleView = _segmentButton;
-    }else
-        self.navigationItem.titleView = nil;
-    
-    
-    
-    //设置背景颜色
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
-    
-    
-    
+
+
+
+
+
+
+    [self refreshTitle];
+
+
+
+
+
+
+
+
     [SqliteUtil initDb];
-    
-    
-    
-    //每隔一段时间，提示用户去评分
-    [self pingFen];
-    
-    DLog(@"kDeviceWidth:%f,kDeviceHeight:%f",kDeviceWidth,KDeviceHeight);
-    
+
+
+
+
     CGRect bounds = self.view.bounds;
-    DLog(@"bounds.size.width:%f,bounds.size.height:%f",bounds.size.width,bounds.size.height);
     bounds.size.height = KDeviceHeight - (44);
-    
-    
+
+
     //添加内容的TableView
     self.m_contentView = [[ContentViewController alloc]initWithNibName:@"ContentViewController" bundle:nil];
     [m_contentView.view setFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight - 44 -20)];
-    DLog(@":%f",m_contentView.view.frame.size.height);
-    [m_contentView LoadPageOfQiushiType:_typeQiuShi Time:_timeType];
+    [m_contentView LoadPageOfQiushiType:_typeQiuShi];
     [self.view addSubview:m_contentView.view];
-    
- 
-    
 
-//    _refreshBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    UIImage *refreshImg = [UIImage imageNamed:@"refresh.png"];
-//    [self.refreshBtn setFrame:CGRectMake(kDeviceWidth-refreshImg.size.width-15,
-//                                         KDeviceHeight-refreshImg.size.height-44-20-15,
-//                                         refreshImg.size.width,
-//                                         refreshImg.size.height)];
-//    [self.refreshBtn setBackgroundImage:refreshImg forState:UIControlStateNormal];
-//    [self.refreshBtn setImage:[UIImage imageNamed:@"icon_bg.png"] forState:UIControlStateNormal];
-//    [self.refreshBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.refreshBtn setTag:kTagRefresh];
-//    [self.view addSubview:_refreshBtn];
 
-    
-    
+
+
+    //    _refreshBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    //    UIImage *refreshImg = [UIImage imageNamed:@"refresh.png"];
+    //    [self.refreshBtn setFrame:CGRectMake(kDeviceWidth-refreshImg.size.width-15,
+    //                                         KDeviceHeight-refreshImg.size.height-44-20-15,
+    //                                         refreshImg.size.width,
+    //                                         refreshImg.size.height)];
+    //    [self.refreshBtn setBackgroundImage:refreshImg forState:UIControlStateNormal];
+    //    [self.refreshBtn setImage:[UIImage imageNamed:@"icon_bg.png"] forState:UIControlStateNormal];
+    //    [self.refreshBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+    //    [self.refreshBtn setTag:kTagRefresh];
+    //    [self.view addSubview:_refreshBtn];
+
+
+
 }
 
 - (void)viewDidUnload
 {
     DLog(@"viewDidUnload");
-    
+
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -228,7 +199,7 @@ static CGFloat progress = 0;
 
     [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
     [super viewDidAppear:animated];
-    
+
 }
 
 
@@ -241,105 +212,17 @@ static CGFloat progress = 0;
     UIButton *btn = (UIButton*)sender;
     switch ([btn tag])
     {
-        case kTagMenu:
-        {
-            [DIYMenu show];
-        }break;
+
         case kTagRefresh:
         {
             [self refreshDate];
         }break;
-            
-            
-    }
-}
-
-- (void)lixian:(id)sender
-{
-
-//    
-//    [statusBar show];
-//
-//    [self startOffline];
-
-//    [m_contentView LoadDataForCache];
-
-}
+        default:
+        {
+            NSAssert(nil, @"tag is error!!!");
+        }break;
 
 
-
-
-
-// 模拟离线
-- (void)startOffline
-{
-    progress = 0;
-    
-    [timer invalidate];
-    timer = nil;
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
-}
-
-- (void)stopOffline
-{
-    [timer invalidate];
-    timer = nil;
-}
-
-- (void)updateProgress:(NSTimer *)sender
-{
-    progress += 0.05;
-    
-    [statusBar setProgress:progress];
-    [statusBar setLoadingMsg:[NSString stringWithFormat:@"正在离线: %.0f%%", progress * 100]];
-    
-    if (progress > 1) {
-        progress = 0;
-        [statusBar setLoadingMsg:@"离线完成"];
-        
-        [self stopOffline];
-        
-        [statusBar performSelector:@selector(hide) withObject:nil afterDelay:1];
-    }
-}
-
-#pragma mark - ProgressStatusBarDelegate
-
-- (void)closeButtonClicked
-{
-    // stop offline
-    [self stopOffline];
-    
-    [statusBar setLoadingMsg:@"停止离线"];
-}
-
-#pragma mark -  引导用户去 评分
-- (void) pingFen
-{
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    int sum = [[ud objectForKey:kQDCS] intValue];
-    
-    if (sum < kTime) {
-        sum++;
-        
-    }else if(sum == kTime){
-        sum = 0;
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"糗事囧事有什么需要改进的吗？去评个分吧~~" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"去评分", nil];
-        
-        [alert show];
-        
-    }
-    
-    [ud setInteger:sum forKey:kQDCS];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        //前去评分
-        NSString *str = [NSString stringWithFormat:@"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@",MyAppleID];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }
 }
 
@@ -349,69 +232,92 @@ static CGFloat progress = 0;
 - (void)refreshDate
 {
 
-    if (_typeQiuShi == QiuShiTypeTop) {
-        self.navigationItem.titleView = _segmentButton;
-    }else
-        self.navigationItem.titleView = nil;
+    [self refreshTitle];
+
+    if (_index == 0) {
+        _typeQiuShi = QiuShiTypeTop;
+    }else if (_index == 1){
+        _typeQiuShi = QiuShiTimeDay;
+    }else if (_index == 2){
+        _typeQiuShi = QiuShiTypePhotoYC;
+    }else if(_index == 3){
+        _typeQiuShi = QiuShiTypeCy;
+    }
+
+
+
+
     //刷新 数据
-    [m_contentView LoadPageOfQiushiType:_typeQiuShi Time:_timeType];
+    [m_contentView LoadPageOfQiushiType:_typeQiuShi];
 }
 
 
-#pragma mark - DIYMenuDelegate
-
-- (void)menuItemSelected:(NSString *)action
+-(void) segmentAction: (UISegmentedControl *) sender
 {
-    NSLog(@"Delegate: selected: %@", action);
-    if ([action isEqualToString:@"随便逛逛"]) {
-        if (_timeType != QiuShiTimeRandom) {
-            _timeType = QiuShiTimeRandom;
-        }else{
-            return;
+	if (sender.tag == kTagSeg0) {
+        if (sender.selectedSegmentIndex == 0) {
+            _typeQiuShi = QiuShiTypeTop;
+        }else if (sender.selectedSegmentIndex == 1) {
+            _typeQiuShi = QiuShiTypeNew;
         }
-        
-        
-    }else if ([action isEqualToString:@"日精选"]) {
-        
-        if (_timeType != QiuShiTimeDay) {
-             _timeType = QiuShiTimeDay;
-        }else{
-            return;
+    }else if (sender.tag == kTagSeg1) {
+        if (sender.selectedSegmentIndex == 0) {
+            _typeQiuShi = QiuShiTimeDay;
+        }else if (sender.selectedSegmentIndex == 1) {
+            _typeQiuShi = QiuShiTimeWeek;
+        }else if (sender.selectedSegmentIndex == 2) {
+            _typeQiuShi = QiuShiTimeMonth;
         }
+    }else if (sender.tag == kTagSeg2) {
+        if (sender.selectedSegmentIndex == 0) {
+            _typeQiuShi = QiuShiTypePhotoYC;
+        }else if (sender.selectedSegmentIndex == 1) {
+            _typeQiuShi = QiuShiTypePhotoSL;
+        }
+    }
 
-    }else if ([action isEqualToString:@"周精选"]) {
-       
-        if (_timeType != QiuShiTimeWeek) {
-             _timeType = QiuShiTimeWeek;
-        }else{
-            return;
-        }
+    //刷新 数据
+    [m_contentView LoadPageOfQiushiType:_typeQiuShi];
 
-    }else if ([action isEqualToString:@"月精选"]) {
+
+}
+
+- (void) refreshTitle
+{
+    if (_index == 0) {
+
+
+        NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"硬菜",@"嫩草",nil];
+        //初始化UISegmentedControl
+        UISegmentedControl *segmentedTemp = [[UISegmentedControl alloc]initWithItems:segmentedArray];
+        segmentedTemp.segmentedControlStyle = UISegmentedControlStyleBar;
+        [segmentedTemp addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+        segmentedTemp.tag = kTagSeg0;
+        segmentedTemp.selectedSegmentIndex = 0;
+        self.navigationItem.titleView = segmentedTemp;
+    }else if (_index == 1){
+        NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"日",@"月",@"年",nil];
+        //初始化UISegmentedControl
+        UISegmentedControl *segmentedTemp = [[UISegmentedControl alloc]initWithItems:segmentedArray];
+        segmentedTemp.segmentedControlStyle = UISegmentedControlStyleBar;
+        [segmentedTemp addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+        segmentedTemp.tag = kTagSeg1;
+        segmentedTemp.selectedSegmentIndex = 0;
+        self.navigationItem.titleView = segmentedTemp;
+    }else if (_index == 2){
+        NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"硬菜",@"时令",nil];
+        //初始化UISegmentedControl
+        UISegmentedControl *segmentedTemp = [[UISegmentedControl alloc]initWithItems:segmentedArray];
+        segmentedTemp.segmentedControlStyle = UISegmentedControlStyleBar;
+        [segmentedTemp addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+        segmentedTemp.tag = kTagSeg2;
+        segmentedTemp.selectedSegmentIndex = 0;
+        self.navigationItem.titleView = segmentedTemp;
         
-        if (_timeType != QiuShiTimeMonth) {
-            _timeType = QiuShiTimeMonth;
-        }else{
-            return;
-        }
-
+    }else{
+        self.navigationItem.titleView = nil;
     }
     
-    [_segmentButton setTitle:action forState:UIControlStateNormal];
-    [m_contentView LoadPageOfQiushiType:_typeQiuShi Time:_timeType];
 }
-
-- (void)menuActivated
-{
-    NSLog(@"Delegate: menuActivated");
-}
-
-- (void)menuCancelled
-{
-    NSLog(@"Delegate: menuCancelled");
-}
-
-
-
 
 @end

@@ -38,5 +38,5 @@ typedef enum _RequestTypeTag
 @property (nonatomic, retain) id <RefreshDateNetDelegate> delegate;
 
 - (void) requestWithURL:(NSString*)urlString withType:(RequestTypeTag)type withDictionary:(NSDictionary*)dic;
-//+(NetManager *) SharedNetManager;
++(NetManager *) SharedNetManager;
 @end

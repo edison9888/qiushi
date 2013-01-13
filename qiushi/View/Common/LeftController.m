@@ -25,7 +25,7 @@
 @interface LeftController ()
 {
     UISlider *_mSlider;//伪 调节屏幕亮度
-    int _mainType;
+
 }
 @property (nonatomic, assign) int mainType;
 @end
@@ -35,7 +35,7 @@
 @synthesize items = _items;
 @synthesize navController = _navController;
 @synthesize mainViewController = _mainViewController;
-@synthesize mainType = _mainType;
+
 
 - (id)init {
     if ((self = [super init])) {
@@ -61,14 +61,14 @@
     
     _items = [[NSMutableArray alloc]initWithObjects:
               @"随便逛逛",
-              @"新鲜出炉",
+              @"精华",
               @"有图有真相",
+              @"穿越",
               @"个人收藏",
               @"缓存也精彩",
               @"",
               @"设置",
               @"关于",
-              @"实验室",
               nil];
     
     
@@ -87,9 +87,7 @@
     [_mSlider addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventValueChanged];
     
     
-    _mainType = 1001;
-    
-    
+
     
     
     if (!_tableView) {
@@ -147,7 +145,7 @@
     QuadCurveMenu *menu = [[QuadCurveMenu alloc] initWithFrame:self.view.bounds menus:menus];
     menu.delegate = self;
 #ifdef DEBUG
-    [self.view addSubview:menu];
+//    [self.view addSubview:menu];
 #endif
     
 }
@@ -194,7 +192,7 @@
     [cell.textLabel setTextColor:[UIColor whiteColor]];
     
     
-    if (indexPath.row == 5) {
+    if (indexPath.row == 6) {
         [cell.contentView addSubview:_mSlider];
     }
     
@@ -226,65 +224,66 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    //    [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller) {
-    //        if ([controller.centerController isKindOfClass:[UINavigationController class]]) {
-    //            UITableViewController* cc = (UITableViewController*)((UINavigationController*)controller.centerController).topViewController;
-    //            cc.navigationItem.title = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-    //            if ([cc respondsToSelector:@selector(tableView)]) {
-    //                [cc.tableView deselectRowAtIndexPath:[cc.tableView indexPathForSelectedRow] animated:NO];
-    //            }
-    //        }
-    //
-    //    }];
+    [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller)
+    {
+
+        if (indexPath.row == 0
+            || indexPath.row == 1
+            || indexPath.row == 2
+            || indexPath.row == 3) {
+            [self.navController popToRootViewControllerAnimated:NO];
+            self.mainViewController.title = @"";
+
+            self.mainViewController.index = indexPath.row;
+            [self.mainViewController refreshDate];
+        }else if (indexPath.row == 4){
+            FavouriteViewController *favourite = [[FavouriteViewController alloc]initWithNibName:@"FavouriteViewController" bundle:nil];
+
+            [self.navController pushViewController:favourite animated:NO];
+
+
+        }else if (indexPath.row == 5){
+            History1ViewController *history = [[History1ViewController alloc]initWithNibName:@"History1ViewController" bundle:nil];
+
+            [self.navController pushViewController:history animated:NO];
+
+
+        }else if (indexPath.row == 7){
+            SetViewController *set = [[SetViewController alloc]initWithNibName:@"SetViewController" bundle:nil];
+
+            [self.navController pushViewController:set animated:NO];
+
+        }else if (indexPath.row == 8){
+            AboutViewController *about = [[AboutViewController alloc]initWithNibName:@"AboutViewController" bundle:nil];
+            [self.navController pushViewController:about animated:NO];
+            
+            
+        }
+
+    }];
 
     
-    if (_mainType == (1001 + indexPath.row)) {
-      
-        
-    }else if (indexPath.row == 0){
-        
-        [self.navController popToRootViewControllerAnimated:NO];
-        self.mainViewController.title = @"";
-        
-        self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
-        [self.mainViewController refreshDate];
-       
-    }else if (indexPath.row == 1 || indexPath.row == 2){
-        [self.navController popToRootViewControllerAnimated:NO];
-        self.mainViewController.title = [NSString stringWithFormat:@"%@", [self.items objectAtIndex:indexPath.row]];
-        
-        self.mainViewController.typeQiuShi = 1001 + indexPath.row ; //
-        [self.mainViewController refreshDate];
-      
-    }else if (indexPath.row == 3){
-        FavouriteViewController *favourite = [[FavouriteViewController alloc]initWithNibName:@"FavouriteViewController" bundle:nil];
-        
-        [self.navController pushViewController:favourite animated:NO];
-        
-        
-    }else if (indexPath.row == 4){
-        History1ViewController *history = [[History1ViewController alloc]initWithNibName:@"History1ViewController" bundle:nil];
-        
-        [self.navController pushViewController:history animated:NO];
-        
-        
-    }else if (indexPath.row == 6){
-        SetViewController *set = [[SetViewController alloc]initWithNibName:@"SetViewController" bundle:nil];
-        
-        [self.navController pushViewController:set animated:NO];
-        
-    }else if (indexPath.row == 7){
-        AboutViewController *about = [[AboutViewController alloc]initWithNibName:@"AboutViewController" bundle:nil];
-        [self.navController pushViewController:about animated:NO];
-        
-        
-    }else if (indexPath.row == 8){
-        
-    }
-    
-    [self.viewDeckController closeLeftViewAnimated:YES];
-    _mainType = 1001 + indexPath.row;
-    
+//    if (_mainType == (1001 + indexPath.row)) {
+//      
+//        
+//    }else if (indexPath.row == 0){
+//        
+//        
+//       
+//    }else if (indexPath.row == 1 || indexPath.row == 2){
+//        [self.navController popToRootViewControllerAnimated:NO];
+//        self.mainViewController.title = @"";
+//
+//        self.mainViewController.index = indexPath.row;
+//        [self.mainViewController refreshDate];
+//      
+//    }else if (indexPath.row == 8){
+//        
+//    }
+//    
+//    [self.viewDeckController closeLeftViewAnimated:YES];
+//    _mainType = 1001 + indexPath.row;
+
     
 }
 

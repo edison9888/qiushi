@@ -206,8 +206,7 @@ UIAlertViewDelegate
     
     UIBarButtonItem* listBarButton = [[UIBarButtonItem alloc] initWithCustomView:listBtn];
     
-    
-   
+
     
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
         NSArray *btnArray = [NSArray arrayWithObjects:cleanBarButton,listBarButton, nil];
