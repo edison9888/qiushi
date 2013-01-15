@@ -809,9 +809,12 @@
 	if (!CGSizeEqualToSize(contentSize, self.scrollView.contentSize)) {
 		self.scrollView.contentSize = contentSize;
 	}
-	
-	_captionView.frame = CGRectMake(0.0f, self.view.bounds.size.height - (toolbarSize + 44.0f + 20), self.view.bounds.size.width, 44.0f);
 
+//    [_captionView setCaptionText:@"" hidden:YES];
+    NSString *string = [[self.photoSource photoAtIndex:_pageIndex] caption];
+    CGSize size = [string sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(self.view.bounds.size.width, 220) lineBreakMode:UILineBreakModeTailTruncation];
+	_captionView.frame = CGRectMake(0.0f, self.view.bounds.size.height - (toolbarSize + size.height), self.view.bounds.size.width, size.height);
+    _captionView.textView.frame = _captionView.frame;
     DLog(@"%@",NSStringFromCGRect(self.view.bounds));
     DLog(@"%@",NSStringFromCGRect(_captionView.frame));
     

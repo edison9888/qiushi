@@ -126,8 +126,8 @@ RefreshDateNetDelegate
         
     }
     
-    
     [NetManager SharedNetManager].delegate = self;
+    
 
     
     if (self.page == 0) {
@@ -164,6 +164,12 @@ RefreshDateNetDelegate
     // Release any retained subviews of the main view.
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [NetManager SharedNetManager].delegate = self;
+}
 
 #pragma mark - Your actions
 
@@ -233,7 +239,7 @@ RefreshDateNetDelegate
     NSLog(@"%@",url);
 
 
-
+    [NetManager SharedNetManager].delegate = self;
     [[NetManager SharedNetManager] requestWithURL:url withType:kRequestTypeGetQiushi withDictionary:nil];
     
     
@@ -584,7 +590,7 @@ RefreshDateNetDelegate
 
 
 #pragma mark - delegate net
--(void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type
+- (void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type
 {
     if (type == kRequestTypeGetQiushi)
     {
@@ -599,8 +605,20 @@ RefreshDateNetDelegate
                 [self.imageUrlArray removeAllObjects];
                 
                 [SqliteUtil initDb];
+
+
+//                [self loadData];
             }
-            
+
+//            if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
+//                if (self.page < 5) {
+//                    [self loadData];
+//                }
+//
+//            }else if (self.page == 1) {
+//                [self loadData];
+//            }
+
             
             
             if ([dic objectForKey:@"items"])
@@ -631,7 +649,7 @@ RefreshDateNetDelegate
                     
                     [self.list addObject:qs];
                     
-                    if (qs.imageURL != nil && ![qs.imageURL isEqual: @""]) {
+                    if (qs.imageURL != nil && ![qs.imageURL isEqualToString: @""]) {
                         [self.imageUrlArray addObject:qs.imageURL];
                         [self.imageUrlArray addObject:qs.imageMidURL];
                     }
@@ -646,7 +664,7 @@ RefreshDateNetDelegate
             //数据源去重复
             self.list = [Utils removeRepeatArray:self.list];
             //保存到数据库
-            dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0); 
+            dispatch_queue_t newThread = dispatch_queue_create("com.xyxd.qiushi.db", NULL);//dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
             dispatch_async(newThread, ^{
                 [SqliteUtil saveDbWithArray:self.list];
             });

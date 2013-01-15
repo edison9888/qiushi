@@ -29,6 +29,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation EGOPhotoCaptionView
+@synthesize textView = _textView;
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -46,11 +47,12 @@
 //		[self addSubview:_textLabel];
 //		[_textLabel release];
         
-        _textView = [[UITextView alloc]initWithFrame:CGRectMake(10.0f, 0.0f, self.frame.size.width - 20.0f, 44.0f)];
+        _textView = [[UITextView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 44.0f)];
         _textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         _textView.backgroundColor = [UIColor clearColor];
 		_textView.textAlignment = UITextAlignmentLeft;
 		_textView.textColor = [UIColor whiteColor];
+        _textView.font = [UIFont systemFontOfSize:12.0];
         _textView.editable = NO;
 
 

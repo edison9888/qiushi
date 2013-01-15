@@ -11,7 +11,6 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 #import "IsNetWorkUtil.h"
-#import "MyProgressHud.h"
 #import "iToast.h"
 #import "JSON.h"
 
@@ -111,7 +110,7 @@ static NetManager *_sharedContext = nil;
     
     DLog(@"RequestSuccess");
     
-    [MyProgressHud remove];
+  
     NSString *responseString = [request responseString];
 //    DLog(@"%@",responseString);
     
@@ -138,8 +137,7 @@ static NetManager *_sharedContext = nil;
 {
     DLog(@"RequestFail");
 
-    [MyProgressHud remove];
-
+  
     if (request.tag == kRequestTypeGetQiushi
         || request.tag == kRequestTypeGetComment)
     {

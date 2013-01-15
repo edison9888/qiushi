@@ -56,8 +56,9 @@ typedef enum _QiuShiType
 #define kFlurryAppKey       @"2WMCGZK7RKGGNRQ2F6MX"
 
 
-#define kFont  @"微软雅黑" 
-//#define kFont  @"Arial"
+//#define kFont  @"微软雅黑" 
+//#define kFont  @"BanglaSangamMN-Bold"
+#define kFont  @"Georgia-BoldItalic"
 
 
 #define kDeviceWidth [UIScreen mainScreen].bounds.size.width

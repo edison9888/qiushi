@@ -296,7 +296,7 @@
         segmentedTemp.selectedSegmentIndex = 0;
         self.navigationItem.titleView = segmentedTemp;
     }else if (_index == 1){
-        NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@"日",@"月",@"年",nil];
+        NSArray *segmentedArray = [[NSArray alloc]initWithObjects:@" 日 ",@" 月 ",@" 年 ",nil];
         //初始化UISegmentedControl
         UISegmentedControl *segmentedTemp = [[UISegmentedControl alloc]initWithItems:segmentedArray];
         segmentedTemp.segmentedControlStyle = UISegmentedControlStyleBar;

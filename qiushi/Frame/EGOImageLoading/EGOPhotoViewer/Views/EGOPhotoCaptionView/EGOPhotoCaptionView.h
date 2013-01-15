@@ -26,12 +26,14 @@
 
 
 @interface EGOPhotoCaptionView : UIView {
-@private
+
 //	UILabel *_textLabel;
     UITextView *_textView;
 	BOOL _hidden;
 
 }
+
+@property (nonatomic, retain) UITextView *textView;
 
 - (void)setCaptionText:(NSString*)text hidden:(BOOL)val;
 - (void)setCaptionHidden:(BOOL)hidden;

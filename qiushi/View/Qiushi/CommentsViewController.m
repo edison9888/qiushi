@@ -666,11 +666,11 @@ RefreshDateNetDelegate
             
             
             
-        //保存到数据库
-        dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        dispatch_async(newThread, ^{
-            [SqliteUtil saveCommentWithArray:self.list];
-        });
+//        //保存到数据库
+//        dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//        dispatch_async(newThread, ^{
+//            [SqliteUtil saveCommentWithArray:self.list];
+//        });
 
             
             

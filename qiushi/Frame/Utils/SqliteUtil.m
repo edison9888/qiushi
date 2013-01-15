@@ -151,6 +151,7 @@ static NSArray *dirPaths;
 
 + (void)saveDbWithArray:(NSMutableArray*)qsArray
 {
+
     
     sqlite3_stmt *statement;
     
@@ -169,8 +170,8 @@ static NSArray *dirPaths;
             sqlite3_prepare_v2(qiushiDB, insert_stmt, -1, &statement, NULL);
             if (sqlite3_step(statement)==SQLITE_DONE) {
                 
-                DLog(@"已存储到数据库");
-                
+//                DLog(@"已存储到数据库");
+
                 
                 
 //#ifdef DEBUG
@@ -204,7 +205,7 @@ static NSArray *dirPaths;
             }
             else
             {
-                DLog(@"保存失败:%s",sqlite3_errmsg(qiushiDB));
+//                DLog(@"保存失败:%s",sqlite3_errmsg(qiushiDB));
                 //
                 
             }
