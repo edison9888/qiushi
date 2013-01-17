@@ -251,8 +251,6 @@
 		C9F63ADA1645214A00E17ED2 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F63AC81645214A00E17ED2 /* AboutViewController.xib */; };
 		C9F63ADB1645214A00E17ED2 /* FeedBackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63ACA1645214A00E17ED2 /* FeedBackViewController.m */; };
 		C9F63ADC1645214A00E17ED2 /* FeedBackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F63ACB1645214A00E17ED2 /* FeedBackViewController.xib */; };
-		C9F63ADD1645214A00E17ED2 /* PurchaseInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63ACD1645214A00E17ED2 /* PurchaseInViewController.m */; };
-		C9F63ADE1645214A00E17ED2 /* PurchaseInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F63ACE1645214A00E17ED2 /* PurchaseInViewController.xib */; };
 		C9F63ADF1645214A00E17ED2 /* SetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63AD01645214A00E17ED2 /* SetViewController.m */; };
 		C9F63AE01645214A00E17ED2 /* SetViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F63AD11645214A00E17ED2 /* SetViewController.xib */; };
 		D20878011699C4FE003A012B /* MyTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = D20877FD1699C4FE003A012B /* MyTableController.m */; };
@@ -641,9 +639,6 @@
 		C9F63AC91645214A00E17ED2 /* FeedBackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedBackViewController.h; sourceTree = "<group>"; };
 		C9F63ACA1645214A00E17ED2 /* FeedBackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedBackViewController.m; sourceTree = "<group>"; };
 		C9F63ACB1645214A00E17ED2 /* FeedBackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FeedBackViewController.xib; sourceTree = "<group>"; };
-		C9F63ACC1645214A00E17ED2 /* PurchaseInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseInViewController.h; sourceTree = "<group>"; };
-		C9F63ACD1645214A00E17ED2 /* PurchaseInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseInViewController.m; sourceTree = "<group>"; };
-		C9F63ACE1645214A00E17ED2 /* PurchaseInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PurchaseInViewController.xib; sourceTree = "<group>"; };
 		C9F63ACF1645214A00E17ED2 /* SetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetViewController.h; sourceTree = "<group>"; };
 		C9F63AD01645214A00E17ED2 /* SetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetViewController.m; sourceTree = "<group>"; };
 		C9F63AD11645214A00E17ED2 /* SetViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetViewController.xib; sourceTree = "<group>"; };
@@ -1496,9 +1491,6 @@
 				C9F63AC91645214A00E17ED2 /* FeedBackViewController.h */,
 				C9F63ACA1645214A00E17ED2 /* FeedBackViewController.m */,
 				C9F63ACB1645214A00E17ED2 /* FeedBackViewController.xib */,
-				C9F63ACC1645214A00E17ED2 /* PurchaseInViewController.h */,
-				C9F63ACD1645214A00E17ED2 /* PurchaseInViewController.m */,
-				C9F63ACE1645214A00E17ED2 /* PurchaseInViewController.xib */,
 				C9F63ACF1645214A00E17ED2 /* SetViewController.h */,
 				C9F63AD01645214A00E17ED2 /* SetViewController.m */,
 				C9F63AD11645214A00E17ED2 /* SetViewController.xib */,
@@ -1693,7 +1685,6 @@
 				C9F63AD81645214A00E17ED2 /* ContentViewController.xib in Resources */,
 				C9F63ADA1645214A00E17ED2 /* AboutViewController.xib in Resources */,
 				C9F63ADC1645214A00E17ED2 /* FeedBackViewController.xib in Resources */,
-				C9F63ADE1645214A00E17ED2 /* PurchaseInViewController.xib in Resources */,
 				C9F63AE01645214A00E17ED2 /* SetViewController.xib in Resources */,
 				D20878031699C4FE003A012B /* TestViewController.xib in Resources */,
 				D20878081699C522003A012B /* ContentFromParseViewController.xib in Resources */,
@@ -1807,7 +1798,6 @@
 				C9F63AD71645214A00E17ED2 /* ContentViewController.m in Sources */,
 				C9F63AD91645214A00E17ED2 /* AboutViewController.m in Sources */,
 				C9F63ADB1645214A00E17ED2 /* FeedBackViewController.m in Sources */,
-				C9F63ADD1645214A00E17ED2 /* PurchaseInViewController.m in Sources */,
 				C9F63ADF1645214A00E17ED2 /* SetViewController.m in Sources */,
 				C9A7948716820CEB00A3722E /* DeviceInfo.m in Sources */,
 				13D1BBBC168825A30065A931 /* NetManager.m in Sources */,

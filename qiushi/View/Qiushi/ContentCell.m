@@ -50,7 +50,7 @@
         
         txtContent = [[UILabel alloc]init];
         [txtContent setBackgroundColor:[UIColor clearColor]];
-        [txtContent setFrame:CGRectMake(20, 10, 280, 220)];
+        [txtContent setFrame:CGRectMake(20, 20, 280, 220)];
         [txtContent setFont:[UIFont fontWithName:kFont size:14]];
         [txtContent setLineBreakMode:UILineBreakModeTailTruncation];
         [self addSubview:txtContent];
@@ -92,7 +92,7 @@
         TagPhoto = [[UIImageView alloc]initWithFrame:CGRectMake(15, 200, tagImage.size.width, tagImage.size.height)];
         [TagPhoto setImage:tagImage];
         [self addSubview:TagPhoto];
-        
+
         UIImage *footimage = [UIImage imageNamed:@"block_foot_background.png"];
         footView = [[UIImageView alloc]initWithImage:footimage];
         [footView setFrame:CGRectMake(0, txtContent.frame.size.height, footimage.size.width, footimage.size.height)];
@@ -108,7 +108,6 @@
         [goodbtn.titleLabel setFont:[UIFont fontWithName:kFont size:14]];
         [goodbtn.titleLabel setTextAlignment:UITextAlignmentRight];
         [goodbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        
         [goodbtn setTag:FGOOD];
         [self addSubview:goodbtn];
         
@@ -125,19 +124,16 @@
         
         commentsbtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [commentsbtn setFrame:CGRectMake(170,txtContent.frame.size.height-30,70,32)];
-
-
         [commentsbtn setImage:[UIImage imageNamed:@"icon_for_comment.png"] forState:UIControlStateNormal];
-
         [commentsbtn setImageEdgeInsets:UIEdgeInsetsMake(0, .5, 0, 0)];
         [commentsbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -20)];
         [commentsbtn.titleLabel setFont:[UIFont fontWithName:kFont size:14]];
         [commentsbtn setTitle:@"0" forState:UIControlStateNormal];
         [commentsbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-       
         [commentsbtn setTag:FCOMMITE];
         [self addSubview:commentsbtn];
      
+
         saveImage = [UIImage imageNamed:@"button_save.png"];
         _saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_saveBtn setFrame:CGRectMake(260,txtContent.frame.size.height-30,saveImage.size.width,saveImage.size.height)];
@@ -171,9 +167,9 @@
     }
     
     
-    [txtContent setFrame:CGRectMake(20, 10, contentWidth, size.height+60)];
+    [txtContent setFrame:CGRectMake(20, 20, contentWidth, size.height+60)];
     
-    if (imgUrl!=nil&&![imgUrl isEqualToString:@""]) {
+    if (imgUrl != nil && ![imgUrl isEqualToString:@""]) {
        [imgPhoto setFrame:CGRectMake(30, size.height+70, 72, 72)];
        [centerimageView setFrame:CGRectMake(0, 0, 320, size.height+200)];
        [imgPhoto setImageURL:[NSURL URLWithString:imgUrl]];
@@ -190,7 +186,7 @@
     [goodbtn setFrame:CGRectMake(10,centerimageView.frame.size.height-28,70,32)];
     [badbtn setFrame:CGRectMake(90,centerimageView.frame.size.height-28,70,32)];
     [commentsbtn setFrame:CGRectMake(170,centerimageView.frame.size.height-28,70,32)];
-    [_saveBtn setFrame:CGRectMake(260, centerimageView.frame.size.height-28, saveImage.size.width,saveImage.size.height)];
+    [_saveBtn setFrame:CGRectMake(260, centerimageView.frame.size.height-28, 70,32)];
     [txtTag setFrame:CGRectMake(40,centerimageView.frame.size.height-50,200, 30)];
     [TagPhoto setFrame:CGRectMake(15,centerimageView.frame.size.height-50,tagImage.size.width, tagImage.size.height)];
 

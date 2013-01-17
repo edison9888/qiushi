@@ -12,7 +12,6 @@
 #import "AppDelegate.h"
 #import "AboutViewController.h"
 #import "SetViewController.h"
-#import "PurchaseInViewController.h"
 #import "MyNavigationController.h"
 #import "FavouriteViewController.h"
 #import "History1ViewController.h"
@@ -292,9 +291,7 @@
     NSLog(@"Select the index : %d",idx);
     if (idx == 0)
     {
-        //程序内购买
-        PurchaseInViewController *purchase = [[PurchaseInViewController alloc]initWithNibName:@"PurchaseInViewController" bundle:nil];
-        [self.navController pushViewController:purchase animated:NO];
+        
         
         
     }else if (idx == 1)

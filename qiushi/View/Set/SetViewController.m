@@ -13,7 +13,7 @@
 #import "EGOCache.h"
 #import "IIViewDeckController.h"
 #import "FeedBackViewController.h"
-#import "PurchaseInViewController.h"
+
 @interface SetViewController ()
 {
     UIBarButtonItem *leftMenuBtn;
@@ -186,8 +186,7 @@
         [self.navigationController pushViewController:feedback animated:YES];
         
     }else if (indexPath.row == 4){//升级，ipa
-        PurchaseInViewController *purchase = [[PurchaseInViewController alloc]initWithNibName:@"PurchaseInViewController" bundle:nil];
-        [self.navigationController pushViewController:purchase animated:YES];
+       
     }
 }
 

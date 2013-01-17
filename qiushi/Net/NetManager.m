@@ -108,7 +108,7 @@ static NetManager *_sharedContext = nil;
 - (void) requestSuccess:(ASIHTTPRequest *)request
 {
     
-    DLog(@"RequestSuccess");
+    DLog(@"RequestSuccess,%d",request.tag);
     
   
     NSString *responseString = [request responseString];
@@ -135,7 +135,7 @@ static NetManager *_sharedContext = nil;
 
 - (void) requestFail:(ASIHTTPRequest *)request
 {
-    DLog(@"RequestFail");
+    DLog(@"RequestFail,%d",request.tag);
 
   
     if (request.tag == kRequestTypeGetQiushi
