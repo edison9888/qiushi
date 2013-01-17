@@ -30,29 +30,81 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
-         timestampString = "379868662.113261"
+         timestampString = "380126461.358234"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "816"
-         endingLineNumber = "816"
+         startingLineNumber = "815"
+         endingLineNumber = "815"
          landmarkName = "-setupScrollViewContentSize"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Views/EGOPhotoCaptionView/EGOPhotoCaptionView.m"
-         timestampString = "379869134.96793"
+         timestampString = "380125333.37424"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "59"
-         endingLineNumber = "59"
+         startingLineNumber = "50"
+         endingLineNumber = "50"
          landmarkName = "-initWithFrame:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Views/EGOPhotoImageView/EGOPhotoImageView.m"
+         timestampString = "380126652.001504"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "345"
+         endingLineNumber = "345"
+         landmarkName = "-layoutScrollViewAnimated:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "380126826.909565"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "927"
+         endingLineNumber = "927"
+         landmarkName = "-scrollViewDidEndDecelerating:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "380127072.467931"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "944"
+         endingLineNumber = "944"
+         landmarkName = "-scrollViewWillBeginDecelerating:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/Frame/EGOImageLoading/EGOPhotoViewer/Controller/EGOPhotoViewController/EGOPhotoViewController.m"
+         timestampString = "380127863.25552"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "430"
+         endingLineNumber = "430"
+         landmarkName = "-setStatusBarHidden:animated:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

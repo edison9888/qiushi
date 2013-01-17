@@ -155,7 +155,8 @@
     
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated
+{
 	[super viewWillAppear:animated];
     
     if ([self.viewDeckController leftControllerIsOpen]==YES) {
@@ -810,14 +811,11 @@
 		self.scrollView.contentSize = contentSize;
 	}
 
-//    [_captionView setCaptionText:@"" hidden:YES];
-    NSString *string = [[self.photoSource photoAtIndex:_pageIndex] caption];
-    CGSize size = [string sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(self.view.bounds.size.width, 220) lineBreakMode:UILineBreakModeTailTruncation];
-	_captionView.frame = CGRectMake(0.0f, self.view.bounds.size.height - (toolbarSize + size.height), self.view.bounds.size.width, size.height);
-    _captionView.textView.frame = _captionView.frame;
-    DLog(@"%@",NSStringFromCGRect(self.view.bounds));
-    DLog(@"%@",NSStringFromCGRect(_captionView.frame));
-    
+
+	_captionView.frame = CGRectMake(0.0f, self.view.bounds.size.height - (toolbarSize + 60.0f), self.view.bounds.size.width, 60);
+//    DLog(@"%@",NSStringFromCGRect(self.view.bounds));
+//    DLog(@"%@",NSStringFromCGRect(_captionView.frame));
+
 }
 
 - (void)enqueuePhotoViewAtIndex:(NSInteger)theIndex{
@@ -935,7 +933,14 @@
     
 }
 
+
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+
+    DLog(@"%@",NSStringFromCGPoint(scrollView.contentOffset));
+    if ([self.photoSource numberOfPhotos] == 1 && scrollView.contentOffset.x < 0) {
+        [self fadeOut];
+    }
+
 	[self layoutScrollViewSubviews];
 }
 
@@ -1060,7 +1065,7 @@
 
 -(void) fadeOut
 {
-    
+    [self setBarsHidden:NO animated:NO];
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [[delegate navController] dismissModalViewControllerAnimated:YES];
 }

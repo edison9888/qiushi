@@ -37,17 +37,8 @@
 		self.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 		
-//		_textLabel = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 0.0f, self.frame.size.width - 40.0f, 40.0f)];
-//		_textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-//		_textLabel.backgroundColor = [UIColor clearColor];
-//		_textLabel.textAlignment = UITextAlignmentCenter;
-//		_textLabel.textColor = [UIColor whiteColor];
-//		_textLabel.shadowColor = [UIColor blackColor];
-//		_textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-//		[self addSubview:_textLabel];
-//		[_textLabel release];
         
-        _textView = [[UITextView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 44.0f)];
+        _textView = [[UITextView alloc]initWithFrame:CGRectMake(5.0f, 0.0f, self.frame.size.width-10.0f, 60.0f)];
         _textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         _textView.backgroundColor = [UIColor clearColor];
 		_textView.textAlignment = UITextAlignmentLeft;
@@ -70,9 +61,7 @@
 - (void)layoutSubviews{
 	
 	[self setNeedsDisplay];
-//	_textLabel.frame = CGRectMake(20.0f, 0.0f, self.frame.size.width - 40.0f, 40.0f);
-    _textView.frame = CGRectMake(20.0f, 0.0f, self.frame.size.width - 44.0f, 44.0f);
-	
+
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -89,14 +78,13 @@
 	
 	if (text == nil || [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length == 0) {
 		
-//		_textLabel.text = nil;
+
         _textView.text = nil;
 		[self setHidden:YES];
 		
 	} else {
 		
 		[self setHidden:val];
-//		_textLabel.text = text;
         _textView.text = text;
 		
 	}
@@ -150,7 +138,7 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
-//	_textLabel=nil;
+
     _textView = nil;
     [super dealloc];
 }

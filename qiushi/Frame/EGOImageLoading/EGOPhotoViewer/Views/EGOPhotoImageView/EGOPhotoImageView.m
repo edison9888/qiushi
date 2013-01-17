@@ -501,27 +501,42 @@ inline static NSString* keyForURL(NSURL* url, NSString* style) {
 	[UIView setAnimationDidStopSelector:@selector(killZoomAnimationDidStop:finished:context:)];
 	[UIView setAnimationDelegate:self];
     
-	CGFloat hfactor = self.imageView.image.size.width / self.frame.size.width;
+
+    CGFloat hfactor = self.imageView.image.size.width / self.frame.size.width;
 	CGFloat vfactor = self.imageView.image.size.height / self.frame.size.height;
-	
+
 	CGFloat factor = MAX(hfactor, vfactor);
-    
+
 	CGFloat newWidth = self.imageView.image.size.width / factor;
 	CGFloat newHeight = self.imageView.image.size.height / factor;
-    
-    
-    if (hfactor < vfactor)
-    {
+
+    if (hfactor < vfactor) {
+
         newHeight = newHeight * self.frame.size.width / newWidth;
         newWidth = self.frame.size.width;
-        
+        NSLog(@"%f,%f",newWidth,newHeight);
+
     }
-	
+
 	CGFloat leftOffset = MAX((self.frame.size.width - newWidth) / 2, 0);
 	CGFloat topOffset = MAX((self.frame.size.height - newHeight) / 2, 0);
-    
+
+
+
 	self.scrollView.frame = CGRectMake(leftOffset, topOffset, MIN(newWidth, self.frame.size.width), MIN(newHeight, self.frame.size.height));
-	self.imageView.frame = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
+    NSLog(@"scrollview.frame:%@",NSStringFromCGRect(self.scrollView.frame));
+	self.scrollView.layer.position = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+	self.scrollView.contentSize = CGSizeMake(newWidth, newHeight);
+	self.scrollView.contentOffset = CGPointMake(0.0f, 0.0f);
+    if (hfactor < vfactor) {
+        self.imageView.frame = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
+    }else {
+        self.imageView.frame = self.scrollView.bounds;
+    }
+
+    NSLog(@"self.imageView.frame:%@",NSStringFromCGRect(self.imageView.frame));
+    NSLog(@"size:%@",NSStringFromCGSize(self.scrollView.contentSize));
+
     
 	[UIView commitAnimations];
     
