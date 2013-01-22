@@ -355,9 +355,10 @@
 
 - (void)ShareKitView:(ShareKitView *)sharekit clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    [self performSelector:@selector(loadViewDelayClose) withObject:nil afterDelay:.3f];
     //移出分享窗口
     if (buttonIndex==-1) {
-        [self performSelector:@selector(loadViewDelayClose) withObject:nil afterDelay:1.f];
+        
     }else if (buttonIndex>=[_menuItems count]) {
         //处理动作
         if (buttonIndex>=([_menuItems count]+[_redirectServices count])) {

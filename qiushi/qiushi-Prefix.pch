@@ -92,7 +92,7 @@ typedef enum _QiuShiType
 #define MonthURLString(page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/list/month?count=30&page=%d",page]
 #define CYURLString(date,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/history/%@?count=30&page=%d",date,page]
 
-#define CommentsURLString(ID,count,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/%@/comments?count=50&page=%d",ID,page]
+#define CommentsURLString(ID,page) [NSString stringWithFormat:@"http://m2.qiushibaike.com/article/%@/comments?count=50&page=%d",ID,page]
 
 
 

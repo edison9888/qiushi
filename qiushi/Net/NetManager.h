@@ -22,7 +22,7 @@ typedef enum _RequestTypeTag
 
 @protocol RefreshDateNetDelegate <NSObject>
 
--(void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type;
+-(void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type isOk:(BOOL)isOk;
 
 @end
 
@@ -30,13 +30,17 @@ typedef enum _RequestTypeTag
 {
     ASIHTTPRequest *_httpRequest;
     ASIFormDataRequest *_formRequest;
-    id <RefreshDateNetDelegate> _delegate;
+//    id <RefreshDateNetDelegate> _delegate;
 }
 
 @property (nonatomic, retain) ASIHTTPRequest *httpRequest;
 @property (nonatomic, retain) ASIFormDataRequest *formRequest;
-@property (nonatomic, retain) id <RefreshDateNetDelegate> delegate;
+//@property (nonatomic, retain) id <RefreshDateNetDelegate> delegate;
 
-- (void) requestWithURL:(NSString*)urlString withType:(RequestTypeTag)type withDictionary:(NSDictionary*)dic;
+- (void) requestWithURL:(NSString*)urlString
+               withType:(RequestTypeTag)type
+         withDictionary:(NSDictionary*)dic
+           withDelegate:(id <RefreshDateNetDelegate>)delegate;
+
 +(NetManager *) SharedNetManager;
 @end

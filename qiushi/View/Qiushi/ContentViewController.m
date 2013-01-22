@@ -61,8 +61,8 @@ RefreshDateNetDelegate
     
     [self.view setBackgroundColor:[UIColor clearColor]];
     
-    _list = [NSMutableArray new];
-    _imageUrlArray = [NSMutableArray new];
+    _list = [NSMutableArray array];
+    _imageUrlArray = [NSMutableArray array];
     
     
     
@@ -82,6 +82,7 @@ RefreshDateNetDelegate
         bannerView_.rootViewController = self;
         bannerView_.delegate = self;
         [self.view addSubview:bannerView_];
+        bannerView_.hidden = YES;
         
     }
     
@@ -126,8 +127,6 @@ RefreshDateNetDelegate
         
     }
     
-    [NetManager SharedNetManager].delegate = self;
-    
 
     
     if (self.page == 0) {
@@ -162,13 +161,6 @@ RefreshDateNetDelegate
    
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-}
-
-- (void) viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    [NetManager SharedNetManager].delegate = self;
 }
 
 #pragma mark - Your actions
@@ -239,8 +231,10 @@ RefreshDateNetDelegate
     NSLog(@"%@",url);
 
 
-    [NetManager SharedNetManager].delegate = self;
-    [[NetManager SharedNetManager] requestWithURL:url withType:kRequestTypeGetQiushi withDictionary:nil];
+    [[NetManager SharedNetManager] requestWithURL:url
+                                         withType:kRequestTypeGetQiushi
+                                   withDictionary:nil
+                                     withDelegate:self];
     
     
 }
@@ -280,33 +274,35 @@ RefreshDateNetDelegate
     [cell.txtContent setNumberOfLines: 12];
     
     //设置图片
-    if (qs.imageURL!=nil && ![qs.imageURL isEqual: @""]) {
+    if (qs.imageURL != nil && ![qs.imageURL isEqualToString:@""]) {
         cell.imgUrl = qs.imageURL;
         cell.imgMidUrl = qs.imageMidURL;
-        // cell.imgPhoto.hidden = NO;
+
     }else
     {
         cell.imgUrl = @"";
         cell.imgMidUrl = @"";
-        // cell.imgPhoto.hidden = YES;
+ 
     }
     //设置用户名
-    if (qs.anchor!=nil && ![qs.anchor isEqual: @""])
+    if (qs.anchor != nil && ![qs.anchor isEqualToString:@""])
     {
         cell.txtAnchor.text = qs.anchor;
     }else
     {
         cell.txtAnchor.text = @"匿名";
     }
+
+ 
     //设置标签
-    if (qs.tag==nil || [qs.tag isEqualToString:@""] || qs.tag.length == 0)
+    if (qs.tag == nil || [qs.tag isEqualToString:@""] || qs.tag.length == 0)
     {
         
-        cell.txtTag.text = qs.tag;
+        cell.txtTag.text = @"";
         
     }else
     {
-        cell.txtTag.text = @"";
+        cell.txtTag.text = qs.tag;
         
     }
     //设置up ，down and commits
@@ -322,7 +318,6 @@ RefreshDateNetDelegate
     
     
     [cell.commentsbtn setTag:indexPath.row];
-    
     [cell.commentsbtn addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
     
     [cell.goodbtn setTag:indexPath.row];
@@ -347,32 +342,36 @@ RefreshDateNetDelegate
 
 
 #pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
+- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView
+{
     self.refreshing = YES;
     [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
 }
 
 
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
+- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView
+{
     [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
 }
 
 #pragma mark - Scroll
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     [self.tableView tableViewDidScroll:scrollView];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
     [self.tableView tableViewDidEndDragging:scrollView];
 }
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.viewDeckController leftControllerIsOpen]==YES) {
+    if ([self.viewDeckController leftControllerIsOpen] == YES) {
         [self.viewDeckController closeLeftView];
-    }else{
+    }else {
         AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
         CommentsViewController *comments=[[CommentsViewController alloc]initWithNibName:@"CommentsViewController" bundle:nil];
         comments.qs = [self.list objectAtIndex:indexPath.row];
@@ -385,7 +384,7 @@ RefreshDateNetDelegate
 }
 
 #pragma mark - LoadPage
--(void) LoadPageOfQiushiType:(QiuShiType) type
+- (void)LoadPageOfQiushiType:(QiuShiType) type
 {
     self.Qiutype = type;
     self.page = 0;
@@ -395,11 +394,11 @@ RefreshDateNetDelegate
 
 
 //cell 动态 高度
--(CGFloat) getTheHeight:(NSInteger)row
+- (CGFloat)getTheHeight:(NSInteger)row
 {
     CGFloat contentWidth = 280;
     // 设置字体
-    UIFont *font = [UIFont fontWithName:kFont size:14];
+    UIFont *font = [UIFont fontWithName:kFont size:kSize];
     
     QiuShi *qs =[self.list objectAtIndex:row];
     // 显示的内容
@@ -408,7 +407,7 @@ RefreshDateNetDelegate
     // 计算出长宽
     CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];
     CGFloat height;
-    if (qs.imageURL==nil || [qs.imageURL isEqualToString:@""]) {
+    if (qs.imageURL == nil || [qs.imageURL isEqualToString:@""]) {
         height = size.height+140;
     }else
     {
@@ -590,7 +589,7 @@ RefreshDateNetDelegate
 
 
 #pragma mark - delegate net
-- (void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type
+- (void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type isOk:(BOOL)isOk
 {
     if (type == kRequestTypeGetQiushi)
     {
@@ -649,7 +648,7 @@ RefreshDateNetDelegate
                     
                     [self.list addObject:qs];
                     
-                    if (qs.imageURL != nil && ![qs.imageURL isEqualToString: @""]) {
+                    if (qs.imageURL != nil && ![qs.imageURL isEqualToString:@""]) {
                         [self.imageUrlArray addObject:qs.imageURL];
                         [self.imageUrlArray addObject:qs.imageMidURL];
                     }
@@ -694,11 +693,11 @@ RefreshDateNetDelegate
             
             if (isShowAd == NO) {
                 //请求 ad
-//                [bannerView_ loadRequest:[GADRequest request]];
+                [bannerView_ loadRequest:[GADRequest request]];
             }
         
             
-        }else{
+        }else {
             
             if (self.page > 0) {
                 self.page--;

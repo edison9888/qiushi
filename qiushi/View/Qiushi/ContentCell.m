@@ -51,7 +51,7 @@
         txtContent = [[UILabel alloc]init];
         [txtContent setBackgroundColor:[UIColor clearColor]];
         [txtContent setFrame:CGRectMake(20, 20, 280, 220)];
-        [txtContent setFont:[UIFont fontWithName:kFont size:14]];
+        [txtContent setFont:[UIFont fontWithName:kFont size:kSize]];
         [txtContent setLineBreakMode:UILineBreakModeTailTruncation];
         [self addSubview:txtContent];
     
@@ -155,7 +155,7 @@
     }
 
  
-    UIFont *font = [UIFont fontWithName:kFont size:14];
+    UIFont *font = [UIFont fontWithName:kFont size:kSize];
     
     CGSize size = CGSizeMake(0, 0);
     if (type == kTypeMain || type == kTypeHistory)

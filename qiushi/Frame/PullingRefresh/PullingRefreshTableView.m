@@ -9,7 +9,7 @@
 #import "PullingRefreshTableView.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define kPROffsetY 60.f
+#define kPROffsetY 40.f
 #define kPRMargin 5.f
 #define kPRLabelHeight 20.f
 #define kPRLabelWidth 100.f

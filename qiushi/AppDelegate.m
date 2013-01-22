@@ -35,6 +35,15 @@
 {
     
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+
+
+    NSString *string = @"dfdsfasddfdasl大发了多少12楼的说法是范德萨发斯蒂芬";
+    int i = [string intValue];
+    DLog(@"i====%d",i);
+
+    NSScanner *scanner = [NSScanner scannerWithString:@"楼"];
+    DLog(@"",scanner.scanLocation)
+
     
     [Parse setApplicationId:kParseApplicationId
                   clientKey:kParseClientKey];

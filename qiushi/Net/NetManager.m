@@ -54,7 +54,7 @@ static NetManager *_sharedContext = nil;
 }
 
 
-- (void) requestWithURL:(NSString*)urlString withType:(RequestTypeTag)type withDictionary:(NSDictionary*)dic
+- (void) requestWithURL:(NSString*)urlString withType:(RequestTypeTag)type withDictionary:(NSDictionary*)dic withDelegate:(id<RefreshDateNetDelegate>)delegate
 {
     if (![IsNetWorkUtil isNetWork1])
     {
@@ -73,9 +73,12 @@ static NetManager *_sharedContext = nil;
         [self.httpRequest setDidFailSelector:@selector(requestFail:)];
         [self.httpRequest setDidFinishSelector:@selector(requestSuccess:)];
         [self.httpRequest setNumberOfTimesToRetryOnTimeout:2];
+        NSMutableDictionary *userInfo = [NSMutableDictionary new];
+        [userInfo setObject:delegate forKey:@"delegate"];
+        _httpRequest.userInfo = userInfo;
         [self.httpRequest startAsynchronous];
          
-        //        [self.interviews.view addSubview:[MyProgressHud getInstance]];
+   
         
         
     }else if (type == kRequestTypeGetQsParse)
@@ -91,6 +94,9 @@ static NetManager *_sharedContext = nil;
         [self.httpRequest setDidFailSelector:@selector(requestFail:)];
         [self.httpRequest setDidFinishSelector:@selector(requestSuccess:)];
         [self.httpRequest setNumberOfTimesToRetryOnTimeout:2];
+        NSMutableDictionary *userInfo = [NSMutableDictionary new];
+        [userInfo setObject:delegate forKey:@"delegate"];
+        _httpRequest.userInfo = userInfo;
         [self.httpRequest startAsynchronous];
     }
     
@@ -112,8 +118,8 @@ static NetManager *_sharedContext = nil;
     
   
     NSString *responseString = [request responseString];
-//    DLog(@"%@",responseString);
-    
+    DLog(@"%@",responseString);
+
     
     NSMutableDictionary *resultDic;
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
@@ -127,7 +133,7 @@ static NetManager *_sharedContext = nil;
         || request.tag == kRequestTypeGetComment)
     {
         
-        [self.delegate refreshDate1:resultDic data2:nil withType:[request tag]];
+        [[request.userInfo objectForKey:@"delegate"] refreshDate1:resultDic data2:nil withType:[request tag] isOk:YES];
     }
     
 }
@@ -141,7 +147,7 @@ static NetManager *_sharedContext = nil;
     if (request.tag == kRequestTypeGetQiushi
         || request.tag == kRequestTypeGetComment)
     {
-        [self.delegate refreshDate1:nil data2:nil withType:[request tag]];
+        [[request.userInfo objectForKey:@"delegate"] refreshDate1:nil data2:nil withType:[request tag] isOk:NO];
     }
 
 

@@ -14,7 +14,7 @@
 #import "GADBannerView.h"
 @class PullingRefreshTableView;
 @class SHSShareViewController;
-@class NetManager;
+
 
 @interface CommentsViewController : UIViewController
 <UIGestureRecognizerDelegate,GADBannerViewDelegate>
@@ -41,7 +41,7 @@
     int _index;
     BOOL _isHidden;//是否隐藏 cell三个按钮;正常时显示;收藏/缓存 时,不显示
     
-    NetManager *_net;
+  
 }
 @property (nonatomic,retain) PullingRefreshTableView *commentView;
 @property (nonatomic,retain) UITableView *tableView;
@@ -50,7 +50,6 @@
 @property (nonatomic,retain) SHSShareViewController *shareView;
 @property (retain,nonatomic) NSMutableArray *qsList;
 @property (nonatomic, assign) int index;
-@property (retain,nonatomic) NetManager *net;
 @property (nonatomic, assign) BOOL isHidden;
 -(CGFloat) getTheHeight;
 -(CGFloat) getTheCellHeight:(int) row;

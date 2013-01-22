@@ -1066,8 +1066,19 @@
 -(void) fadeOut
 {
     [self setBarsHidden:NO animated:NO];
+    
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    [[delegate navController] dismissModalViewControllerAnimated:YES];
+    [UIView animateWithDuration:.03 animations:^{
+
+//        CGRect frame = self.view.frame;
+//        frame.origin.x = self.view.frame.size.width;
+//        self.view.frame = frame;
+//        [self.view setHidden:YES];
+
+    } completion:^(BOOL finished) {
+        [[delegate navController] dismissModalViewControllerAnimated:NO];
+    }];
+
 }
 
 

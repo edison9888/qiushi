@@ -6,22 +6,6 @@
 	<array>
 		<dict>
 			<key>title</key>
-			<string>新浪微博</string>
-			<key>name</key>
-			<string>SinaWeiboSharer</string>
-			<key>oauthType</key>
-			<string>0</string>
-			<key>accessTokenURL</key>
-			<string>http://api.t.sina.com.cn/oauth/access_token</string>
-			<key>authorizeURL</key>
-			<string>http://api.t.sina.com.cn/oauth/authorize</string>
-			<key>requestTokenURL</key>
-			<string>http://api.t.sina.com.cn/oauth/request_token</string>
-			<key>callbackURL</key>
-			<string>oob</string>
-		</dict>
-		<dict>
-			<key>title</key>
 			<string>腾讯微博</string>
 			<key>name</key>
 			<string>TXWeiboSharer</string>
@@ -33,6 +17,22 @@
 			<string>https://open.t.qq.com/cgi-bin/authorize</string>
 			<key>requestTokenURL</key>
 			<string>https://open.t.qq.com/cgi-bin/request_token</string>
+			<key>callbackURL</key>
+			<string>oob</string>
+		</dict>
+		<dict>
+			<key>title</key>
+			<string>新浪微博</string>
+			<key>name</key>
+			<string>SinaWeiboSharer</string>
+			<key>oauthType</key>
+			<string>0</string>
+			<key>accessTokenURL</key>
+			<string>http://api.t.sina.com.cn/oauth/access_token</string>
+			<key>authorizeURL</key>
+			<string>http://api.t.sina.com.cn/oauth/authorize</string>
+			<key>requestTokenURL</key>
+			<string>http://api.t.sina.com.cn/oauth/request_token</string>
 			<key>callbackURL</key>
 			<string>oob</string>
 		</dict>

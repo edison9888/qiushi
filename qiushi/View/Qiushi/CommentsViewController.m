@@ -50,7 +50,7 @@ RefreshDateNetDelegate
 @synthesize index = _index;
 @synthesize isHidden = _isHidden;
 @synthesize page = _page;
-@synthesize net = _net;
+
 
 
 
@@ -67,33 +67,27 @@ RefreshDateNetDelegate
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib
 
-    
+
     //是否显示广告
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    
+
     if ([[ud objectForKey:@"isAdvanced"] boolValue] == NO) {
         bannerView_ = [[GADBannerView alloc]
                        initWithFrame:CGRectMake(0.0,
                                                 KDeviceHeight - GAD_SIZE_320x50.height - 44 -20,
                                                 GAD_SIZE_320x50.width,
                                                 GAD_SIZE_320x50.height)];//设置位置
-        
-        
+
         bannerView_.adUnitID = MY_BANNER_UNIT_ID;//调用你的id
         bannerView_.rootViewController = self;
         bannerView_.delegate = self;
         [self.view addSubview:bannerView_];
-        
+
     }
-    
-    
-    
+
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
-    list = [SqliteUtil queryCommentsById:qs.qiushiID];//[[NSMutableArray alloc]init];
-    
-    
-    
-#ifdef DEBUG
+    list = [SqliteUtil queryCommentsById:qs.qiushiID];//[NSMutableArray array];
+
     UIImage* image= [UIImage imageNamed:@"comm_btn_top_n.png"];
     UIImage* imagef= [UIImage imageNamed:@"comm_btn_top_s.png"];
     CGRect frame_1= CGRectMake(0, 0, image.size.width, image.size.height);
@@ -102,17 +96,12 @@ RefreshDateNetDelegate
     [backButton setBackgroundImage:imagef forState:UIControlStateHighlighted];
     [backButton setTitle:@"分享" forState:UIControlStateNormal];
     [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    backButton.titleLabel.font=[UIFont boldSystemFontOfSize:14];
+    backButton.titleLabel.font=[UIFont systemFontOfSize:12];
     [backButton addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
-
     //定制自己的风格的  UIBarButtonItem
     UIBarButtonItem* someBarButtonItem= [[UIBarButtonItem alloc] initWithCustomView:backButton];
-
-
     [self.navigationItem setRightBarButtonItem:someBarButtonItem];
-#endif
-    
-    
+
     //糗事列表
     tableView = [[UITableView alloc]  initWithFrame:CGRectMake(0, 0, kDeviceWidth, [self getTheHeight]-60)];
     tableView.backgroundColor = [UIColor clearColor];
@@ -121,8 +110,7 @@ RefreshDateNetDelegate
     tableView.delegate = self;
     tableView.scrollEnabled = NO;
     [_commentView addSubview:tableView];
-    
-    
+
 
     _commentView = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight-44-20) pullingDelegate:self];
     _commentView.backgroundColor = [UIColor clearColor];
@@ -133,20 +121,20 @@ RefreshDateNetDelegate
     [self.view addSubview:_commentView];
     _commentView.tableHeaderView = tableView;
 
-    
+
     //添加footimage
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
     UIImage *footbg= [UIImage imageNamed:@"block_center_background.png"];
     UIImageView *footbgView = [[UIImageView alloc]initWithImage:footbg];
     [footbgView setFrame:CGRectMake(0, 0, 320, 25)];
     [footView addSubview:footbgView];
-    
-    
+
+
     UIImage *footimage = [UIImage imageNamed:@"block_foot_background.png"];
     UIImageView *footimageView = [[UIImageView alloc]initWithImage:footimage];
     [footimageView setFrame:CGRectMake(0, 25, 320, 15)];
     [footView addSubview:footimageView];
-    
+
     //    //添加评论
     //    UIButton *addcomments = [UIButton buttonWithType:UIButtonTypeCustom];
     //    [addcomments setFrame:CGRectMake(20,2,280,28)];
@@ -157,22 +145,17 @@ RefreshDateNetDelegate
     //    [addcomments addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     //    [addcomments setTag:FAddComments];
     //    [footView addSubview:addcomments];
-    
+
     _commentView.tableFooterView = footView;
     [_commentView addSubview:footView];
-    
-    
-     list = [[NSMutableArray alloc]init];
-    
-    _net = [[NetManager alloc]init];
-    _net.delegate = self;
-    
-    
+
+
+
     if (self.page == 0) {
-        
+
         [self.commentView launchRefreshing];
     }
-    
+
     [self registerGesture];
 }
 
@@ -181,8 +164,10 @@ RefreshDateNetDelegate
 
 
 -(void)registerGesture{
-    
-    UISwipeGestureRecognizer *swipeRcognize1=[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
+
+    UISwipeGestureRecognizer *swipeRcognize1 = [[UISwipeGestureRecognizer alloc]
+                                              initWithTarget:self
+                                                action:@selector(handleSwipe:)];
     swipeRcognize1.delegate=self;
     [swipeRcognize1 setEnabled:YES];
     [swipeRcognize1 delaysTouchesEnded];
@@ -198,50 +183,55 @@ RefreshDateNetDelegate
     {
         //右
         [self backMainContent];
-        
-        
+
     }else if (direction == 2)
     {
-        
         //左
-        
+
     }
-    
+
 }
 
 
 
 -(void) btnClicked:(id)sender
 {
-    
+
     _shareView = [[SHSShareViewController alloc]initWithRootViewController:self];
     [_shareView.view setFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight)];
-    _shareView.sharedtitle = @"糗事百科-生活百态尽在Qiushibaike...";
-    _shareView.sharedText = qs.content;
+    _shareView.sharedtitle = @"糗事囧事";
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设定时间格式,这里可以设置成自己需要的格式
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    //用[NSDate date]可以获取系统当前时间
+    NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
+    
+    _shareView.sharedText = [NSString stringWithFormat:@"测试数据,%@",currentDateStr];//qs.content;
     _shareView.sharedURL =@"http://www.qiushibaike.com";
     _shareView.sharedImageURL = qs.imageURL;
     [_shareView showShareKitView];
     //    [self.view addSubview:_shareView.view];
-    
+
     UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
     [window addSubview:_shareView.view];
-    
+
 }
 
 
 - (void)favoriteAction:(id)sender
 {
-    
+
     [SqliteUtil updateDataIsFavourite:qs.qiushiID isFavourite:@"yes"];
-    
+
     [[iToast makeText:@"已添加到收藏..."] show];
 }
 
 - (void)viewDidUnload
 {
-    
+
     _shareView = nil;
-    
+
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -249,7 +239,7 @@ RefreshDateNetDelegate
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     if ([self.viewDeckController leftControllerIsOpen]==YES) {
         [self.viewDeckController closeLeftView];
     }
@@ -260,7 +250,7 @@ RefreshDateNetDelegate
 {
     [super viewDidDisappear:animated];
     [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
-    
+
 }
 
 
@@ -275,21 +265,24 @@ RefreshDateNetDelegate
         [self.commentView reloadData];
         return;
     }
-    
-    
+
+
     self.page++;
-    NSString *url = CommentsURLString(qs.qiushiID,10,self.page);
-          
+    NSString *url = CommentsURLString(qs.qiushiID,self.page);
+
 
     NSLog(@"%@",url);
- 
-    
-    [_net requestWithURL:url withType:kRequestTypeGetComment withDictionary:nil];
+
+
+    [[NetManager SharedNetManager] requestWithURL:url
+                                         withType:kRequestTypeGetComment
+                                   withDictionary:nil
+                                     withDelegate:self];
 }
 
 
 
-#pragma mark - TableView*
+#pragma mark - UITableView DataSource
 
 - (NSInteger)tableView:(UITableView *)tableview numberOfRowsInSection:(NSInteger)section{
     if (tableview == tableView) {
@@ -300,9 +293,9 @@ RefreshDateNetDelegate
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableview cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     if (tableview == tableView) {
-        
+
         static NSString *identifier = @"_QiShiCELL";
         ContentCell *cell =(ContentCell *) [tableview dequeueReusableCellWithIdentifier:identifier];
         if (cell == nil){
@@ -313,7 +306,7 @@ RefreshDateNetDelegate
             cell.contentView.backgroundColor = [UIColor clearColor];
             cell.txtContent.NumberOfLines = qs.content.length * 14 * 0.05 + 1;
         }
-        
+
         //设置内容
         cell.txtContent.text = qs.content;
         //发布时间
@@ -345,9 +338,9 @@ RefreshDateNetDelegate
         {
             cell.txtTag.text = @"";
         }
-        
-        
-        
+
+
+
         if (self.isHidden == YES) {//隐藏
             [cell.goodbtn setHidden:YES];
             [cell.badbtn setHidden:YES];
@@ -358,22 +351,16 @@ RefreshDateNetDelegate
             //        [cell.goodbtn setEnabled:NO];
             [cell.badbtn setTitle:[NSString stringWithFormat:@"%d",qs.downCount] forState:UIControlStateNormal];
             //        [cell.badbtn setEnabled:NO];
-            
-            
-            
-            
+
             [cell.goodbtn addTarget:self action:@selector(goodClick:) forControlEvents:UIControlEventTouchUpInside];
-            
-            
             [cell.badbtn addTarget:self action:@selector(badClick:) forControlEvents:UIControlEventTouchUpInside];
         }
-        
-        
+
+
         [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
-        
         [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
         //        [cell.commentsbtn setEnabled:NO];
-        
+
         //自适应函数
         [cell resizeTheHeight:kTypeContent];
         return cell;
@@ -391,7 +378,7 @@ RefreshDateNetDelegate
         Comments *cm = [list objectAtIndex:indexPath.row];
         //设置内容
         cell.txtContent.text = cm.content;
-        
+
         //        int i = [cm.content intValue];
         ////        NSLog(@"%d",i);
         //
@@ -418,8 +405,8 @@ RefreshDateNetDelegate
         ////                 NSLog(@"没有");
         //            }
         //        }
-        
-        
+
+
         cell.txtfloor.text = [NSString stringWithFormat:@"%d",cm.floor];
         //设置用户名
         if (cm.anchor!=nil && ![cm.anchor isEqual: @""])
@@ -433,12 +420,12 @@ RefreshDateNetDelegate
         [cell resizeTheHeight];
         return cell;
     }
-    
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableview heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+
     if (tableView == tableview) {
         CGFloat height = [self getTheHeight];
         [tableView setFrame:CGRectMake(0, 0, kDeviceWidth, height)];
@@ -446,18 +433,11 @@ RefreshDateNetDelegate
     }else {
         return [self getTheCellHeight:indexPath.row];
     }
-    
+
 }
 
 
 #pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
-
-
 -(CGFloat) getTheHeight
 {
     CGFloat contentWidth = 280;
@@ -483,7 +463,7 @@ RefreshDateNetDelegate
     CGFloat contentWidth = 280;
     // 设置字体
     UIFont *font = [UIFont fontWithName:kFont size:14];
-    
+
     Comments *cm = [self.list objectAtIndex:row];
     // 显示的内容
     NSString *content = cm.content;
@@ -498,14 +478,14 @@ RefreshDateNetDelegate
 - (void) goodClick:(id)sender
 {
     UIButton *btn = (UIButton*)sender;
-    
-    
+
+
     NSString *str = btn.currentTitle ;
-    
+
     int i = [str intValue];
     i += 1;
     [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
-    
+
     QiuShi *qs1 = qs;//[self.list objectAtIndex:self.index];
     qs1.upCount = i;
     [self.qsList replaceObjectAtIndex:self.index withObject:qs1];
@@ -514,13 +494,13 @@ RefreshDateNetDelegate
 - (void) badClick:(id)sender
 {
     UIButton *btn = (UIButton*)sender;
-    
+
     NSString *str = btn.currentTitle ;
-    
+
     int i = [str intValue];
     i -= 1;
     [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
-    
+
     QiuShi *qs1 = qs;
     qs1.downCount = i;
     [self.qsList replaceObjectAtIndex:self.index withObject:qs1];
@@ -530,7 +510,7 @@ RefreshDateNetDelegate
 
 - (void)backMainContent
 {
-    
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -570,14 +550,14 @@ RefreshDateNetDelegate
         bounds.size.height = KDeviceHeight - (44 + 20 + GAD_SIZE_320x50.height);
         [UIView animateWithDuration:.4 animations:^{
             [self.commentView setFrame:bounds];
-            
+
         }];
-        
-        
+
+
     }
-    
-    
-    
+
+
+
 }
 
 - (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error
@@ -590,19 +570,19 @@ RefreshDateNetDelegate
             [self.commentView setFrame:bounds];
         }];
     }
-    
-    
+
+
     DLog(@"adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
-    
+
 }
 
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView
 {
     DLog(@"adViewWillLeaveApplication");
-    
+
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     [ud setObject:[NSNumber numberWithBool:YES] forKey:@"isAdvanced"];
-    
+
     //实例化一个NSDateFormatter对象
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     //设定时间格式,这里可以设置成自己需要的格式
@@ -610,7 +590,7 @@ RefreshDateNetDelegate
     //用[NSDate date]可以获取系统当前时间
     NSString *currentDateStr = [dateFormatter stringFromDate:[NSDate date]];
     [ud setObject:currentDateStr forKey:@"lastClickAd"];
-    
+
     CGRect bounds = self.view.bounds;
     bounds.size.height = KDeviceHeight - (44 + 20);
     [UIView animateWithDuration:.4 animations:^{
@@ -624,75 +604,69 @@ RefreshDateNetDelegate
 
 
 #pragma mark - delegate net
--(void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type
+-(void)refreshDate1:(NSMutableDictionary*)dic data2:(NSMutableArray*)array withType:(int)type isOk:(BOOL)isOk
 {
     if (type == kRequestTypeGetComment)
     {
-        
-        if (dic != nil) {
-            
-            if (self.refreshing)
-            {
-                self.page = 1;
-                self.refreshing = NO;
-                
-            }
-            
-                  
-            if ([dic objectForKey:@"items"]) {
-                NSArray *array = [NSArray arrayWithArray:[dic objectForKey:@"items"]];
-                for (NSDictionary *comments in array) {
-                    Comments *cm = [[Comments alloc]initWithDictionary:comments];
-                    cm.qsId = qs.qiushiID;
-                    cm.createTime = qs.fbTime;
-                    [list addObject:cm];
-                }
-            }
-            
-            
-            if (list.count == [[dic objectForKey:@"total"] intValue]) {
-                [self.commentView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
-                self.commentView.reachedTheEnd  = YES;
-            } else {
-                [self.commentView tableViewDidFinishedLoading];
-                self.commentView.reachedTheEnd  = NO;
-                [self.commentView reloadData];
-            }
-            
-            
-            if (isShowAd == NO) {
-                [bannerView_ loadRequest:[GADRequest request]];
-            }
-            
-            
-            
-//        //保存到数据库
-//        dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//        dispatch_async(newThread, ^{
-//            [SqliteUtil saveCommentWithArray:self.list];
-//        });
+        if (isOk == YES) {
+            if (dic != nil) {
 
-            
-            
-        }else{
-            
-            if (self.page > 0) {
-                self.page--;
+                if (self.refreshing)
+                {
+                    self.page = 1;
+                    self.refreshing = NO;
+
+                }
+
+                NSArray *comments = [dic objectForKey:@"items"];
+                if (comments.count > 0) {
+                    NSArray *array = [NSArray arrayWithArray:[dic objectForKey:@"items"]];
+                    for (NSDictionary *comments in array) {
+                        Comments *cm = [[Comments alloc]initWithDictionary:comments];
+                        cm.qsId = qs.qiushiID;
+                        cm.createTime = qs.fbTime;
+                        [list addObject:cm];
+                    }
+
+                    [self.commentView reloadData];
+
+                    [self.commentView tableViewDidFinishedLoading];
+                    self.commentView.reachedTheEnd  = NO;
+
+
+                    
+
+                }else {
+                    if (self.page > 0)
+                    {
+                        self.page--;
+                    }
+
+                    [self.commentView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
+                    self.commentView.reachedTheEnd  = YES;
+                    self.refreshing = NO;
+                    [self.commentView tableViewDidFinishedLoading];
+
+                }
+
+                if (isShowAd == NO) {
+                    [bannerView_ loadRequest:[GADRequest request]];
+                }
+
+
+        //保存到数据库
+        dispatch_queue_t newThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(newThread, ^{
+            [SqliteUtil saveCommentWithArray:self.list];
+        });
+
             }
             
-            
+        }else {
             self.refreshing = NO;
             [self.commentView tableViewDidFinishedLoading];
-            
-
-                        
         }
-        
-        
-        
-        
-        
-        
+
     }
 }
 

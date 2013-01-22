@@ -198,6 +198,9 @@
     DLog("viewDidAppear");
 
     [self.viewDeckController setPanningMode:IIViewDeckFullViewPanning];
+
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    
     [super viewDidAppear:animated];
 
 }
