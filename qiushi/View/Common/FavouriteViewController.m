@@ -292,7 +292,7 @@ UITableViewDelegate
     
     
     //自适应函数
-    [cell resizeTheHeight:kTypeMain];
+//    [cell resizeTheHeight:kTypeMain];
     return cell;
 }
 

@@ -65,7 +65,7 @@
 {
     CGFloat contentWidth = 280;  
 
-    UIFont *font = [UIFont fontWithName:kFont size:14];  
+    UIFont *font = [UIFont fontWithName:kFont size:kSize];
     
     CGSize size = [txtContent.text sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];  
     

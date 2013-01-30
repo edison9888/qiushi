@@ -60,9 +60,10 @@ typedef enum _QiuShiType
 //#define kFont  @"微软雅黑" 
 //#define kFont  @"BanglaSangamMN-Bold"
 //#define kFont  @"OriyaSangamMN-Bold"
-#define kFont @"Noteworthy-Bold"
+//#define kFont @"Noteworthy-Bold"
 #define kSize   16
 //#define kFont @"MarkerFelt-Thin"
+#define kFont @"Arial"
 
 
 #define kDeviceWidth [UIScreen mainScreen].bounds.size.width

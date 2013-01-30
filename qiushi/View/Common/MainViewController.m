@@ -73,7 +73,7 @@
     [super viewDidLoad];
 
     //设置背景颜色
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]]; 
 
 
     UIImage *image = [UIImage imageNamed:@"nav_menu_icon.png"];

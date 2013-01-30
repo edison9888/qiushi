@@ -240,7 +240,6 @@
 		C9F63AD31645214A00E17ED2 /* CommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63ABC1645214A00E17ED2 /* CommentsCell.m */; };
 		C9F63AD41645214A00E17ED2 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63ABE1645214A00E17ED2 /* CommentsViewController.m */; };
 		C9F63AD51645214A00E17ED2 /* CommentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F63ABF1645214A00E17ED2 /* CommentsViewController.xib */; };
-		C9F63AD61645214A00E17ED2 /* ContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63AC11645214A00E17ED2 /* ContentCell.m */; };
 		C9F63AD71645214A00E17ED2 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63AC31645214A00E17ED2 /* ContentViewController.m */; };
 		C9F63AD81645214A00E17ED2 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F63AC41645214A00E17ED2 /* ContentViewController.xib */; };
 		C9F63AD91645214A00E17ED2 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F63AC71645214A00E17ED2 /* AboutViewController.m */; };
@@ -256,6 +255,8 @@
 		D20878081699C522003A012B /* ContentFromParseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D20878061699C522003A012B /* ContentFromParseViewController.xib */; };
 		D208781316A1A03C003A012B /* 111.md in Resources */ = {isa = PBXBuildFile; fileRef = D208781216A1A03C003A012B /* 111.md */; };
 		D2D3145B16AED25C00863C21 /* MyTicketLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D3145A16AED25C00863C21 /* MyTicketLabel.m */; };
+		D2D3145D16AEDF2100863C21 /* ContentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2D3145C16AEDF2000863C21 /* ContentCell.xib */; };
+		D2D3146316B812A800863C21 /* ContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D3146216B812A800863C21 /* ContentCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -620,8 +621,6 @@
 		C9F63ABD1645214A00E17ED2 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C9F63ABE1645214A00E17ED2 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
 		C9F63ABF1645214A00E17ED2 /* CommentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentsViewController.xib; sourceTree = "<group>"; };
-		C9F63AC01645214A00E17ED2 /* ContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentCell.h; sourceTree = "<group>"; };
-		C9F63AC11645214A00E17ED2 /* ContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCell.m; sourceTree = "<group>"; };
 		C9F63AC21645214A00E17ED2 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		C9F63AC31645214A00E17ED2 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
 		C9F63AC41645214A00E17ED2 /* ContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentViewController.xib; sourceTree = "<group>"; };
@@ -645,6 +644,9 @@
 		D208781216A1A03C003A012B /* 111.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 111.md; sourceTree = "<group>"; };
 		D2D3145916AED25C00863C21 /* MyTicketLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTicketLabel.h; sourceTree = "<group>"; };
 		D2D3145A16AED25C00863C21 /* MyTicketLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTicketLabel.m; sourceTree = "<group>"; };
+		D2D3145C16AEDF2000863C21 /* ContentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentCell.xib; sourceTree = "<group>"; };
+		D2D3146116B812A800863C21 /* ContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentCell.h; sourceTree = "<group>"; };
+		D2D3146216B812A800863C21 /* ContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1456,8 +1458,9 @@
 				C9F63ABD1645214A00E17ED2 /* CommentsViewController.h */,
 				C9F63ABE1645214A00E17ED2 /* CommentsViewController.m */,
 				C9F63ABF1645214A00E17ED2 /* CommentsViewController.xib */,
-				C9F63AC01645214A00E17ED2 /* ContentCell.h */,
-				C9F63AC11645214A00E17ED2 /* ContentCell.m */,
+				D2D3146116B812A800863C21 /* ContentCell.h */,
+				D2D3146216B812A800863C21 /* ContentCell.m */,
+				D2D3145C16AEDF2000863C21 /* ContentCell.xib */,
 				C9F63AC21645214A00E17ED2 /* ContentViewController.h */,
 				C9F63AC31645214A00E17ED2 /* ContentViewController.m */,
 				C9F63AC41645214A00E17ED2 /* ContentViewController.xib */,
@@ -1669,6 +1672,7 @@
 				D20878031699C4FE003A012B /* TestViewController.xib in Resources */,
 				D20878081699C522003A012B /* ContentFromParseViewController.xib in Resources */,
 				D208781316A1A03C003A012B /* 111.md in Resources */,
+				D2D3145D16AEDF2100863C21 /* ContentCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1773,7 +1777,6 @@
 				C9F63AD21645214A00E17ED2 /* Comments.m in Sources */,
 				C9F63AD31645214A00E17ED2 /* CommentsCell.m in Sources */,
 				C9F63AD41645214A00E17ED2 /* CommentsViewController.m in Sources */,
-				C9F63AD61645214A00E17ED2 /* ContentCell.m in Sources */,
 				C9F63AD71645214A00E17ED2 /* ContentViewController.m in Sources */,
 				C9F63AD91645214A00E17ED2 /* AboutViewController.m in Sources */,
 				C9F63ADB1645214A00E17ED2 /* FeedBackViewController.m in Sources */,
@@ -1786,6 +1789,7 @@
 				D20878021699C4FE003A012B /* TestViewController.m in Sources */,
 				D20878071699C522003A012B /* ContentFromParseViewController.m in Sources */,
 				D2D3145B16AED25C00863C21 /* MyTicketLabel.m in Sources */,
+				D2D3146316B812A800863C21 /* ContentCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

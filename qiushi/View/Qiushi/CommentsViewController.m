@@ -23,6 +23,8 @@
 #define FBackBtn        102
 #define FAddComments    103
 
+#define kContentWidth    280
+
 @interface CommentsViewController ()
 <PullingRefreshTableViewDelegate,
 UITableViewDataSource,
@@ -304,23 +306,31 @@ RefreshDateNetDelegate
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.backgroundColor = [UIColor clearColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
-            cell.txtContent.NumberOfLines = qs.content.length * 14 * 0.05 + 1;
+
+//            CGFloat contentWidth = 280;
+//            contentWidth =  floorf(contentWidth / kSize) * kSize;
+//            float numberOfLines = qs.content.length * kSize/contentWidth;
+//            DLog(@"%f",numberOfLines);
+//            int number = numberOfLines + 1;
+            cell.txtContent.NumberOfLines = 0;//number;
         }
 
+        NSString *content = qs.content;
+
         //设置内容
-        cell.txtContent.text = qs.content;
+        cell.txtContent.text = content;
         //发布时间
         cell.txtTime.text = qs.fbTime;
         //设置图片
         if (qs.imageURL!=nil && ![qs.imageURL isEqual: @""]) {
             cell.imgUrl = qs.imageURL;
             cell.imgMidUrl = qs.imageMidURL;
-            //  cell.imgPhoto.hidden = NO;
+
         }else
         {
             cell.imgUrl = @"";
             cell.imgMidUrl = @"";
-            //  cell.imgPhoto.hidden = YES;
+
         }
         //设置用户名
         if (qs.anchor!=nil && ![qs.anchor isEqual: @""])
@@ -338,8 +348,6 @@ RefreshDateNetDelegate
         {
             cell.txtTag.text = @"";
         }
-
-
 
         if (self.isHidden == YES) {//隐藏
             [cell.goodbtn setHidden:YES];
@@ -359,10 +367,10 @@ RefreshDateNetDelegate
 
         [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
         [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
-        //        [cell.commentsbtn setEnabled:NO];
+
 
         //自适应函数
-        [cell resizeTheHeight:kTypeContent];
+//        [cell resizeTheHeight:kTypeContent];
         return cell;
     }else {
         static NSString *identifier1 = @"_CommentCell";
@@ -441,15 +449,32 @@ RefreshDateNetDelegate
 -(CGFloat) getTheHeight
 {
     CGFloat contentWidth = 280;
+    contentWidth =  floorf(contentWidth / kSize) * kSize;
+
     // 设置字体
-    UIFont *font = [UIFont fontWithName:kFont size:14];
+    UIFont *font = [UIFont fontWithName:kFont size:kSize];
     // 显示的内容
     NSString *content = qs.content;
     // 计算出长宽
-    CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, (content.length * 14 * 0.05 + 1 ) * 14) lineBreakMode:UILineBreakModeTailTruncation];
+
+    DLog(@"%d",content.length);
+    float height1 = content.length * kSize / contentWidth;
+    height1 = (height1 + 1) * kSize;
+
+    DLog(@"%f",height1);
+
+    height1 = (content.length * kSize / contentWidth + 1) * kSize;
+
+     DLog(@"%f",height1);
+
+    CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, (content.length * kSize / contentWidth + 1) * kSize) lineBreakMode:UILineBreakModeWordWrap];
+
+    DLog(@"%@",NSStringFromCGSize(size));
+
+
     CGFloat height;
-    if (qs.imageURL==nil || [qs.imageURL isEqualToString:@""]) {
-        height = size.height+214;
+    if (qs.imageURL == nil || [qs.imageURL isEqualToString:@""]) {
+        height = size.height+314;
     }else
     {
         height = size.height+294;

@@ -258,23 +258,37 @@ RefreshDateNetDelegate
     
     static NSString *Contentidentifier = @"_ContentCELL";
     ContentCell *cell = [tableView dequeueReusableCellWithIdentifier:Contentidentifier];
-    if (cell == nil){
+    if (cell == nil)
+    {
         //设置cell 样式
-        cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Contentidentifier] ;
+//        cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Contentidentifier] ;
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ContentCell" owner:self options:nil] lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.opaque = YES;
-        
+
     }
+
+
     
     QiuShi *qs = [self.list objectAtIndex:[indexPath row]];
+
+    //设置用户名
+    if (qs.anchor != nil && ![qs.anchor isEqualToString:@""])
+    {
+        cell.txtAnchor.text = qs.anchor;
+    }else
+    {
+        cell.txtAnchor.text = @"匿名";
+    }
+
+    
     //设置内容
     cell.txtContent.text = qs.content;
-    
-    
-    [cell.txtContent setNumberOfLines: 12];
+//    [cell.txtContent setNumberOfLines: 12];
+
     
     //设置图片
-    if (qs.imageURL != nil && ![qs.imageURL isEqualToString:@""]) {
+    if (qs.imageURL != nil && ![qs.imageURL isEqualToString:@""])
+    {
         cell.imgUrl = qs.imageURL;
         cell.imgMidUrl = qs.imageMidURL;
 
@@ -284,14 +298,7 @@ RefreshDateNetDelegate
         cell.imgMidUrl = @"";
  
     }
-    //设置用户名
-    if (qs.anchor != nil && ![qs.anchor isEqualToString:@""])
-    {
-        cell.txtAnchor.text = qs.anchor;
-    }else
-    {
-        cell.txtAnchor.text = @"匿名";
-    }
+    
 
  
     //设置标签
@@ -325,18 +332,18 @@ RefreshDateNetDelegate
     
     [cell.badbtn setTag:indexPath.row];
     [cell.badbtn addTarget:self action:@selector(badClick:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     
     //自适应函数
-    [cell resizeTheHeight:kTypeMain];
-    
+//    [cell resizeTheHeight:kTypeMain];
+
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self getTheHeight:indexPath.row];
+    return 263;//return [self getTheHeight:indexPath.row];
 }
 
 
@@ -408,10 +415,10 @@ RefreshDateNetDelegate
     CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];
     CGFloat height;
     if (qs.imageURL == nil || [qs.imageURL isEqualToString:@""]) {
-        height = size.height+140;
+        height = size.height+100;
     }else
     {
-        height = size.height+220;
+        height = size.height+180;
     }
     // 返回需要的高度
     return height;

@@ -336,7 +336,7 @@ UIAlertViewDelegate
     [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
     
     //自适应函数
-    [cell resizeTheHeight:kTypeHistory];
+//    [cell resizeTheHeight:kTypeHistory];
     return cell;
 }
 
