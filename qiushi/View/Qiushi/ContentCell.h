@@ -16,7 +16,7 @@
 #define kTypeHistory    1003
 
 @interface ContentCell : UITableViewCell
-//<EGOImageButtonDelegate>
+<EGOImageButtonDelegate>
 {
 //     //糗事图片
 //    EGOImageButton *imgPhoto;
@@ -52,22 +52,27 @@
 //    
 //    PhotoViewer *_photoview;
 }
-@property(nonatomic,retain) EGOImageButton *imgPhoto;
 
 
-@property(nonatomic,retain) NSString *imgUrl;
-@property(nonatomic,retain) NSString *imgMidUrl;
+@property (weak, nonatomic) IBOutlet EGOImageButton *imgPhoto;
+
+@property (nonatomic,retain) NSString *imgUrl;
+@property (nonatomic,retain) NSString *imgMidUrl;
 
 @property (weak, nonatomic) IBOutlet UIImageView *headPhoto;
+@property (weak, nonatomic) IBOutlet UILabel *txtTime;
+@property (weak, nonatomic) IBOutlet UILabel *txtAnchor;
+
 @property (weak, nonatomic) IBOutlet UIButton *goodbtn;
 @property (weak, nonatomic) IBOutlet UIButton *badbtn;
 @property (weak, nonatomic) IBOutlet UIButton *commentsbtn;
 @property (weak, nonatomic) IBOutlet UIButton *saveBtn;
-@property (weak, nonatomic) IBOutlet UILabel *txtTime;
-@property (weak, nonatomic) IBOutlet UILabel *txtAnchor;
 @property (weak, nonatomic) IBOutlet UILabel *txtContent;
 @property (weak, nonatomic) IBOutlet UILabel *txtTag;
+@property (weak, nonatomic) IBOutlet UIImageView *imageTag;
+@property (weak, nonatomic) IBOutlet UIImageView *imageBg;
+@property (weak, nonatomic) IBOutlet UIImageView *imageFoot;
 
 
-//-(void) resizeTheHeight:(int)type;
+-(void) resizeTheHeight:(int)type;
 @end

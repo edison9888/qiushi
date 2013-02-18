@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/View/Qiushi/CommentsViewController.m"
-         timestampString = "378039142.552887"
+         timestampString = "382863821.783666"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "282"
-         endingLineNumber = "282"
+         startingLineNumber = "280"
+         endingLineNumber = "280"
          landmarkName = "-loadData"
          landmarkType = "5">
       </FileBreakpoint>
@@ -59,39 +59,52 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Qiushi/ContentViewController.m"
-         timestampString = "379249574.187207"
+         filePath = "qiushi/View/Qiushi/CommentsViewController.m"
+         timestampString = "382863821.783666"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "509"
-         endingLineNumber = "509"
-         landmarkName = "-badClick:"
-         landmarkType = "5">
+         startingLineNumber = "552"
+         endingLineNumber = "552"
+         landmarkName = "@implementation CommentsViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Qiushi/ContentViewController.m"
-         timestampString = "379249574.187207"
+         filePath = "qiushi/View/Qiushi/ContentCell.m"
+         timestampString = "382860041.166947"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "529"
-         endingLineNumber = "529"
-         landmarkName = "-getImageCache:"
+         startingLineNumber = "57"
+         endingLineNumber = "57"
+         landmarkName = "-resizeTheHeight:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "qiushi/View/Qiushi/ContentViewController.m"
-         timestampString = "378037831.876485"
+         filePath = "qiushi/View/Qiushi/ContentCell.m"
+         timestampString = "382860041.166947"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "79"
-         endingLineNumber = "79"
-         landmarkName = "-viewDidLoad"
+         startingLineNumber = "181"
+         endingLineNumber = "181"
+         landmarkName = "-btnClicked:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/View/Qiushi/ContentCell.m"
+         timestampString = "382860041.166947"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "152"
+         endingLineNumber = "152"
+         landmarkName = "-btnClick:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -99,12 +112,51 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "qiushi/View/Qiushi/CommentsViewController.m"
-         timestampString = "378039142.552887"
+         timestampString = "382863821.783666"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "565"
-         endingLineNumber = "565"
-         landmarkName = "-adViewDidReceiveAd:"
+         startingLineNumber = "623"
+         endingLineNumber = "623"
+         landmarkName = "-refreshDate1:data2:withType:isOk:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/View/Qiushi/CommentsViewController.m"
+         timestampString = "382863656.897188"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "380"
+         endingLineNumber = "380"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/View/Qiushi/CommentsViewController.m"
+         timestampString = "382863919.975916"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "370"
+         endingLineNumber = "370"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "qiushi/View/Qiushi/CommentsViewController.m"
+         timestampString = "382864072.046884"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "297"
+         endingLineNumber = "297"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

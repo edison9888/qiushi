@@ -28,6 +28,7 @@
 
 @implementation EGOQuickPhoto
 @synthesize URL=_URL, caption=_caption, image=_image, size=_size, failed=_failed;
+@synthesize placeholderImage = _placeholderImage;
 
 - (id)initWithImageURL:(NSURL*)aURL name:(NSString*)aName image:(UIImage*)aImage {
 	if (self = [super init]) {

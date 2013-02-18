@@ -54,7 +54,7 @@ static NetManager *_sharedContext = nil;
 }
 
 
-- (void) requestWithURL:(NSString*)urlString withType:(RequestTypeTag)type withDictionary:(NSDictionary*)dic withDelegate:(id<RefreshDateNetDelegate>)delegate
+- (void) requestWithURL:(NSString*)urlString withType:(RequestTypeTag)type withDictionary:(NSMutableDictionary*)dic withDelegate:(id<RefreshDateNetDelegate>)delegate
 {
     if (![IsNetWorkUtil isNetWork1])
     {
@@ -70,8 +70,6 @@ static NetManager *_sharedContext = nil;
         _httpRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
         [self.httpRequest setTag:type];
         [self.httpRequest setDelegate:self];
-        [self.httpRequest setDidFailSelector:@selector(requestFail:)];
-        [self.httpRequest setDidFinishSelector:@selector(requestSuccess:)];
         [self.httpRequest setNumberOfTimesToRetryOnTimeout:2];
         NSMutableDictionary *userInfo = [NSMutableDictionary new];
         [userInfo setObject:delegate forKey:@"delegate"];
@@ -91,13 +89,32 @@ static NetManager *_sharedContext = nil;
         [_httpRequest addRequestHeader:@"X-Parse-REST-API-Key" value:kParseREST];
         [self.httpRequest setTag:type];
         [self.httpRequest setDelegate:self];
-        [self.httpRequest setDidFailSelector:@selector(requestFail:)];
-        [self.httpRequest setDidFinishSelector:@selector(requestSuccess:)];
         [self.httpRequest setNumberOfTimesToRetryOnTimeout:2];
         NSMutableDictionary *userInfo = [NSMutableDictionary new];
         [userInfo setObject:delegate forKey:@"delegate"];
         _httpRequest.userInfo = userInfo;
         [self.httpRequest startAsynchronous];
+    }else if (type == kRequestTypeLogin)
+    {
+        urlString = @"http://m2.qiushibaike.com/user/signin";
+        _formRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [_formRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+        [_formRequest addRequestHeader:@"Accept" value:@"application/json"];
+        [self.formRequest setTag:type];
+        [self.formRequest setDelegate:self];
+        [self.formRequest setNumberOfTimesToRetryOnTimeout:2];
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        [userInfo setObject:delegate forKey:@"delegate"];
+        _formRequest.userInfo = userInfo;
+        
+        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
+            NSError* error;
+            [self.formRequest appendPostData:[NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&error]];
+        }else {
+            [self.formRequest appendPostData:[[dic JSONFragment] dataUsingEncoding: NSUTF8StringEncoding]];
+        }
+        
+        [self.formRequest startAsynchronous];
     }
     
 
@@ -111,12 +128,9 @@ static NetManager *_sharedContext = nil;
 
 
 
-- (void) requestSuccess:(ASIHTTPRequest *)request
+- (void)requestFinished:(ASIHTTPRequest *)request
 {
-    
-    DLog(@"RequestSuccess,%d",request.tag);
-    
-  
+
     NSString *responseString = [request responseString];
     DLog(@"%@",responseString);
 
@@ -134,12 +148,22 @@ static NetManager *_sharedContext = nil;
     {
         
         [[request.userInfo objectForKey:@"delegate"] refreshDate1:resultDic data2:nil withType:[request tag] isOk:YES];
+    }else if (request.tag == kRequestTypeLogin)//登录
+    {
+
+        NSString *err_msg = [resultDic objectForKey:@"err_msg"];
+        if (err_msg == nil) {
+            [[request.userInfo objectForKey:@"delegate"] refreshDate1:resultDic data2:nil withType:[request tag] isOk:YES];
+        }else {
+            [[request.userInfo objectForKey:@"delegate"] refreshDate1:resultDic data2:nil withType:[request tag] isOk:NO];
+        }
+    
     }
     
 }
 
 
-- (void) requestFail:(ASIHTTPRequest *)request
+- (void) requestFailed:(ASIHTTPRequest *)request
 {
     DLog(@"RequestFail,%d",request.tag);
 

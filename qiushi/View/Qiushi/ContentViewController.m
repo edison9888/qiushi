@@ -127,24 +127,24 @@ RefreshDateNetDelegate
         
     }
     
-
+    
     
     if (self.page == 0) {
         
         [self.tableView launchRefreshing];
     }
-
- 
-
-
-
-//#ifdef DEBUG
-//    //每隔15分钟,取数据，保持到parse
-//
-//    NSTimer *addEnemyTimer=[NSTimer scheduledTimerWithTimeInterval:(60*20) target:self selector:@selector(addEnemy) userInfo:nil repeats:YES];
-//
-//#endif
-
+    
+    
+    
+    
+    
+    //#ifdef DEBUG
+    //    //每隔15分钟,取数据，保持到parse
+    //
+    //    NSTimer *addEnemyTimer=[NSTimer scheduledTimerWithTimeInterval:(60*20) target:self selector:@selector(addEnemy) userInfo:nil repeats:YES];
+    //
+    //#endif
+    
     
 }
 //
@@ -158,7 +158,7 @@ RefreshDateNetDelegate
 {
     DLog(@"~viewDidUnload ContentViewController");
     bannerView_.delegate = nil;
-   
+    
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -179,14 +179,14 @@ RefreshDateNetDelegate
     
     self.page++;
     NSString *url;
-
-
+    
+    
     switch (Qiutype)
     {
         case QiuShiTypeTop://干货
         {
             url = SuggestURLString(self.page);
-
+            
         }break;
         case QiuShiTypeNew://嫩草
         {
@@ -218,19 +218,19 @@ RefreshDateNetDelegate
             formatter.dateFormat = @"yyyy-MM-dd";
             NSString *timestamp = [formatter stringFromDate:[NSDate date]];
             url = CYURLString(timestamp,self.page);
-
+            
         }break;
         default:
         {
             NSAssert(nil, @"Qiutype is error");
         }break;
     }
-
-
-
+    
+    
+    
     NSLog(@"%@",url);
-
-
+    
+    
     [[NetManager SharedNetManager] requestWithURL:url
                                          withType:kRequestTypeGetQiushi
                                    withDictionary:nil
@@ -261,16 +261,16 @@ RefreshDateNetDelegate
     if (cell == nil)
     {
         //设置cell 样式
-//        cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Contentidentifier] ;
+        //        cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Contentidentifier] ;
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ContentCell" owner:self options:nil] lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
     }
-
-
+    
+    
     
     QiuShi *qs = [self.list objectAtIndex:[indexPath row]];
-
+    
     //设置用户名
     if (qs.anchor != nil && ![qs.anchor isEqualToString:@""])
     {
@@ -279,28 +279,24 @@ RefreshDateNetDelegate
     {
         cell.txtAnchor.text = @"匿名";
     }
-
     
     //设置内容
     cell.txtContent.text = qs.content;
-//    [cell.txtContent setNumberOfLines: 12];
-
+    [cell.txtContent setNumberOfLines: 12];
+    
     
     //设置图片
     if (qs.imageURL != nil && ![qs.imageURL isEqualToString:@""])
     {
         cell.imgUrl = qs.imageURL;
         cell.imgMidUrl = qs.imageMidURL;
-
+        
     }else
     {
-        cell.imgUrl = @"";
-        cell.imgMidUrl = @"";
- 
+        cell.imgUrl = cell.imgMidUrl = @"";
+        
     }
     
-
- 
     //设置标签
     if (qs.tag == nil || [qs.tag isEqualToString:@""] || qs.tag.length == 0)
     {
@@ -332,18 +328,18 @@ RefreshDateNetDelegate
     
     [cell.badbtn setTag:indexPath.row];
     [cell.badbtn addTarget:self action:@selector(badClick:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     
     //自适应函数
-//    [cell resizeTheHeight:kTypeMain];
-
+    [cell resizeTheHeight:kTypeMain];
+    
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 263;//return [self getTheHeight:indexPath.row];
+    return [self getTheHeight:indexPath.row];
 }
 
 
@@ -404,6 +400,9 @@ RefreshDateNetDelegate
 - (CGFloat)getTheHeight:(NSInteger)row
 {
     CGFloat contentWidth = 280;
+    
+    contentWidth = [[self notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
+    contentWidth = contentWidth * kSize;
     // 设置字体
     UIFont *font = [UIFont fontWithName:kFont size:kSize];
     
@@ -413,13 +412,17 @@ RefreshDateNetDelegate
     
     // 计算出长宽
     CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];
+    
+    DLog(@"%f,%f",size.height,size.width);
     CGFloat height;
     if (qs.imageURL == nil || [qs.imageURL isEqualToString:@""]) {
-        height = size.height+100;
+        height = size.height + 149 - 25;
     }else
     {
-        height = size.height+180;
+        height = size.height + 100 + 149 -25;//88+6+6
     }
+    
+    DLog(@"%f",height);
     // 返回需要的高度
     return height;
 }
@@ -611,20 +614,20 @@ RefreshDateNetDelegate
                 [self.imageUrlArray removeAllObjects];
                 
                 [SqliteUtil initDb];
-
-
-//                [self loadData];
+                
+                
+                //                [self loadData];
             }
-
-//            if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
-//                if (self.page < 5) {
-//                    [self loadData];
-//                }
-//
-//            }else if (self.page == 1) {
-//                [self loadData];
-//            }
-
+            
+            //            if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
+            //                if (self.page < 5) {
+            //                    [self loadData];
+            //                }
+            //
+            //            }else if (self.page == 1) {
+            //                [self loadData];
+            //            }
+            
             
             
             if ([dic objectForKey:@"items"])
@@ -702,7 +705,7 @@ RefreshDateNetDelegate
                 //请求 ad
                 [bannerView_ loadRequest:[GADRequest request]];
             }
-        
+            
             
         }else {
             
@@ -722,6 +725,17 @@ RefreshDateNetDelegate
         
         
     }
+}
+
+-(NSString *)notRounding:(float)price afterPoint:(int)position{
+    NSDecimalNumberHandler* roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:position raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
+    NSDecimalNumber *ouncesDecimal;
+    NSDecimalNumber *roundedOunces;
+    
+    ouncesDecimal = [[NSDecimalNumber alloc] initWithFloat:price];
+    roundedOunces = [ouncesDecimal decimalNumberByRoundingAccordingToBehavior:roundingBehavior];
+    //    [ouncesDecimal release];
+    return [NSString stringWithFormat:@"%@",roundedOunces];
 }
 
 

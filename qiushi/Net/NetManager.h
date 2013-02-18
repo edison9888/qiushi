@@ -17,6 +17,8 @@ typedef enum _RequestTypeTag
     kRequestTypeGetQiushi = 1001,
     kRequestTypeGetComment,
     kRequestTypeGetQsParse,
+    kRequestTypeLogin,
+    kRequestTypeCreate,//发布糗事
     
 }RequestTypeTag;
 
@@ -39,8 +41,21 @@ typedef enum _RequestTypeTag
 
 - (void) requestWithURL:(NSString*)urlString
                withType:(RequestTypeTag)type
-         withDictionary:(NSDictionary*)dic
+         withDictionary:(NSMutableDictionary*)dic
            withDelegate:(id <RefreshDateNetDelegate>)delegate;
 
 +(NetManager *) SharedNetManager;
 @end
+
+
+/** 
+ http://m2.qiushibaike.com/article/create
+ {"content":"fdfhffhh","anonymous":true,"allow_comment":1}
+
+ 
+ 
+ 
+ 
+ 
+ 
+ */

@@ -19,21 +19,10 @@
 @interface CommentsViewController : UIViewController
 <UIGestureRecognizerDelegate,GADBannerViewDelegate>
 {
-    //糗事内容的TableView
-    UITableView *tableView;
-    //评论的TableView
-    PullingRefreshTableView *_commentView;
-    
-    //糗事的对象
-    QiuShi *qs;
-    //记录评论的数组
-    NSMutableArray *list;
+
     GADBannerView *bannerView_;//实例变量 bannerView_是一个view
     
-    
-//    UIBarButtonItem *_shareItem;//分享item
-    
-   
+
     
     SHSShareViewController *_shareView;
     
@@ -43,10 +32,10 @@
     
   
 }
-@property (nonatomic,retain) PullingRefreshTableView *commentView;
-@property (nonatomic,retain) UITableView *tableView;
-@property (nonatomic,retain) NSMutableArray *list;
-@property (nonatomic,retain) QiuShi *qs;
+@property (nonatomic,retain) PullingRefreshTableView *commentView;//评论的TableView
+@property (nonatomic,retain) UITableView *tableView;//糗事内容的TableView
+@property (nonatomic,retain) NSMutableArray *list; //记录评论的数组
+@property (nonatomic,retain) QiuShi *qs; //糗事的对象
 @property (nonatomic,retain) SHSShareViewController *shareView;
 @property (retain,nonatomic) NSMutableArray *qsList;
 @property (nonatomic, assign) int index;

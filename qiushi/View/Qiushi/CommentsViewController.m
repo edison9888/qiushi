@@ -42,17 +42,6 @@ RefreshDateNetDelegate
 @end
 
 @implementation CommentsViewController
-@synthesize refreshing = _refreshing;
-@synthesize list;
-@synthesize qs;
-@synthesize tableView;
-@synthesize commentView = _commentView;
-@synthesize shareView = _shareView;
-@synthesize qsList = _qsList;
-@synthesize index = _index;
-@synthesize isHidden = _isHidden;
-@synthesize page = _page;
-
 
 
 
@@ -88,7 +77,7 @@ RefreshDateNetDelegate
     }
 
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
-    list = [SqliteUtil queryCommentsById:qs.qiushiID];//[NSMutableArray array];
+    _list = [SqliteUtil queryCommentsById:self.qs.qiushiID];//[NSMutableArray array];
 
     UIImage* image= [UIImage imageNamed:@"comm_btn_top_n.png"];
     UIImage* imagef= [UIImage imageNamed:@"comm_btn_top_s.png"];
@@ -105,13 +94,13 @@ RefreshDateNetDelegate
     [self.navigationItem setRightBarButtonItem:someBarButtonItem];
 
     //糗事列表
-    tableView = [[UITableView alloc]  initWithFrame:CGRectMake(0, 0, kDeviceWidth, [self getTheHeight]-60)];
-    tableView.backgroundColor = [UIColor clearColor];
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.dataSource = self;
-    tableView.delegate = self;
-    tableView.scrollEnabled = NO;
-    [_commentView addSubview:tableView];
+    _tableView = [[UITableView alloc]  initWithFrame:CGRectMake(0, 0, kDeviceWidth, [self getTheHeight])];
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    _tableView.scrollEnabled = NO;
+    [_commentView addSubview:_tableView];
 
 
     _commentView = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight-44-20) pullingDelegate:self];
@@ -121,7 +110,7 @@ RefreshDateNetDelegate
     _commentView.delegate = self;
     _commentView.scrollEnabled = YES;
     [self.view addSubview:_commentView];
-    _commentView.tableHeaderView = tableView;
+    _commentView.tableHeaderView = _tableView;
 
 
     //添加footimage
@@ -211,7 +200,7 @@ RefreshDateNetDelegate
     
     _shareView.sharedText = [NSString stringWithFormat:@"测试数据,%@",currentDateStr];//qs.content;
     _shareView.sharedURL =@"http://www.qiushibaike.com";
-    _shareView.sharedImageURL = qs.imageURL;
+    _shareView.sharedImageURL = self.qs.imageURL;
     [_shareView showShareKitView];
     //    [self.view addSubview:_shareView.view];
 
@@ -224,7 +213,7 @@ RefreshDateNetDelegate
 - (void)favoriteAction:(id)sender
 {
 
-    [SqliteUtil updateDataIsFavourite:qs.qiushiID isFavourite:@"yes"];
+    [SqliteUtil updateDataIsFavourite:self.qs.qiushiID isFavourite:@"yes"];
 
     [[iToast makeText:@"已添加到收藏..."] show];
 }
@@ -270,7 +259,7 @@ RefreshDateNetDelegate
 
 
     self.page++;
-    NSString *url = CommentsURLString(qs.qiushiID,self.page);
+    NSString *url = CommentsURLString(self.qs.qiushiID,self.page);
 
 
     NSLog(@"%@",url);
@@ -287,44 +276,40 @@ RefreshDateNetDelegate
 #pragma mark - UITableView DataSource
 
 - (NSInteger)tableView:(UITableView *)tableview numberOfRowsInSection:(NSInteger)section{
-    if (tableview == tableView) {
+    if (tableview == self.tableView) {
         return 1;
     }else {
-        return [list count];
+        return [self.list count];
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableview cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    if (tableview == tableView) {
+    if (tableview == self.tableView) {
 
         static NSString *identifier = @"_QiShiCELL";
-        ContentCell *cell =(ContentCell *) [tableview dequeueReusableCellWithIdentifier:identifier];
+        ContentCell *cell = (ContentCell *) [tableview dequeueReusableCellWithIdentifier:identifier];
         if (cell == nil){
             //设置cell 样式
-            cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//            cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"ContentCell" owner:self options:nil] lastObject];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.backgroundColor = [UIColor clearColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
 
-//            CGFloat contentWidth = 280;
-//            contentWidth =  floorf(contentWidth / kSize) * kSize;
-//            float numberOfLines = qs.content.length * kSize/contentWidth;
-//            DLog(@"%f",numberOfLines);
-//            int number = numberOfLines + 1;
             cell.txtContent.NumberOfLines = 0;//number;
         }
 
-        NSString *content = qs.content;
+        NSString *content = self.qs.content;
 
         //设置内容
         cell.txtContent.text = content;
         //发布时间
-        cell.txtTime.text = qs.fbTime;
+        cell.txtTime.text = self.qs.fbTime;
         //设置图片
-        if (qs.imageURL!=nil && ![qs.imageURL isEqual: @""]) {
-            cell.imgUrl = qs.imageURL;
-            cell.imgMidUrl = qs.imageMidURL;
+        if (self.qs.imageURL!=nil && ![self.qs.imageURL isEqual: @""]) {
+            cell.imgUrl = self.qs.imageURL;
+            cell.imgMidUrl = self.qs.imageMidURL;
 
         }else
         {
@@ -333,17 +318,17 @@ RefreshDateNetDelegate
 
         }
         //设置用户名
-        if (qs.anchor!=nil && ![qs.anchor isEqual: @""])
+        if (self.qs.anchor!=nil && ![self.qs.anchor isEqual: @""])
         {
-            cell.txtAnchor.text = qs.anchor;
+            cell.txtAnchor.text = self.qs.anchor;
         }else
         {
             cell.txtAnchor.text = @"匿名";
         }
         //设置标签
-        if (qs.tag!=nil && ![qs.tag isEqual: @""])
+        if (self.qs.tag!=nil && ![self.qs.tag isEqual: @""])
         {
-            cell.txtTag.text = qs.tag;
+            cell.txtTag.text = self.qs.tag;
         }else
         {
             cell.txtTag.text = @"";
@@ -355,9 +340,9 @@ RefreshDateNetDelegate
             [cell.commentsbtn setHidden:YES];
         }else{//显示
             //设置up ，down and commits
-            [cell.goodbtn setTitle:[NSString stringWithFormat:@"%d",qs.upCount] forState:UIControlStateNormal];
+            [cell.goodbtn setTitle:[NSString stringWithFormat:@"%d",self.qs.upCount] forState:UIControlStateNormal];
             //        [cell.goodbtn setEnabled:NO];
-            [cell.badbtn setTitle:[NSString stringWithFormat:@"%d",qs.downCount] forState:UIControlStateNormal];
+            [cell.badbtn setTitle:[NSString stringWithFormat:@"%d",self.qs.downCount] forState:UIControlStateNormal];
             //        [cell.badbtn setEnabled:NO];
 
             [cell.goodbtn addTarget:self action:@selector(goodClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -366,15 +351,15 @@ RefreshDateNetDelegate
 
 
         [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
-        [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
+        [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",self.qs.commentsCount] forState:UIControlStateNormal];
 
 
         //自适应函数
-//        [cell resizeTheHeight:kTypeContent];
+        [cell resizeTheHeight:kTypeContent];
         return cell;
     }else {
         static NSString *identifier1 = @"_CommentCell";
-        CommentsCell *cell =(CommentsCell *) [tableview dequeueReusableCellWithIdentifier:identifier1];
+        CommentsCell *cell = (CommentsCell *) [tableview dequeueReusableCellWithIdentifier:identifier1];
         if (cell == nil){
             //设置cell 样式
             cell = [[CommentsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier1];
@@ -383,8 +368,9 @@ RefreshDateNetDelegate
             cell.contentView.backgroundColor = [UIColor clearColor];
             cell.txtContent.NumberOfLines = 0;
         }
-        Comments *cm = [list objectAtIndex:indexPath.row];
+        Comments *cm = [self.list objectAtIndex:indexPath.row];
         //设置内容
+        DLog(@"%@",cm.content);
         cell.txtContent.text = cm.content;
 
         //        int i = [cm.content intValue];
@@ -434,9 +420,9 @@ RefreshDateNetDelegate
 - (CGFloat)tableView:(UITableView *)tableview heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    if (tableView == tableview) {
+    if (self.tableView == tableview) {
         CGFloat height = [self getTheHeight];
-        [tableView setFrame:CGRectMake(0, 0, kDeviceWidth, height)];
+        [self.tableView setFrame:CGRectMake(0, 0, kDeviceWidth, height)];
         return  height;
     }else {
         return [self getTheCellHeight:indexPath.row];
@@ -449,36 +435,28 @@ RefreshDateNetDelegate
 -(CGFloat) getTheHeight
 {
     CGFloat contentWidth = 280;
-    contentWidth =  floorf(contentWidth / kSize) * kSize;
-
+    
+    contentWidth = [[self notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
+    contentWidth = contentWidth * kSize;
     // 设置字体
     UIFont *font = [UIFont fontWithName:kFont size:kSize];
+    
     // 显示的内容
-    NSString *content = qs.content;
+    NSString *content = self.qs.content;
+    
     // 计算出长宽
-
-    DLog(@"%d",content.length);
-    float height1 = content.length * kSize / contentWidth;
-    height1 = (height1 + 1) * kSize;
-
-    DLog(@"%f",height1);
-
-    height1 = (content.length * kSize / contentWidth + 1) * kSize;
-
-     DLog(@"%f",height1);
-
-    CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, (content.length * kSize / contentWidth + 1) * kSize) lineBreakMode:UILineBreakModeWordWrap];
-
-    DLog(@"%@",NSStringFromCGSize(size));
-
-
+    CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];
+    
+    DLog(@"%f,%f",size.height,size.width);
     CGFloat height;
-    if (qs.imageURL == nil || [qs.imageURL isEqualToString:@""]) {
-        height = size.height+314;
+    if (self.qs.imageURL == nil || [self.qs.imageURL isEqualToString:@""]) {
+        height = size.height + 149 - 25;
     }else
     {
-        height = size.height+294;
+        height = size.height + 100 + 149 -25;//88+6+6
     }
+    
+    DLog(@"%f",height);
     // 返回需要的高度
     return height;
 }
@@ -511,7 +489,7 @@ RefreshDateNetDelegate
     i += 1;
     [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
 
-    QiuShi *qs1 = qs;//[self.list objectAtIndex:self.index];
+    QiuShi *qs1 = self.qs;//[self.list objectAtIndex:self.index];
     qs1.upCount = i;
     [self.qsList replaceObjectAtIndex:self.index withObject:qs1];
 }
@@ -526,7 +504,7 @@ RefreshDateNetDelegate
     i -= 1;
     [btn setTitle:[NSString stringWithFormat:@"%d",i] forState:UIControlStateNormal];
 
-    QiuShi *qs1 = qs;
+    QiuShi *qs1 = self.qs;
     qs1.downCount = i;
     [self.qsList replaceObjectAtIndex:self.index withObject:qs1];
 }
@@ -648,9 +626,9 @@ RefreshDateNetDelegate
                     NSArray *array = [NSArray arrayWithArray:[dic objectForKey:@"items"]];
                     for (NSDictionary *comments in array) {
                         Comments *cm = [[Comments alloc]initWithDictionary:comments];
-                        cm.qsId = qs.qiushiID;
-                        cm.createTime = qs.fbTime;
-                        [list addObject:cm];
+                        cm.qsId = self.qs.qiushiID;
+                        cm.createTime = self.qs.fbTime;
+                        [self.list addObject:cm];
                     }
 
                     [self.commentView reloadData];
@@ -693,6 +671,18 @@ RefreshDateNetDelegate
         }
 
     }
+}
+
+
+-(NSString *)notRounding:(float)price afterPoint:(int)position{
+    NSDecimalNumberHandler* roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:position raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
+    NSDecimalNumber *ouncesDecimal;
+    NSDecimalNumber *roundedOunces;
+    
+    ouncesDecimal = [[NSDecimalNumber alloc] initWithFloat:price];
+    roundedOunces = [ouncesDecimal decimalNumberByRoundingAccordingToBehavior:roundingBehavior];
+    //    [ouncesDecimal release];
+    return [NSString stringWithFormat:@"%@",roundedOunces];
 }
 
 @end
