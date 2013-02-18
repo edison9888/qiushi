@@ -32,12 +32,12 @@
     
   
 }
-@property (nonatomic,retain) PullingRefreshTableView *commentView;//评论的TableView
-@property (nonatomic,retain) UITableView *tableView;//糗事内容的TableView
-@property (nonatomic,retain) NSMutableArray *list; //记录评论的数组
-@property (nonatomic,retain) QiuShi *qs; //糗事的对象
-@property (nonatomic,retain) SHSShareViewController *shareView;
-@property (retain,nonatomic) NSMutableArray *qsList;
+@property (nonatomic, retain) PullingRefreshTableView *commentView;//评论的TableView
+@property (nonatomic, retain) UITableView *tableView;//糗事内容的TableView
+@property (nonatomic, retain) NSMutableArray *list; //记录评论的数组
+@property (nonatomic, retain) QiuShi *qs; //糗事的对象
+@property (nonatomic, retain) SHSShareViewController *shareView;
+@property (nonatomic, retain) NSMutableArray *qsList;
 @property (nonatomic, assign) int index;
 @property (nonatomic, assign) BOOL isHidden;
 -(CGFloat) getTheHeight;
