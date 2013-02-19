@@ -7,6 +7,7 @@
 //
 
 #import "LeftCell.h"
+#import "HPThemeManager.h"
 
 @implementation LeftCell
 
@@ -25,5 +26,21 @@
 
     // Configure the view for the selected state
 }
+
+- (IBAction)valueChanged:(id)sender
+{
+    UISwitch* switchControl = sender;
+    DLog( @"The switch is %@", switchControl.on ? @"ON" : @"OFF" );
+    
+    NSString *selectName = switchControl.on ? @"night" : @"day" ;
+    [[HPThemeManager sharedThemeManager] setCurrentTheme:selectName]; //must set before post
+    [[HPThemeManager sharedThemeManager] setCurrentThemeIndex:switchControl.on ? 1 : 0];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kThemeDidChangeNotification"
+                                                        object:nil
+                                                      userInfo:[NSDictionary dictionaryWithObject:selectName forKey:@"selectedTheme"]];
+    
+}
+
 
 @end

@@ -9,23 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "EGOImageView.h"
 @interface CommentsCell : UITableViewCell
-{
-    //作者
-    UILabel *txtAnchor;
-    //内容
-    UILabel *txtContent;
-    //楼层
-    UILabel *txtfloor;
-    //背景
-    UIImageView *centerimageView;
-    //底部的画笔
-    UIImageView *footView;
-}
 
-@property(nonatomic,retain) UILabel *txtAnchor;
-@property(nonatomic,retain) UILabel *txtContent; 
-@property(nonatomic,retain) UILabel *txtfloor;
-@property(nonatomic,retain) UIImageView *footView;
-@property(nonatomic,retain) UIImageView *centerimageView;
+@property (weak, nonatomic) IBOutlet UILabel *txtAnchor;
+@property (weak, nonatomic) IBOutlet UILabel *txtContent;
+@property (weak, nonatomic) IBOutlet UILabel *txtfloor;
+@property (weak, nonatomic) IBOutlet UIImageView *imageBg;
+@property (weak, nonatomic) IBOutlet UIImageView *imageFg;
+
 -(void) resizeTheHeight;
 @end

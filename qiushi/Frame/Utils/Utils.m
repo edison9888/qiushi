@@ -54,4 +54,18 @@
     return tmpAry;
 }
 
+
+#pragma mark 舍掉小数点后几位
++ (NSString *)notRounding:(float)price afterPoint:(int)position
+{
+    NSDecimalNumberHandler* roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:position raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
+    NSDecimalNumber *ouncesDecimal;
+    NSDecimalNumber *roundedOunces;
+    
+    ouncesDecimal = [[NSDecimalNumber alloc] initWithFloat:price];
+    roundedOunces = [ouncesDecimal decimalNumberByRoundingAccordingToBehavior:roundingBehavior];
+    //    [ouncesDecimal release];
+    return [NSString stringWithFormat:@"%@",roundedOunces];
+}
+
 @end

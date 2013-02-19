@@ -9,8 +9,7 @@
 #import "LoginViewController.h"
 #import <Parse/Parse.h>
 #import "iToast.h"
-#import "ASIHTTPRequest.h"
-#import "ASIFormDataRequest.h"
+
 #import "IsNetWorkUtil.h"
 #import "MyProgressHud.h"
 #import "JSON.h"
@@ -22,9 +21,7 @@
 @implementation LoginViewController
 @synthesize nameTextField  = _nameTextField;
 @synthesize pswTextField = _pswTextField;
-@synthesize mTest = _mTest;
-@synthesize httpRequest = _httpRequest;
-@synthesize formRequest = _formRequest;
+
 
 #pragma mark - view lifecycle
 
@@ -56,15 +53,10 @@
 {
     [self setNameTextField:nil];
     [self setPswTextField:nil];
-    [self setMTest:nil];
     [super viewDidUnload];
 }
 
-- (void)dealloc
-{
-    self.httpRequest.delegate = nil;
-    
-}
+
 #pragma mark - delegate textField
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -98,6 +90,27 @@
 }
 
 #pragma mark - action
+
+- (IBAction)click:(id)sender
+{
+    self.nameTextField.text = @"871211xyjs";
+    self.pswTextField.text = @"qqqqqq";
+    [self loginAction];
+    
+}
+- (IBAction)create:(id)sender
+{
+    //        {"content":"fdfhffhh","anonymous":true,"allow_comment":1}
+    
+    NSMutableDictionary *temDic = [NSMutableDictionary dictionary];
+    [temDic setObject:@"dfasfsdfa" forKey:@"content"];
+    [temDic setObject:[NSNumber numberWithBool:YES] forKey:@"anonymous"];
+    [temDic setObject:[NSNumber numberWithInt:1] forKey:@"allow_comment"];
+    
+    
+    [self.view addSubview:[MyProgressHud getInstance]];
+    [[NetManager SharedNetManager] requestWithURL:nil withType:kRequestTypeCreate withDictionary:temDic withDelegate:self];
+}
 
 - (void)loginAction
 {
@@ -135,6 +148,12 @@
             DLog(@"login ok");
         }else {
             [[iToast makeText:[dic objectForKey:@"err_msg"]] show];
+        }
+    }else if (type == kRequestTypeCreate) {
+        if (isOk == YES) {
+            DLog(@"发布成功");
+        }else {
+            DLog(@"发布失败");
         }
     }
 }

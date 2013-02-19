@@ -310,7 +310,7 @@ UITableViewDelegate
     cell.txtContent.text = qs.content;
 
 
-    [cell.txtContent setNumberOfLines: 12];
+    [cell.txtContent setNumberOfLines: 0];
 
     //设置图片
     if (qs.imageURL!=nil && ![qs.imageURL isEqual: @""]) {
@@ -430,7 +430,7 @@ UITableViewDelegate
     NSString *content = qs.content;
 
     // 计算出长宽
-    CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];
+    CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 2200) lineBreakMode:UILineBreakModeTailTruncation];
     CGFloat height;
     if (qs.imageURL==nil || [qs.imageURL isEqualToString:@""]) {
         height = size.height+140;

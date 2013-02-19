@@ -20,9 +20,6 @@
     
     MyNavigationController *_navController;
     MainViewController *_mainViewController;
-    
-  
-    
 
 
 }

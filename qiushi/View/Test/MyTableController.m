@@ -126,19 +126,19 @@
     cell.txtContent.text = [NSString stringWithFormat:@"%@", [object objectForKey:@"content"]];
 
 
-    [cell.txtContent setNumberOfLines: 12];
+    [cell.txtContent setNumberOfLines: 0];
 
     //设置图片
     NSString *imageUrl = [NSString stringWithFormat:@"%@", [object objectForKey:@"imageurl"]];
     if (imageUrl!=nil && ![imageUrl isEqual: @""] && ![imageUrl isEqual: @"(null)"]) {
         cell.imgUrl = imageUrl;
         cell.imgMidUrl = [NSString stringWithFormat:@"%@", [object objectForKey:@"imagemidurl"]];
-        // cell.imgPhoto.hidden = NO;
+      
     }else
     {
         cell.imgUrl = @"";
         cell.imgMidUrl = @"";
-        // cell.imgPhoto.hidden = YES;
+     
     }
     //设置用户名
     NSString *anchor = [NSString stringWithFormat:@"%@", [object objectForKey:@"anchor"]];

@@ -7,54 +7,20 @@
 //
 
 #import "CommentsCell.h"
+#import "Utils.h"
 
 @interface CommentsCell()
 @end;
 
 @implementation CommentsCell
-@synthesize txtContent,txtAnchor,footView,centerimageView,txtfloor;
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 
-        UIImage *centerimage = [UIImage imageNamed:@"block_center_background.png"];
-        centerimageView = [[UIImageView alloc]initWithImage:centerimage];
-        [centerimageView setFrame:CGRectMake(0, 0, 320, 220)];
-        [self addSubview:centerimageView];
-    
-        
-        txtContent = [[UILabel alloc]init];
-        [txtContent setBackgroundColor:[UIColor clearColor]];
-        [txtContent setFrame:CGRectMake(20, 32, 280, 220)];
-        [txtContent setFont:[UIFont fontWithName:kFont size:14]];
-        [txtContent setLineBreakMode:UILineBreakModeTailTruncation];
-        [self addSubview:txtContent];
-   
-        
-        txtAnchor = [[UILabel alloc]initWithFrame:CGRectMake(10,4, 200, 30)];
-        [txtAnchor setText:@"匿名"];
-        [txtAnchor setFont:[UIFont fontWithName:kFont size:14]];
-        [txtAnchor setBackgroundColor:[UIColor clearColor]];
-        [txtAnchor setTextColor:[UIColor brownColor]];
-        [self addSubview:txtAnchor];
-     
-        
-        txtfloor = [[UILabel alloc]initWithFrame:CGRectMake(290,4, 50, 30)];
-        [txtfloor setText:@"1"];
-        [txtfloor setFont:[UIFont fontWithName:kFont size:14]];
-        [txtfloor setBackgroundColor:[UIColor clearColor]];
-        [txtfloor setTextColor:[UIColor brownColor]];
-        [self addSubview:txtfloor];
-     
-        
-        UIImage *footimage = [UIImage imageNamed:@"block_line.png"];
-        footView = [[UIImageView alloc]initWithImage:footimage];
-        [footView setFrame:CGRectMake(5, txtContent.frame.size.height, 310, 2)];
-        [self addSubview:footView];
-      
-       
+              
     }
     return self;
 }
@@ -63,23 +29,29 @@
 
 -(void) resizeTheHeight
 {
-    CGFloat contentWidth = 280;  
+    CGFloat contentWidth = 280;
+    contentWidth = [[Utils notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
+    contentWidth = contentWidth * kSize;
 
     UIFont *font = [UIFont fontWithName:kFont size:kSize];
     
-    CGSize size = [txtContent.text sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];  
+    CGSize size = [_txtContent.text sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 2200) lineBreakMode:UILineBreakModeTailTruncation];
     
-    [txtContent setFrame:CGRectMake(20, 28, 280, size.height)];
-    [centerimageView setFrame:CGRectMake(0, 0, 320, size.height+30)];
-    [footView setFrame:CGRectMake(5, size.height+28, 310, 2)];
+    CGRect frame = _txtContent.frame;
+    CGRect frame1 = _txtContent.frame;
+    frame.size.height = size.height;
+    [_txtContent setFrame:frame];
+    
+    
+    frame = self.imageBg.frame;
+    frame.size.height = frame.size.height + size.height - frame1.size.height;
+    self.imageBg.frame = frame;
+    
+    frame = self.imageFg.frame;
+    frame.origin.y = frame.origin.y + size.height - frame1.size.height;
+    self.imageFg.frame = frame;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
 
 
 

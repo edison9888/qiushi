@@ -10,4 +10,7 @@
 
 @interface LeftCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UISwitch *mSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *mTitle;
+
 @end

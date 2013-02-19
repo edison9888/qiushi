@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1312570116D31877001C30D4 /* CommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1312570016D31877001C30D4 /* CommentsCell.xib */; };
 		1312AD021642149200857AD0 /* block_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 1312ACC91642149200857AD0 /* block_background.png */; };
 		1312AD031642149200857AD0 /* block_center_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 1312ACCA1642149200857AD0 /* block_center_background.png */; };
 		1312AD051642149200857AD0 /* block_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 1312ACCC1642149200857AD0 /* block_line.png */; };
@@ -216,6 +217,12 @@
 		13D4BBFD15FD87EC00AD8B8B /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D4BBFC15FD87EC00AD8B8B /* iToast.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		13D4BC0115FD89AA00AD8B8B /* IsNetWorkUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D4BC0015FD89AA00AD8B8B /* IsNetWorkUtil.m */; };
 		13DBBE6C164A39FE00FDC85A /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13DBBE6B164A39FE00FDC85A /* libFlurry.a */; };
+		13E4C90016D34D3800564E91 /* BaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13E4C8FC16D34D3800564E91 /* BaseController.m */; };
+		13E4C90116D34D3800564E91 /* HPThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 13E4C8FE16D34D3800564E91 /* HPThemeManager.m */; };
+		13E4C90216D34D3800564E91 /* themes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13E4C8FF16D34D3800564E91 /* themes.plist */; };
+		13E4C90416D34EEC00564E91 /* Theme in Resources */ = {isa = PBXBuildFile; fileRef = 13E4C90316D34EEC00564E91 /* Theme */; };
+		13EB5F8C16D381D40077330A /* iVersion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 13EB5F8916D381D40077330A /* iVersion.bundle */; };
+		13EB5F8D16D381D40077330A /* iVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 13EB5F8B16D381D40077330A /* iVersion.m */; };
 		C9214F5F16889E940063DD59 /* MyPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = C9214F5C16889E940063DD59 /* MyPhoto.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C9214F6016889E940063DD59 /* MyPhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C9214F5E16889E940063DD59 /* MyPhotoSource.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C9A7948716820CEB00A3722E /* DeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A7948616820CEB00A3722E /* DeviceInfo.m */; };
@@ -260,6 +267,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1312570016D31877001C30D4 /* CommentsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentsCell.xib; sourceTree = "<group>"; };
 		1312ACC91642149200857AD0 /* block_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block_background.png; sourceTree = "<group>"; };
 		1312ACCA1642149200857AD0 /* block_center_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block_center_background.png; sourceTree = "<group>"; };
 		1312ACCC1642149200857AD0 /* block_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = block_line.png; sourceTree = "<group>"; };
@@ -582,6 +590,15 @@
 		13D4BC0015FD89AA00AD8B8B /* IsNetWorkUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IsNetWorkUtil.m; sourceTree = "<group>"; };
 		13DBBE6A164A39FE00FDC85A /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		13DBBE6B164A39FE00FDC85A /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
+		13E4C8FB16D34D3800564E91 /* BaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseController.h; sourceTree = "<group>"; };
+		13E4C8FC16D34D3800564E91 /* BaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseController.m; sourceTree = "<group>"; };
+		13E4C8FD16D34D3800564E91 /* HPThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPThemeManager.h; sourceTree = "<group>"; };
+		13E4C8FE16D34D3800564E91 /* HPThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPThemeManager.m; sourceTree = "<group>"; };
+		13E4C8FF16D34D3800564E91 /* themes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = themes.plist; sourceTree = "<group>"; };
+		13E4C90316D34EEC00564E91 /* Theme */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Theme; sourceTree = "<group>"; };
+		13EB5F8916D381D40077330A /* iVersion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iVersion.bundle; sourceTree = "<group>"; };
+		13EB5F8A16D381D40077330A /* iVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iVersion.h; sourceTree = "<group>"; };
+		13EB5F8B16D381D40077330A /* iVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iVersion.m; sourceTree = "<group>"; };
 		C9214F5B16889E940063DD59 /* MyPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPhoto.h; sourceTree = "<group>"; };
 		C9214F5C16889E940063DD59 /* MyPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPhoto.m; sourceTree = "<group>"; };
 		C9214F5D16889E940063DD59 /* MyPhotoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPhotoSource.h; sourceTree = "<group>"; };
@@ -945,19 +962,21 @@
 		13C845E315E48AFE000B8A44 /* Frame */ = {
 			isa = PBXGroup;
 			children = (
-				13DBBE69164A39FE00FDC85A /* Flurry4.0.6 */,
-				137666F61641324C004A3DF8 /* Parse.framework */,
+				13EB5F8816D381D40077330A /* iVersion */,
 				1344FABC162FA11300EE6E7B /* admob */,
-				137CF947162E7D6C00162D11 /* ViewDeck */,
-				13292538162CFE1B00B8B99A /* Parse */,
+				13C845F615E48AFE000B8A44 /* ASIHttpRequest */,
+				13C8476D15E4E152000B8A44 /* EGOImageLoading */,
+				13DBBE69164A39FE00FDC85A /* Flurry4.0.6 */,
+				13E4C8FA16D34D3800564E91 /* HPThemeManager */,
 				13D4BBFA15FD87EC00AD8B8B /* iToast */,
 				136A2E5F15F5ED8700E402D8 /* MBProgressHUD */,
-				13C3E9E415F490C30001E3A1 /* SBJson */,
-				13C847BA15E4F96A000B8A44 /* ShareService */,
-				13C8476D15E4E152000B8A44 /* EGOImageLoading */,
-				13C845F615E48AFE000B8A44 /* ASIHttpRequest */,
+				13292538162CFE1B00B8B99A /* Parse */,
+				137666F61641324C004A3DF8 /* Parse.framework */,
 				13C8464015E48AFE000B8A44 /* PullingRefresh */,
 				13C8464715E48AFE000B8A44 /* QuadCurveMenu */,
+				13C3E9E415F490C30001E3A1 /* SBJson */,
+				13C847BA15E4F96A000B8A44 /* ShareService */,
+				137CF947162E7D6C00162D11 /* ViewDeck */,
 			);
 			name = Frame;
 			path = qiushi/Frame;
@@ -1398,6 +1417,29 @@
 			path = Flurry4.0.6;
 			sourceTree = "<group>";
 		};
+		13E4C8FA16D34D3800564E91 /* HPThemeManager */ = {
+			isa = PBXGroup;
+			children = (
+				13E4C90316D34EEC00564E91 /* Theme */,
+				13E4C8FB16D34D3800564E91 /* BaseController.h */,
+				13E4C8FC16D34D3800564E91 /* BaseController.m */,
+				13E4C8FD16D34D3800564E91 /* HPThemeManager.h */,
+				13E4C8FE16D34D3800564E91 /* HPThemeManager.m */,
+				13E4C8FF16D34D3800564E91 /* themes.plist */,
+			);
+			path = HPThemeManager;
+			sourceTree = "<group>";
+		};
+		13EB5F8816D381D40077330A /* iVersion */ = {
+			isa = PBXGroup;
+			children = (
+				13EB5F8916D381D40077330A /* iVersion.bundle */,
+				13EB5F8A16D381D40077330A /* iVersion.h */,
+				13EB5F8B16D381D40077330A /* iVersion.m */,
+			);
+			path = iVersion;
+			sourceTree = "<group>";
+		};
 		C9214F5A16889E940063DD59 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1455,6 +1497,7 @@
 				C9F63ABA1645214A00E17ED2 /* Comments.m */,
 				C9F63ABB1645214A00E17ED2 /* CommentsCell.h */,
 				C9F63ABC1645214A00E17ED2 /* CommentsCell.m */,
+				1312570016D31877001C30D4 /* CommentsCell.xib */,
 				C9F63ABD1645214A00E17ED2 /* CommentsViewController.h */,
 				C9F63ABE1645214A00E17ED2 /* CommentsViewController.m */,
 				C9F63ABF1645214A00E17ED2 /* CommentsViewController.xib */,
@@ -1673,6 +1716,10 @@
 				D20878081699C522003A012B /* ContentFromParseViewController.xib in Resources */,
 				D208781316A1A03C003A012B /* 111.md in Resources */,
 				D2D3145D16AEDF2100863C21 /* ContentCell.xib in Resources */,
+				1312570116D31877001C30D4 /* CommentsCell.xib in Resources */,
+				13E4C90216D34D3800564E91 /* themes.plist in Resources */,
+				13E4C90416D34EEC00564E91 /* Theme in Resources */,
+				13EB5F8C16D381D40077330A /* iVersion.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1790,6 +1837,9 @@
 				D20878071699C522003A012B /* ContentFromParseViewController.m in Sources */,
 				D2D3145B16AED25C00863C21 /* MyTicketLabel.m in Sources */,
 				D2D3146316B812A800863C21 /* ContentCell.m in Sources */,
+				13E4C90016D34D3800564E91 /* BaseController.m in Sources */,
+				13E4C90116D34D3800564E91 /* HPThemeManager.m in Sources */,
+				13EB5F8D16D381D40077330A /* iVersion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -115,7 +115,31 @@ static NetManager *_sharedContext = nil;
         }
         
         [self.formRequest startAsynchronous];
+    }else if (type == kRequestTypeCreate)
+    {
+        urlString = @"http://m2.qiushibaike.com/article/create";
+        _formRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [_formRequest addRequestHeader:@"Content-Type" value:@"application/json"];
+        [_formRequest addRequestHeader:@"Accept" value:@"application/json"];
+        [self.formRequest setTag:type];
+        [self.formRequest setDelegate:self];
+        [self.formRequest setNumberOfTimesToRetryOnTimeout:2];
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+        [userInfo setObject:delegate forKey:@"delegate"];
+        _formRequest.userInfo = userInfo;
+        
+//        {"content":"fdfhffhh","anonymous":true,"allow_comment":1}
+        
+        if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"version"] isEqualToString:@">=5"] ) {
+            NSError* error;
+            [self.formRequest appendPostData:[NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&error]];
+        }else {
+            [self.formRequest appendPostData:[[dic JSONFragment] dataUsingEncoding: NSUTF8StringEncoding]];
+        }
+        
+        [self.formRequest startAsynchronous];
     }
+
     
 
     
@@ -132,7 +156,7 @@ static NetManager *_sharedContext = nil;
 {
 
     NSString *responseString = [request responseString];
-    DLog(@"%@",responseString);
+//    DLog(@"%@",responseString);
 
     
     NSMutableDictionary *resultDic;
@@ -168,11 +192,11 @@ static NetManager *_sharedContext = nil;
     DLog(@"RequestFail,%d",request.tag);
 
   
-    if (request.tag == kRequestTypeGetQiushi
-        || request.tag == kRequestTypeGetComment)
-    {
+//    if (request.tag == kRequestTypeGetQiushi
+//        || request.tag == kRequestTypeGetComment)
+//    {
         [[request.userInfo objectForKey:@"delegate"] refreshDate1:nil data2:nil withType:[request tag] isOk:NO];
-    }
+//    }
 
 
 

@@ -276,7 +276,8 @@ UIAlertViewDelegate
     ContentCell *cell = [tableView dequeueReusableCellWithIdentifier:Contentidentifier];
     if (cell == nil){
         //设置cell 样式
-        cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Contentidentifier] ;
+//        cell = [[ContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:Contentidentifier] ;
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ContentCell" owner:self options:nil] lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
@@ -290,7 +291,7 @@ UIAlertViewDelegate
     cell.txtContent.text = qs.content;
     
     
-    [cell.txtContent setNumberOfLines: 12];
+    [cell.txtContent setNumberOfLines: 0];
     
     //设置图片
     if (qs.imageURL!=nil && ![qs.imageURL isEqual: @""]) {
@@ -413,11 +414,15 @@ UIAlertViewDelegate
 
 
 
--(CGFloat) getTheHeight:(NSInteger)row
+//cell 动态 高度
+- (CGFloat)getTheHeight:(NSInteger)row
 {
     CGFloat contentWidth = 250;
+    
+    contentWidth = [[Utils notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
+    contentWidth = contentWidth * kSize;
     // 设置字体
-    UIFont *font = [UIFont fontWithName:kFont size:14];
+    UIFont *font = [UIFont fontWithName:kFont size:kSize];
     
     QiuShi *qs =[self.list objectAtIndex:row];
     // 显示的内容
@@ -425,13 +430,17 @@ UIAlertViewDelegate
     
     // 计算出长宽
     CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];
+    
+    //    DLog(@"%f,%f",size.height,size.width);
     CGFloat height;
-    if (qs.imageURL==nil || [qs.imageURL isEqualToString:@""]) {
-        height = size.height+140;
+    if (qs.imageURL == nil || [qs.imageURL isEqualToString:@""]) {
+        height = size.height + 149 - 25;
     }else
     {
-        height = size.height+220;
+        height = size.height + 100 + 149 -25;//88+6+6
     }
+    
+    //    DLog(@"%f",height);
     // 返回需要的高度
     return height;
 }

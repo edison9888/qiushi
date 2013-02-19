@@ -14,12 +14,8 @@
 #import "EGOPhotoViewController.h"
 #import "MyPhoto.h"
 #import "MyPhotoSource.h"
+#import "Utils.h"
 
-#define FGOOD       101
-#define FBAD        102
-#define FCOMMITE    103
-#define FSave       104
-#define FImage      105
 
 @implementation ContentCell
 
@@ -32,8 +28,7 @@
         [_imgPhoto setPlaceholderImage:[UIImage imageNamed:@"thumb_pic.png"]];
         [_imgPhoto setDelegate:self];
         [_imgPhoto setFrame:CGRectMake(0, 0, 0, 0)];
-//        [_imgPhoto setTag:FImage];
-//        [_imgPhoto addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
+
         
     }
     return self;
@@ -45,47 +40,37 @@
     CGFloat contentWidth;
     if (type != kTypeHistory) {
         contentWidth = 280;
-        contentWidth = [[self notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
+        contentWidth = [[Utils notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
         contentWidth = contentWidth * kSize;
     }else{
         contentWidth = 250;
-        contentWidth = [[self notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
+        contentWidth = [[Utils notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
         contentWidth = contentWidth * kSize;
     }
+    
     
     
     UIFont *font = [UIFont fontWithName:kFont size:kSize];
     
     CGSize size = CGSizeMake(0, 0);
-    if (type == kTypeMain || type == kTypeHistory)
-    {
+    
+    if (type == kTypeContent) {
+        size = [_txtContent.text sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 2200) lineBreakMode:UILineBreakModeTailTruncation];
+    }else {
         size = [_txtContent.text sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];
-    }else if (type == kTypeContent)
-    {
-        size = [_txtContent.text sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, (_txtContent.text.length * kSize /contentWidth + 1) * kSize) lineBreakMode:UILineBreakModeWordWrap];
-        
-        DLog(@"%f",(_txtContent.text.length * kSize /contentWidth + 1) * kSize);
-        
-        
     }
+    
+    
+    
     
     DLog(@"%@",NSStringFromCGSize(size));
     
-    //    if (type == kTypeContent) {
-    //        [txtContent setFrame:CGRectMake(20,
-    //                                        headPhoto.frame.origin.y + headPhoto.frame.size.height,
-    //                                        contentWidth,
-    //                                        size.height+80)];
-    //    }else {
-//    [_txtContent setFrame:CGRectMake(20,
-//                                     _txtContent.frame.origin.y + _txtContent.frame.size.height,
-//                                     contentWidth,
-//                                     size.height)];
+
     CGRect frame = _txtContent.frame;
     CGRect frame1 = _txtContent.frame;
     frame.size.height = size.height;
     [_txtContent setFrame:frame];
-    //    }
+   
     
     
     
@@ -146,6 +131,7 @@
     
 }
 
+
 - (IBAction)btnClick:(id)sender
 {
     DLog(@"click");
@@ -170,44 +156,6 @@
     aboutNavController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     
     [[delegate navController] presentModalViewController:aboutNavController animated:YES];
-}
-
--(void) btnClicked:(id)sender
-{
-    UIButton *btn = (UIButton *) sender;
-    switch (btn.tag) {
-        case FImage:
-        {
-            AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-            
-            //    _photoview = [[PhotoViewer alloc]initWithNibName:@"PhotoViewer" bundle:nil];
-            //    _photoview.imgUrl = self.imgMidUrl;
-            //    DLog(@"self.imgMidUrl:%@",self.imgMidUrl);
-            //    _photoview.placeholderImage = [[self.imgPhoto imageView] image];
-            //    [[delegate navController] presentModalViewController:_photoview animated:YES];
-            
-            
-            MyPhoto *photo = [[MyPhoto alloc] initWithImageURL:[NSURL URLWithString:self.imgMidUrl] name:_txtContent.text image:nil pImage:[[self.imgPhoto imageView] image]];
-            
-            MyPhotoSource *source = [[MyPhotoSource alloc] initWithPhotos:[NSArray arrayWithObjects:photo, nil]];
-            
-            EGOPhotoViewController *photoController = [[EGOPhotoViewController alloc] initWithPhotoSource:source];
-            
-            
-            //            [[delegate navController] presentModalViewController:photoController animated:YES];
-            UINavigationController *aboutNavController = [[UINavigationController alloc] initWithRootViewController:photoController];
-            aboutNavController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-            
-            [[delegate navController] presentModalViewController:aboutNavController animated:YES];
-            
-            
-        }break;
-            
-        default:
-        {
-            NSAssert(nil, @"button tag error");
-        }break;
-    }
 }
 
 
@@ -242,16 +190,6 @@
 
 
 
--(NSString *)notRounding:(float)price afterPoint:(int)position{
-    NSDecimalNumberHandler* roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:position raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
-    NSDecimalNumber *ouncesDecimal;
-    NSDecimalNumber *roundedOunces;
-    
-    ouncesDecimal = [[NSDecimalNumber alloc] initWithFloat:price];
-    roundedOunces = [ouncesDecimal decimalNumberByRoundingAccordingToBehavior:roundingBehavior];
-    //    [ouncesDecimal release];
-    return [NSString stringWithFormat:@"%@",roundedOunces];
-}
 
 
 @end

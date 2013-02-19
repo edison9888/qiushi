@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ContentCell.h"
 #import "GADBannerView.h"
+#import "BaseController.h"
 @class EGOImageButton;
 @class PullingRefreshTableView;
 
@@ -17,7 +18,7 @@
 #define kTagGetOffline   1002
 #define kTagGetOfflineOk    1003
 
-@interface ContentViewController : UIViewController
+@interface ContentViewController : BaseController
 <EGOImageButtonDelegate,GADBannerViewDelegate>
 {
    

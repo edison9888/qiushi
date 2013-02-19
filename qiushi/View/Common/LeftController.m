@@ -19,22 +19,18 @@
 #import "LoginViewController.h"
 #import "MyTableController.h"
 #import "ContentFromParseViewController.h"
+#import "LeftCell.h"
 
 
 @interface LeftController ()
 {
     UISlider *_mSlider;//伪 调节屏幕亮度
-
+    UISwitch *_mSwitch;
 }
 @property (nonatomic, assign) int mainType;
+@property (nonatomic, retain) UISwitch *mSwitch;
 @end
 @implementation LeftController
-
-@synthesize tableView=_tableView;
-@synthesize items = _items;
-@synthesize navController = _navController;
-@synthesize mainViewController = _mainViewController;
-
 
 - (id)init {
     if ((self = [super init])) {
@@ -65,7 +61,7 @@
               @"穿越",
               @"个人收藏",
               @"缓存也精彩",
-              @"",
+              @"夜间模式",
               @"设置",
               @"关于",
               nil];
@@ -74,7 +70,10 @@
     
     [self.view setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
 
-
+    
+   
+    _mSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(190, 8, 79, 27)];
+    [_mSwitch setOn:NO animated:NO];
     
     //调节亮度的 滑动条
     _mSlider = [[UISlider alloc]initWithFrame:CGRectMake(15.0, 12 , 220, 20)];
@@ -94,7 +93,9 @@
         tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         tableView.delegate = (id<UITableViewDelegate>)self;
         tableView.dataSource = (id<UITableViewDataSource>)self;
-        tableView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+//        tableView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+        tableView.backgroundView = nil;
+        tableView.backgroundColor = [UIColor clearColor];
         [self.view addSubview:tableView];
         self.tableView = tableView;
     }
@@ -176,24 +177,24 @@
     
 }
 
-- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
     static NSString *CellIdentifier = @"CellIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    //    if(cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    //    }
-    
-    
-    
-    cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
-    cell.textLabel.font = [UIFont fontWithName:kFont size:15.0];
-    [cell.textLabel setTextColor:[UIColor whiteColor]];
-    
-    
-    if (indexPath.row == 6) {
-        [cell.contentView addSubview:_mSlider];
+    LeftCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if(cell == nil) {
+        
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"LeftCell" owner:self options:nil] lastObject];
     }
+
+     
+
+    
+    indexPath.row == 6 ? [cell.mSwitch setHidden:NO] : [cell.mSwitch setHidden:YES];
+
+
+    cell.mTitle.text = [self.items objectAtIndex:indexPath.row];
+    [cell.textLabel setTextColor:[UIColor whiteColor]];
     
     
     
@@ -222,6 +223,9 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == 6) {
+        return;
+    }
     
     [self.viewDeckController closeLeftViewBouncing:^(IIViewDeckController *controller)
     {
@@ -318,7 +322,8 @@
 
 
 
-- (void)changeAction:(id)sender {
+- (void)changeAction:(id)sender
+{
     
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [delegate.window bringSubviewToFront:delegate.lightView];
@@ -330,8 +335,5 @@
     
     
 }
-
-
-
 
 @end

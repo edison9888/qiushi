@@ -51,6 +51,8 @@ RefreshDateNetDelegate
 @synthesize imageUrlArray = _imageUrlArray;
 
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -153,6 +155,16 @@ RefreshDateNetDelegate
 //    [_net requestWithURL:SuggestURLString(10,1) withType:kRequestTypeGetQiushi withDictionary:nil];
 //}
 
+
+-(void)updateTheme:(NSNotification*)notif
+{
+    NSString *themename = [HPThemeManager sharedThemeManager].currentTheme;//get current theme
+    NSString *themePathTmp = [[[HPThemeManager sharedThemeManager] themeDictionary] objectForKey:themename];//theme temp path
+    NSString *themePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:themePathTmp];//actual theme path
+    DLog(@"111:%@",themePath);
+//    if(themePath)
+//        self.backgroundIV.image = [UIImage imageWithContentsOfFile:[themePath stringByAppendingPathComponent:@"mask_1.png"]];
+}
 
 - (void)viewDidUnload
 {
@@ -280,9 +292,12 @@ RefreshDateNetDelegate
         cell.txtAnchor.text = @"匿名";
     }
     
+    /////////////tttttttttttttttttttt
+//    qs.content = @"测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据111测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据222";
+    
     //设置内容
     cell.txtContent.text = qs.content;
-    [cell.txtContent setNumberOfLines: 12];
+    [cell.txtContent setNumberOfLines: 0];
     
     
     //设置图片
@@ -309,9 +324,9 @@ RefreshDateNetDelegate
         
     }
     //设置up ，down and commits
-    [cell.goodbtn setTitle:[NSString stringWithFormat:@"%d",qs.upCount] forState:UIControlStateNormal];
-    [cell.badbtn setTitle:[NSString stringWithFormat:@"%d",qs.downCount] forState:UIControlStateNormal];
-    [cell.commentsbtn setTitle:[NSString stringWithFormat:@"%d",qs.commentsCount] forState:UIControlStateNormal];
+    [cell.goodbtn setTitle:[NSString stringWithFormat:@" %d",qs.upCount] forState:UIControlStateNormal];
+    [cell.badbtn setTitle:[NSString stringWithFormat:@" %d",qs.downCount] forState:UIControlStateNormal];
+    [cell.commentsbtn setTitle:[NSString stringWithFormat:@" %d",qs.commentsCount] forState:UIControlStateNormal];
     
     //发布时间
     cell.txtTime.text = [NSString stringWithFormat:@"%d/%d",indexPath.row+1,[self.list count]];//qs.fbTime;
@@ -401,7 +416,7 @@ RefreshDateNetDelegate
 {
     CGFloat contentWidth = 280;
     
-    contentWidth = [[self notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
+    contentWidth = [[Utils notRounding:(contentWidth / kSize) afterPoint:0] floatValue];
     contentWidth = contentWidth * kSize;
     // 设置字体
     UIFont *font = [UIFont fontWithName:kFont size:kSize];
@@ -726,18 +741,5 @@ RefreshDateNetDelegate
         
     }
 }
-
--(NSString *)notRounding:(float)price afterPoint:(int)position{
-    NSDecimalNumberHandler* roundingBehavior = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundDown scale:position raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
-    NSDecimalNumber *ouncesDecimal;
-    NSDecimalNumber *roundedOunces;
-    
-    ouncesDecimal = [[NSDecimalNumber alloc] initWithFloat:price];
-    roundedOunces = [ouncesDecimal decimalNumberByRoundingAccordingToBehavior:roundingBehavior];
-    //    [ouncesDecimal release];
-    return [NSString stringWithFormat:@"%@",roundedOunces];
-}
-
-
 
 @end

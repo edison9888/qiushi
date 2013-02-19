@@ -14,4 +14,8 @@
 + (NSMutableArray *)removeRepeatArray:(NSMutableArray*)array;
 //重排序
 + (NSMutableArray *)randArray:(NSMutableArray *)ary;
+
+
+
++ (NSString *)notRounding:(float)price afterPoint:(int)position;
 @end

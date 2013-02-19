@@ -162,6 +162,7 @@
     }else if (indexPath.row == 1){
         //图片加载方式
         NSString *title = UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation) ? @"\n\n\n\n\n\n\n\n\n" : @"\n\n\n\n\n\n\n\n\n\n\n\n" ;
+        title = @"\n\n\n\n\n\n\n\n\n\n\n\n";
         
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:@"确定", nil];
         [actionSheet showInView:self.view];
