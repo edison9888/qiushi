@@ -337,7 +337,7 @@ UIAlertViewDelegate
     [cell.saveBtn addTarget:self action:@selector(favoriteAction:) forControlEvents:UIControlEventTouchUpInside];
     
     //自适应函数
-//    [cell resizeTheHeight:kTypeHistory];
+    [cell resizeTheHeight:kTypeHistory];
     return cell;
 }
 
@@ -433,11 +433,13 @@ UIAlertViewDelegate
     
     //    DLog(@"%f,%f",size.height,size.width);
     CGFloat height;
+    CGFloat tagHeight = qs.tag.length > 0 ? 0 :30;
+    CGFloat cellHeight = 124;
     if (qs.imageURL == nil || [qs.imageURL isEqualToString:@""]) {
-        height = size.height + 149 - 25;
+        height = size.height + cellHeight - 25 - tagHeight;
     }else
     {
-        height = size.height + 100 + 149 -25;//88+6+6
+        height = size.height + 100 + cellHeight -25 - tagHeight;//88+6+6
     }
     
     //    DLog(@"%f",height);

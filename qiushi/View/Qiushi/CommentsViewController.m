@@ -451,11 +451,13 @@ RefreshDateNetDelegate
     
     DLog(@"%f,%f",size.height,size.width);
     CGFloat height;
+    CGFloat tagHeight = self.qs.tag.length > 0 ? 0 :30;
+    CGFloat cellHeight = 124;
     if (self.qs.imageURL == nil || [self.qs.imageURL isEqualToString:@""]) {
-        height = size.height + 149 - 25;
+        height = size.height + cellHeight - 25 - tagHeight;
     }else
     {
-        height = size.height + 100 + 149 -25;//88+6+6
+        height = size.height + 100 + cellHeight -25 - tagHeight;//88+6+6
     }
     
     DLog(@"%f",height);

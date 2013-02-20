@@ -28,7 +28,7 @@
         [_imgPhoto setPlaceholderImage:[UIImage imageNamed:@"thumb_pic.png"]];
         [_imgPhoto setDelegate:self];
         [_imgPhoto setFrame:CGRectMake(0, 0, 0, 0)];
-
+        
         
     }
     return self;
@@ -65,12 +65,12 @@
     
     DLog(@"%@",NSStringFromCGSize(size));
     
-
+    
     CGRect frame = _txtContent.frame;
     CGRect frame1 = _txtContent.frame;
     frame.size.height = size.height;
     [_txtContent setFrame:frame];
-   
+    
     
     
     
@@ -87,9 +87,9 @@
     }
     else
     {
-         imageHeight = 0;
+        imageHeight = 0;
         [_imgPhoto cancelImageLoad];
-        [_imgPhoto setFrame:CGRectMake(0, 0, 0, 0)];
+        [_imgPhoto setFrame:CGRectZero];
         
     }
     
@@ -99,35 +99,53 @@
     frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight;
     self.imageTag.frame = frame;
     
+    CGFloat tagHeight = 0;
+    if (self.txtTag.text.length == 0) {
+        tagHeight = 30;//self.imageTag.frame.size.height;
+        [self.imageTag setHidden:YES];
+    }else {
+        tagHeight = 0;
+        [self.imageTag setHidden:NO];
+    }
+    
     frame = self.txtTag.frame;
     frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight;
     self.txtTag.frame = frame;
     
     frame = self.goodbtn.frame;
-    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight;
+    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight - tagHeight;
     self.goodbtn.frame = frame;
     
     frame = self.badbtn.frame;
-    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight;
+    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight - tagHeight;
     self.badbtn.frame = frame;
     
     frame = self.commentsbtn.frame;
-    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight;
+    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight - tagHeight;
     self.commentsbtn.frame = frame;
     
     frame = self.saveBtn.frame;
-    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight;
+    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight - tagHeight;
     self.saveBtn.frame = frame;
     
     frame = self.imageBg.frame;
-    frame.size.height = frame.size.height + size.height - frame1.size.height + imageHeight;
+    frame.size.height = frame.size.height + size.height - frame1.size.height + imageHeight - tagHeight;
     self.imageBg.frame = frame;
     
+    UIImage *bg = [UIImage imageNamed:@"block_center_background.png"];
+    if ([bg respondsToSelector:@selector(resizableImageWithCapInsets:resizingMode:)]) {
+        UIEdgeInsets ed = {1.0f, 1.0f, 1.0f, 1.0f};
+        self.imageBg.image = [bg resizableImageWithCapInsets:ed resizingMode:UIImageResizingModeTile];
+    }else if ([bg respondsToSelector:@selector(stretchableImageWithLeftCapWidth:topCapHeight:)]) {
+        self.imageBg.image = [bg stretchableImageWithLeftCapWidth:1 topCapHeight:1];
+    }
+    
+    
     frame = self.imageFoot.frame;
-    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight;
+    frame.origin.y = frame.origin.y + size.height - frame1.size.height + imageHeight - tagHeight;
     self.imageFoot.frame = frame;
     
-
+    
     
 }
 
