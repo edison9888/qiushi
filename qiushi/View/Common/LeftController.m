@@ -189,8 +189,14 @@
 
      
 
-    
-    indexPath.row == 6 ? [cell.mSwitch setHidden:NO] : [cell.mSwitch setHidden:YES];
+    if (indexPath.row == 6) {
+        [cell.mSwitch setHidden:NO];
+        cell.selectedBackgroundView = nil;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }else {
+        [cell.mSwitch setHidden:YES];
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    }
 
 
     cell.mTitle.text = [self.items objectAtIndex:indexPath.row];
@@ -235,7 +241,8 @@
             || indexPath.row == 2
             || indexPath.row == 3) {
             [self.navController popToRootViewControllerAnimated:NO];
-            self.mainViewController.title = @"";
+            
+            self.mainViewController.title = indexPath.row == 3 ? @"穿越中..." :@"";
 
             self.mainViewController.index = indexPath.row;
             [self.mainViewController refreshDate];

@@ -51,20 +51,21 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">block_center_background.png</string>
+									<string key="NSResourceName">block_center_background@2x.png</string>
 								</object>
 							</object>
 							<object class="IBUIImageView" id="257112039">
 								<reference key="NSNextResponder" ref="971139637"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 53}, {320, 1}}</string>
+								<string key="NSFrame">{{0, 52}, {320, 1}}</string>
 								<reference key="NSSuperview" ref="971139637"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">block_line.png</string>
+									<string key="NSResourceName">block_line@2x.png</string>
 								</object>
 							</object>
 							<object class="IBUILabel" id="872490521">
@@ -148,7 +149,7 @@
 								<double key="preferredMaxLayoutWidth">280</double>
 							</object>
 						</array>
-						<string key="NSFrameSize">{320, 54}</string>
+						<string key="NSFrameSize">{320, 53}</string>
 						<reference key="NSSuperview" ref="598991165"/>
 						<reference key="NSNextKeyView" ref="44983527"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
@@ -163,13 +164,13 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</array>
-				<string key="NSFrameSize">{320, 55}</string>
+				<string key="NSFrameSize">{320, 54}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="971139637"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<reference key="IBUIContentView" ref="971139637"/>
-				<real value="55" key="IBUIRowHeight"/>
+				<real value="54" key="IBUIRowHeight"/>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -299,8 +300,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="block_center_background.png">{320, 15}</string>
-			<string key="block_line.png">{450, 2}</string>
+			<string key="block_center_background@2x.png">{640, 30}</string>
+			<string key="block_line@2x.png">{640, 2}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

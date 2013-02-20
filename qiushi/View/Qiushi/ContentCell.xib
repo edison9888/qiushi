@@ -85,7 +85,7 @@
 								<string key="IBUIText">我是昵称我是昵称我是昵称我是昵称我是昵称我是昵称</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC42MDAwMDAwMjM4IDAuNDAwMDAwMDA2IDAuMjAwMDAwMDAzAA</bytes>
+									<bytes key="NSRGB">MC42NjI3NDUwOTggMC42MzEzNzI1NDkgMC41ODAzOTIxNTY5AA</bytes>
 								</object>
 								<object class="NSColor" key="IBUIHighlightedColor" id="792844320">
 									<int key="NSColorSpace">3</int>
@@ -148,7 +148,10 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">testtesttesttesttesttesttesttesttesttesttesttesttesttest</string>
-								<reference key="IBUITextColor" ref="131619853"/>
+								<object class="NSColor" key="IBUITextColor">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC4zNTI5NDExODUyIDAuMzEzNzI1NTAxMyAwLjI1MDk4MDQwNwA</bytes>
+								</object>
 								<reference key="IBUIHighlightedColor" ref="792844320"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<int key="IBUINumberOfLines">0</int>
@@ -187,7 +190,7 @@
 								<string key="IBUINormalTitle"> 20</string>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+									<bytes key="NSRGB">MC41NjA3ODQzMTM3IDAuNTQ5MDE5NjA3OCAwLjUyMTU2ODYyNzUAA</bytes>
 								</object>
 								<object class="NSColor" key="IBUINormalTitleShadowColor" id="715564290">
 									<int key="NSColorSpace">3</int>
@@ -218,13 +221,12 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUINormalTitle">0</string>
+								<string key="IBUINormalTitle"> 30</string>
 								<reference key="IBUIHighlightedTitleColor" ref="792844320"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+									<bytes key="NSRGB">MC41NjA3ODQzMTM3IDAuNTQ5MDE5NjA3OCAwLjUyMTU2ODYyNzUAA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="715564290"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
@@ -246,13 +248,12 @@
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUINormalTitle">0</string>
+								<string key="IBUINormalTitle"> 20</string>
 								<reference key="IBUIHighlightedTitleColor" ref="792844320"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+									<bytes key="NSRGB">MC41NjA3ODQzMTM3IDAuNTQ5MDE5NjA3OCAwLjUyMTU2ODYyNzUAA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="715564290"/>
 								<object class="NSCustomResource" key="IBUINormalImage">
@@ -291,7 +292,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{0, 108}, {320, 15}}</string>
 								<reference key="NSSuperview" ref="864118940"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -524,10 +524,10 @@
 							<reference ref="954165105"/>
 							<reference ref="106094696"/>
 							<reference ref="768763114"/>
-							<reference ref="664296414"/>
 							<reference ref="702365697"/>
 							<reference ref="338000764"/>
 							<reference ref="116204339"/>
+							<reference ref="664296414"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>

@@ -19,6 +19,7 @@
 #import "Utils.h"
 #import "IIViewDeckController.h"
 #import "NetManager.h"
+#import "MainViewController.h"
 
 
 @interface ContentViewController ()
@@ -33,11 +34,17 @@ RefreshDateNetDelegate
     EGOImageButton *tem;//读取图片缓存的
     
     BOOL isShowAd;//是否展示Ad
+    NSString *_timestamp;
+    BOOL isNight;
+    NSMutableArray *_cacheQsArray;//缓冲array
+    BOOL isAutoLoadData;//是否自动刷新数据,
     
 }
 
-@property (nonatomic) BOOL refreshing;
-@property (assign,nonatomic) NSInteger page;
+@property (assign, nonatomic) BOOL refreshing;
+@property (assign, nonatomic) NSInteger page;
+@property (retain, nonatomic) NSString *timestamp;
+@property (retain, nonatomic) NSMutableArray *cacheQsArray;//缓冲array
 
 @end
 
@@ -60,13 +67,13 @@ RefreshDateNetDelegate
     
     
 	// Do any additional setup after loading the view, typically from a nib.
-    
-//    [self.view setBackgroundColor:[UIColor clearColor]];
+
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
 
     
     _list = [NSMutableArray array];
     _imageUrlArray = [NSMutableArray array];
+    _cacheQsArray = [NSMutableArray array];
     
     
     
@@ -134,7 +141,7 @@ RefreshDateNetDelegate
     
     
     if (self.page == 0) {
-        
+        isAutoLoadData = NO;
         [self.tableView launchRefreshing];
     }
     
@@ -164,6 +171,15 @@ RefreshDateNetDelegate
     NSString *themePathTmp = [[[HPThemeManager sharedThemeManager] themeDictionary] objectForKey:themename];//theme temp path
     NSString *themePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:themePathTmp];//actual theme path
     DLog(@"111:%@",themePath);
+    if ([themename isEqualToString:@"day"]) {
+        isNight = NO;
+    }else {
+        isNight = YES;
+    }
+    
+    [self.tableView reloadData];
+    
+    
 //    if(themePath)
 //        self.backgroundIV.image = [UIImage imageWithContentsOfFile:[themePath stringByAppendingPathComponent:@"mask_1.png"]];
 }
@@ -181,7 +197,7 @@ RefreshDateNetDelegate
 
 - (void)loadData
 {
-    
+
     if ([IsNetWorkUtil isNetWork] == NO) {
         [[iToast makeText:@"亲,网络不给力,请稍后再试呀..."] show];
         self.refreshing = NO;
@@ -228,10 +244,18 @@ RefreshDateNetDelegate
         }break;
         case QiuShiTypeCy://穿越
         {
+            self.mainViewController.title = @"穿越中...";
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             formatter.dateFormat = @"yyyy-MM-dd";
-            NSString *timestamp = [formatter stringFromDate:[NSDate date]];
-            url = CYURLString(timestamp,self.page);
+            _timestamp = [formatter stringFromDate:[NSDate date]];
+            
+            NSString *a = [NSString stringWithFormat:@"%d",[Utils getRandomNumber:2005 to:2012]] ;
+            NSString *b = [NSString stringWithFormat:@"%02d",[Utils getRandomNumber:1 to:12]] ;
+            NSString *c = [NSString stringWithFormat:@"%02d",[Utils getRandomNumber:1 to:28]] ;
+            
+            _timestamp = [NSString stringWithFormat:@"%@-%@-%@",a,b,c];//@"2006-01-01";
+            
+            url = CYURLString(_timestamp,self.page);
             
         }break;
         default:
@@ -312,7 +336,7 @@ RefreshDateNetDelegate
         
     }
     
-    DLog(@"tag:%@",qs.tag);
+//    DLog(@"tag:%@",qs.tag);
     //设置标签
     if (qs.tag == nil || [qs.tag isEqualToString:@""] || qs.tag.length == 0)
     {
@@ -346,6 +370,13 @@ RefreshDateNetDelegate
     [cell.badbtn addTarget:self action:@selector(badClick:) forControlEvents:UIControlEventTouchUpInside];
     
     
+    if (isNight == YES) {
+        cell.txtContent.textColor = [UIColor colorWithRed:178/255.f green:182/255.f blue:191/255.f alpha:1.f];
+    }else {
+        cell.txtContent.textColor = [UIColor colorWithRed:68/255.f green:59/255.f blue:44/255.f alpha:1.f];
+    }
+    
+    
     //自适应函数
     [cell resizeTheHeight:kTypeMain];
     
@@ -363,6 +394,11 @@ RefreshDateNetDelegate
 #pragma mark - PullingRefreshTableViewDelegate
 - (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView
 {
+    //顶部下拉刷新
+    self.page = 0;
+    [self.cacheQsArray removeAllObjects];
+    isAutoLoadData = NO;
+    
     self.refreshing = YES;
     [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
 }
@@ -370,7 +406,17 @@ RefreshDateNetDelegate
 
 - (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView
 {
-    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
+    //底部上拉刷新
+    if (self.cacheQsArray.count > 0) {
+        [self.list addObjectsFromArray:self.cacheQsArray];
+        [self.tableView reloadData];
+        [self.tableView tableViewDidFinishedLoading];
+        [self.cacheQsArray removeAllObjects];
+        isAutoLoadData = YES;
+    }else {
+        isAutoLoadData = NO;
+    }
+    [self performSelector:@selector(loadData) withObject:nil afterDelay:.1f];
 }
 
 #pragma mark - Scroll
@@ -405,6 +451,7 @@ RefreshDateNetDelegate
 #pragma mark - LoadPage
 - (void)LoadPageOfQiushiType:(QiuShiType) type
 {
+    isAutoLoadData = NO;
     self.Qiutype = type;
     self.page = 0;
     [self.tableView launchRefreshing];
@@ -429,7 +476,7 @@ RefreshDateNetDelegate
     // 计算出长宽
     CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:UILineBreakModeTailTruncation];
     
-    DLog(@"%f,%f",size.height,size.width);
+//    DLog(@"%f,%f",size.height,size.width);
     CGFloat height;
     CGFloat tagHeight = qs.tag.length > 0 ? 0 :30;
     CGFloat cellHeight = 124;
@@ -440,7 +487,7 @@ RefreshDateNetDelegate
         height = size.height + 100 + cellHeight -25 - tagHeight;//88+6+6
     }
     
-    DLog(@"%f",height);
+//    DLog(@"%f",height);
     // 返回需要的高度
     return height;
 }
@@ -525,6 +572,7 @@ RefreshDateNetDelegate
     }
     
     NSLog(@"获取缓存完成");
+    [self.tableView reloadData];
     
 }
 
@@ -621,8 +669,13 @@ RefreshDateNetDelegate
 {
     if (type == kRequestTypeGetQiushi)
     {
+        if (Qiutype == QiuShiTypeCy) {
+            self.mainViewController.title = self.timestamp;
+            
+        }
         
         if (dic != nil) {
+            //如果顶部下拉刷新的话,
             if (self.refreshing)
             {
                 self.page = 1;
@@ -632,22 +685,10 @@ RefreshDateNetDelegate
                 [self.imageUrlArray removeAllObjects];
                 
                 [SqliteUtil initDb];
-                
-                
-                //                [self loadData];
+
             }
             
-            //            if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
-            //                if (self.page < 5) {
-            //                    [self loadData];
-            //                }
-            //
-            //            }else if (self.page == 1) {
-            //                [self loadData];
-            //            }
-            
-            
-            
+
             if ([dic objectForKey:@"items"])
             {
                 NSArray *array = [NSArray arrayWithArray:[dic objectForKey:@"items"]];
@@ -674,7 +715,7 @@ RefreshDateNetDelegate
                     
                     
                     
-                    [self.list addObject:qs];
+                    [self.cacheQsArray addObject:qs];
                     
                     if (qs.imageURL != nil && ![qs.imageURL isEqualToString:@""]) {
                         [self.imageUrlArray addObject:qs.imageURL];
@@ -687,43 +728,48 @@ RefreshDateNetDelegate
                 
             }
             
-            
-            //数据源去重复
-            self.list = [Utils removeRepeatArray:self.list];
-            //保存到数据库
-            dispatch_queue_t newThread = dispatch_queue_create("com.xyxd.qiushi.db", NULL);//dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-            dispatch_async(newThread, ^{
-                [SqliteUtil saveDbWithArray:self.list];
-            });
-            
-            
-            //预先加载 图片
-            NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-            int loadType = [[ud objectForKey:@"loadImage"] intValue];
-            if (loadType == 0) {//全部加载
-                [self getImageCache:kTagGetNormal];
-            }else if (loadType == 1){//仅wifi加载
-                if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
-                    [self getImageCache:kTagGetNormal];
+            if (isAutoLoadData == NO) {
+                [self.list addObjectsFromArray:self.cacheQsArray];
+                [self.cacheQsArray removeAllObjects];
+                
+                //数据源去重复
+                self.list = [Utils removeRepeatArray:self.list];
+                
+                if (self.page >= 20) {
+                    [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
+                    self.tableView.reachedTheEnd  = YES;
+                } else {
+                    
+                    [self.tableView reloadData];
+                    [self.tableView tableViewDidFinishedLoading];
+                    self.tableView.reachedTheEnd  = NO;
+                    isAutoLoadData = YES;
+                    [self loadData];
+
                 }
-            }else if (loadType == 2){//不加载
+                
+                
                 
             }
             
-            if (self.page >= 20) {
-                [self.tableView tableViewDidFinishedLoadingWithMessage:@"亲，下面没有了哦..."];
-                self.tableView.reachedTheEnd  = YES;
-            } else {
-                [self.tableView tableViewDidFinishedLoading];
-                self.tableView.reachedTheEnd  = NO;
-                [self.tableView reloadData];
-            }
+            
+            //预先加载 图片
+            [self getImagesByUrl];
+
             
             if (isShowAd == NO) {
                 //请求 ad
                 [bannerView_ loadRequest:[GADRequest request]];
             }
             
+            //保存到数据库
+            dispatch_queue_t newThread = dispatch_queue_create("com.xyxd.qiushi.db", NULL);//dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+            dispatch_async(newThread, ^{
+                [SqliteUtil saveDbWithArray:self.list];
+            });
+
+            
+
             
         }else {
             
@@ -743,6 +789,23 @@ RefreshDateNetDelegate
         
         
     }
+}
+
+- (void)getImagesByUrl
+{
+    //预先加载 图片
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    int loadType = [[ud objectForKey:@"loadImage"] intValue];
+    if (loadType == 0) {//全部加载
+        [self getImageCache:kTagGetNormal];
+    }else if (loadType == 1){//仅wifi加载
+        if ([IsNetWorkUtil netWorkType] == kTypeWifi) {
+            [self getImageCache:kTagGetNormal];
+        }
+    }else if (loadType == 2){//不加载
+        
+    }
+
 }
 
 @end

@@ -16,6 +16,6 @@
 + (NSMutableArray *)randArray:(NSMutableArray *)ary;
 
 
-
 + (NSString *)notRounding:(float)price afterPoint:(int)position;
++ (int)getRandomNumber:(int)from to:(int)to;
 @end

@@ -306,7 +306,7 @@ RefreshDateNetDelegate
         //设置内容
         cell.txtContent.text = content;
         //发布时间
-        cell.txtTime.text = self.qs.fbTime;
+        cell.txtTime.text = @"";//self.qs.fbTime;
         //设置图片
         if (self.qs.imageURL!=nil && ![self.qs.imageURL isEqual: @""]) {
             cell.imgUrl = self.qs.imageURL;

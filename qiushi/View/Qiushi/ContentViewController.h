@@ -10,8 +10,10 @@
 #import "ContentCell.h"
 #import "GADBannerView.h"
 #import "BaseController.h"
+
 @class EGOImageButton;
 @class PullingRefreshTableView;
+@class MainViewController;
 
 
 #define kTagGetNormal    1001
@@ -33,6 +35,7 @@
     
     NSMutableArray *_list;
     PullingRefreshTableView *_tableView;
+    MainViewController *_mainViewController;
     
    
     
@@ -42,6 +45,7 @@
 @property (nonatomic,retain) NSMutableArray *cacheArray;
 @property (nonatomic,retain) NSMutableArray *imageUrlArray;
 @property (retain,nonatomic) NSMutableArray *list;
+@property (retain,nonatomic) MainViewController *mainViewController;
 
 
 -(void) LoadPageOfQiushiType:(QiuShiType) type;

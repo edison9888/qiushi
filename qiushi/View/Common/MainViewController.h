@@ -26,6 +26,7 @@
 }
 
 @property (nonatomic, retain) ContentViewController *m_contentView;
+@property (nonatomic, retain) UIBarButtonItem *rightBarButtonItem;
 @property (nonatomic, assign) int typeQiuShi;
 @property (nonatomic, assign) int index;
 

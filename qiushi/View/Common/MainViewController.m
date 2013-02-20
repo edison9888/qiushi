@@ -103,8 +103,8 @@
     [btn1 setShowsTouchWhenHighlighted:YES];
     [btn1 addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [btn1 setTag:kTagRefresh];
-    UIBarButtonItem* someBarButtonItem1 = [[UIBarButtonItem alloc] initWithCustomView:btn1];
-    self.navigationItem.rightBarButtonItem = someBarButtonItem1;
+    _rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn1];
+    self.navigationItem.rightBarButtonItem = _rightBarButtonItem;
 
 
 
@@ -137,12 +137,6 @@
     [self refreshTitle];
 
 
-
-
-
-
-
-
     [SqliteUtil initDb];
 
 
@@ -156,6 +150,7 @@
     self.m_contentView = [[ContentViewController alloc]initWithNibName:@"ContentViewController" bundle:nil];
     [m_contentView.view setFrame:CGRectMake(0, 0, kDeviceWidth, KDeviceHeight - 44 -20)];
     [m_contentView LoadPageOfQiushiType:_typeQiuShi];
+    m_contentView.mainViewController = self;
     [self.view addSubview:m_contentView.view];
 
 
@@ -246,8 +241,6 @@
     }else if(_index == 3){
         _typeQiuShi = QiuShiTypeCy;
     }
-
-
 
 
     //刷新 数据

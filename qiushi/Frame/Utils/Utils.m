@@ -68,4 +68,13 @@
     return [NSString stringWithFormat:@"%@",roundedOunces];
 }
 
+
++ (int)getRandomNumber:(int)from to:(int)to
+{
+    int i = to - from +1;
+    i = arc4random() % i;
+    i = from + i;
+    return i;
+}
+
 @end

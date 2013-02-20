@@ -63,7 +63,7 @@
     
     
     
-    DLog(@"%@",NSStringFromCGSize(size));
+//    DLog(@"%@",NSStringFromCGSize(size));
     
     
     CGRect frame = _txtContent.frame;
