@@ -15,7 +15,7 @@
 @class PullingRefreshTableView;
 @class SHSShareViewController;
 
-
+#define kTagActivity 301
 @interface CommentsViewController : UIViewController
 <UIGestureRecognizerDelegate,GADBannerViewDelegate>
 {

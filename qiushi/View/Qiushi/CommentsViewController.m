@@ -34,12 +34,14 @@ RefreshDateNetDelegate
 >
 {
     BOOL isShowAd;//是否展示Ad
+    UIView *_footView;
 }
 
 -(void) btnClicked:(id)sender;
 - (void)loadData;
-@property (nonatomic) BOOL refreshing;
-@property (assign,nonatomic) NSInteger page;
+@property (assign, nonatomic) BOOL refreshing;
+@property (assign, nonatomic) NSInteger page;
+@property (retain, nonatomic) UIView *footView;
 @end
 
 @implementation CommentsViewController
@@ -115,37 +117,43 @@ RefreshDateNetDelegate
     
     
     //添加footimage
-    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
+    _footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
     UIImage *footbg= [UIImage imageNamed:@"block_center_background.png"];
     UIImageView *footbgView = [[UIImageView alloc]initWithImage:footbg];
     [footbgView setFrame:CGRectMake(0, 0, 320, 25)];
-    [footView addSubview:footbgView];
+    [_footView addSubview:footbgView];
     
     
     UIImage *footimage = [UIImage imageNamed:@"block_foot_background.png"];
     UIImageView *footimageView = [[UIImageView alloc]initWithImage:footimage];
     [footimageView setFrame:CGRectMake(0, 25, 320, 15)];
-    [footView addSubview:footimageView];
+    [_footView addSubview:footimageView];
     
-    //    //添加评论
-    //    UIButton *addcomments = [UIButton buttonWithType:UIButtonTypeCustom];
-    //    [addcomments setFrame:CGRectMake(20,2,280,28)];
-    //    [addcomments setBackgroundImage:[[UIImage imageNamed:@"button_vote.png"]stretchableImageWithLeftCapWidth:5 topCapHeight:5] forState:UIControlStateNormal];
-    //    [addcomments setTitleColor:[UIColor brownColor] forState:UIControlStateNormal];
-    //    [addcomments.titleLabel setFont: [UIFont fontWithName:kFont size:14]];
-    //    [addcomments setTitle:@"点击发表评论" forState:UIControlStateNormal];
-    //    [addcomments addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    //    [addcomments setTag:FAddComments];
-    //    [footView addSubview:addcomments];
+    //添加评论
+    UIButton *addcomments = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addcomments setFrame:CGRectMake(20,2,280,28)];
+    [addcomments setTitleColor:[UIColor brownColor] forState:UIControlStateNormal];
+    [addcomments.titleLabel setFont: [UIFont fontWithName:kFont size:14]];
+    [addcomments setTitle:@"正在加载评论..." forState:UIControlStateNormal];
+    [addcomments setTag:FAddComments];
+    [_footView addSubview:addcomments];
     
-    _commentView.tableFooterView = footView;
-    [_commentView addSubview:footView];
+    UIActivityIndicatorView* activity=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activity.tag = kTagActivity;
+    activity.center = CGPointMake(90, 18);
+    [activity startAnimating];
+    [_footView addSubview:activity];
+    
+    
+    _commentView.tableFooterView = _footView;
+    [_commentView addSubview:_footView];
     
     
     
     if (self.page == 0) {
         
-        [self.commentView launchRefreshing];
+//        [self.commentView launchRefreshing];
+        [self loadData];
     }
     
     [self registerGesture];
@@ -255,6 +263,9 @@ RefreshDateNetDelegate
         self.refreshing = NO;
         [self.commentView tableViewDidFinishedLoading];
         [self.commentView reloadData];
+        
+        [[_footView viewWithTag:kTagActivity] removeFromSuperview];
+        [[_footView viewWithTag:FAddComments] removeFromSuperview];
         return;
     }
     
@@ -617,6 +628,8 @@ RefreshDateNetDelegate
 {
     if (type == kRequestTypeGetComment)
     {
+        [[_footView viewWithTag:kTagActivity] removeFromSuperview];
+        [[_footView viewWithTag:FAddComments] removeFromSuperview];
         if (isOk == YES) {
             if (dic != nil) {
                 
